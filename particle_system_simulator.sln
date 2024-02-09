@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "udemyopengl", "udemyopengl\udemyopengl.vcxproj", "{FAD29F07-A6F7-4242-A6E5-0024C9FD0C2C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "particle_system_simulator", "particle_system_simulator\particle_system_simulator.vcxproj", "{FAD29F07-A6F7-4242-A6E5-0024C9FD0C2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
