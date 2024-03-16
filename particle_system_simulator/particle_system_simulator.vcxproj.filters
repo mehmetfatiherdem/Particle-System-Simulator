@@ -1,42 +1,248 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="src">
+      <UniqueIdentifier>{db6ca364-be3a-437e-991a-7ff73dbb1d34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="src\General Utility">
+      <UniqueIdentifier>{c1df929d-0b5d-4717-a93f-4fa906a23289}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="src\User Interface">
+      <UniqueIdentifier>{a79f62ed-a4a1-44a8-8232-5065ad52ae6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Resource Management">
+      <UniqueIdentifier>{a07eabea-bee4-4ba8-8096-49a2adc04aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline">
+      <UniqueIdentifier>{09c60c2e-9ded-47ae-bbae-56e570712a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Camera">
+      <UniqueIdentifier>{ebed468d-1b20-4e21-bf1b-ff8ad6f70993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Color">
+      <UniqueIdentifier>{5c6af526-c747-4895-95ce-9f06b55fa309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Constants">
+      <UniqueIdentifier>{b1ef1075-37d4-412f-9593-01bf5ae6ff9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Initialization">
+      <UniqueIdentifier>{c2b45cb1-b908-437e-8194-a8ea445382bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light">
+      <UniqueIdentifier>{c1c670f5-9cb9-4f04-b05d-0942b1779c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Light Base">
+      <UniqueIdentifier>{bd420b79-2660-4682-a9c3-87ee192f57e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Light Management">
+      <UniqueIdentifier>{1064340d-24dc-4acc-857c-629d40396a2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Light Utility">
+      <UniqueIdentifier>{d21c67e5-6ce7-4f60-9a44-fb51e7f3113c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Material">
+      <UniqueIdentifier>{f8eba53b-674e-4cba-9ff8-d7b852579505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Mesh">
+      <UniqueIdentifier>{0d5cbed6-20b9-46cd-9010-b01c533aa7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Mesh Construction">
+      <UniqueIdentifier>{4cc595b2-b4f9-4d26-9318-c6afc9d25fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Transform">
+      <UniqueIdentifier>{fcc88483-dd0e-426e-bc6c-cdb4f6e82aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Texture">
+      <UniqueIdentifier>{89ffb040-a983-4d65-8c3e-c5d0ee10739a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Shader">
+      <UniqueIdentifier>{575afc23-e730-4e20-aa93-e8515735a5c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Shader\Shader Management">
+      <UniqueIdentifier>{2f3cbfab-143f-4d62-b40c-f48ae716113b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Scene">
+      <UniqueIdentifier>{51999228-2858-43fb-ab63-47869777fbce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Object">
+      <UniqueIdentifier>{b1dab580-1352-4b73-b349-ed4518e170d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{3b867455-2df5-44ea-8957-37b8a9bafc44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders">
+      <UniqueIdentifier>{ffc47059-e4c5-4f17-bd84-7fb5ae32281f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Enums">
+      <UniqueIdentifier>{ca11dde3-a052-4c34-a05b-fc7b6ac9a87d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
+      <Filter>src\Resource Management</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\UserInterface\Window.cpp">
+      <Filter>src\User Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\RenderPipeline\Camera\Camera.cpp">
+      <Filter>src\Render Pipeline\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp">
+      <Filter>src\Render Pipeline\Initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\DirectionalLight.cpp">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\PointLight.cpp">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\SpotLight.cpp">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\LightBase\PositionalLight.cpp">
+      <Filter>src\Render Pipeline\Light\Light Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\LightBase\LightSource.cpp">
+      <Filter>src\Render Pipeline\Light\Light Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\LightManagement\LightTracker.cpp">
+      <Filter>src\Render Pipeline\Light\Light Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.cpp">
+      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Material\Material.cpp">
+      <Filter>src\Render Pipeline\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Mesh\Mesh.cpp">
+      <Filter>src\Render Pipeline\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Transform\Transform.cpp">
+      <Filter>src\Render Pipeline\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Texture\Texture.cpp">
+      <Filter>src\Render Pipeline\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Shader\Shader.cpp">
+      <Filter>src\Render Pipeline\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.cpp">
+      <Filter>src\Render Pipeline\Shader\Shader Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp">
+      <Filter>src\Render Pipeline\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp">
+      <Filter>src\Render Pipeline\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Object\RenderableObject.cpp">
+      <Filter>src\Render Pipeline\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshConstruction\Shapes.cpp">
+      <Filter>src\Mesh Construction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\GeneralUtility\Aliases.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\ResourceManagement\ResourceManager.h">
+      <Filter>src\Resource Management</Filter>
     </ClInclude>
+    <ClInclude Include="src\UserInterface\Window.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Camera\Camera.h">
+      <Filter>src\Render Pipeline\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Color\Color3.h">
+      <Filter>src\Render Pipeline\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Color\Color4.h">
+      <Filter>src\Render Pipeline\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Constants\PipelineConstants.h">
+      <Filter>src\Render Pipeline\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h">
+      <Filter>src\Render Pipeline\Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\DirectionalLight.h">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\PointLight.h">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\SpotLight.h">
+      <Filter>src\Render Pipeline\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\LightBase\PositionalLight.h">
+      <Filter>src\Render Pipeline\Light\Light Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\LightBase\LightSource.h">
+      <Filter>src\Render Pipeline\Light\Light Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\LightManagement\LightTracker.h">
+      <Filter>src\Render Pipeline\Light\Light Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.h">
+      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\LightUtility\LightSourceType.h">
+      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Material\Material.h">
+      <Filter>src\Render Pipeline\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h">
+      <Filter>src\Render Pipeline\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Transform\Transform.h">
+      <Filter>src\Render Pipeline\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Transform\Transformable.h">
+      <Filter>src\Render Pipeline\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Texture\Texture.h">
+      <Filter>src\Render Pipeline\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Vertex.h">
+      <Filter>src\Render Pipeline\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Shader.h">
+      <Filter>src\Render Pipeline\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h">
+      <Filter>src\Render Pipeline\Shader\Shader Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Scene\Scene.h">
+      <Filter>src\Render Pipeline\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h">
+      <Filter>src\Render Pipeline\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Object\RenderableObject.h">
+      <Filter>src\Render Pipeline\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\Enums\LightDistance.h">
+      <Filter>src\Render Pipeline\Light\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshConstruction\Shapes.h">
+      <Filter>src\Mesh Construction</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\fragment.frag">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\vertex.vert">
+      <Filter>Resources\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
