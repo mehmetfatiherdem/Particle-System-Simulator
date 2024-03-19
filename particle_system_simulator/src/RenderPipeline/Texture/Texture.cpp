@@ -60,6 +60,7 @@ Texture& Texture::operator=(Texture&& texture) noexcept
 	texture.width = 0;
 	texture.height = 0;
 	texture.bitDepth = 0;
+	return *this;
 }
 
 void Texture::useTexture() const

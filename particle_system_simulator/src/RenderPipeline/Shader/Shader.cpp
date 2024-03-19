@@ -32,6 +32,7 @@ Shader& Shader::operator=(Shader&& shader) noexcept
 {
 	this->programID = shader.programID;
 	shader.programID = 0;
+	return *this;
 }
 
 void Shader::destroyShader()
