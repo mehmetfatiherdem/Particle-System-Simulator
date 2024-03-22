@@ -3,7 +3,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include "LightSource.h"
-#include "RenderPipeline/Light/Enums/LightDistance.h"
+#include "RenderPipeline/Light/Data/LightDistance.h"
 
 class PositionalLight : public LightSource
 {

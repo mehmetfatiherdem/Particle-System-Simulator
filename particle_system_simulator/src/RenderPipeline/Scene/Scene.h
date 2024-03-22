@@ -4,7 +4,7 @@
 #include <functional>
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
-#include "RenderPipeline/Light/Enums/LightDistance.h"
+#include "RenderPipeline/Light/Data/LightDistance.h"
 #include "RenderPipeline/Color/Color3.h"
 #include "RenderPipeline/Camera/Camera.h"
 

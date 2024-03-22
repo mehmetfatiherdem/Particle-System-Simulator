@@ -1,6 +1,7 @@
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
+#include "RenderPipeline/Light/Data/LightConstants.h"
 #include "Scene.h"
 
 Scene::Scene(float aspectRatio) : shaderManager(), lightTracker(this->shaderManager), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS),

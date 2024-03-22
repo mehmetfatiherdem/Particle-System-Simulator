@@ -4,10 +4,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "GeneralUtility/Aliases.h"
-#include "RenderPipeline/Constants/PipelineConstants.h"
-
-using namespace constants::light;
-using namespace constants::UBO;
+#include "RenderPipeline/Light/Data/LightConstants.h"
 
 class DirectionalLight;
 class PointLight;

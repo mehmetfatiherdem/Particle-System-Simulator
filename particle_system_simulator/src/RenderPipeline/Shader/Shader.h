@@ -13,7 +13,7 @@ class Shader
 private:
 	GLuint programID;
 
-	void compileShaders(const char* vertexCode, const char* fragmentCode);
+	void compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode);
 	void addShader(const char* shaderCode, GLenum shaderType);
 	std::string readShaderFile(std::string_view file);
 	void destroyShader();
@@ -26,7 +26,7 @@ public:
 	};
 
 	Shader() = delete;
-	Shader(std::string_view vertex, std::string_view fragment, LoadMethod method = LoadMethod::FromFile);
+	Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry = "", LoadMethod method = LoadMethod::FromFile);
 	Shader(Shader&& shader) noexcept;
 	~Shader();
 

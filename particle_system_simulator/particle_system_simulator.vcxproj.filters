@@ -238,10 +238,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\fragment.frag">
+    <None Include="Resources\Shaders\generic.geom">
       <Filter>Resources\Shaders</Filter>
     </None>
-    <None Include="Resources\Shaders\vertex.vert">
+    <None Include="Resources\Shaders\generic.frag">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\generic.vert">
       <Filter>Resources\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -23,16 +23,16 @@ private:
 
 public:
 	Camera() = delete;
-	Camera(const glm::vec3& position, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(60.0f), float near = 0.1f,
+	Camera(const glm::vec3& position, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f), float near = 0.1f,
 		float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
 
-	Camera(const glm::vec3& position, const glm::vec3& rotation, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(60.0f),
+	Camera(const glm::vec3& position, const glm::vec3& rotation, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f),
 		float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
 
-	Camera(const glm::vec3& position, const glm::quat& rotation, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(60.0f),
+	Camera(const glm::vec3& position, const glm::quat& rotation, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f),
 		float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
 
-	Camera(const Transform& transform, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(60.0f), float near = 0.1f,
+	Camera(const Transform& transform, float aspectRatio, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f), float near = 0.1f,
 		float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
 
 	glm::mat4 getViewMatrix() const;

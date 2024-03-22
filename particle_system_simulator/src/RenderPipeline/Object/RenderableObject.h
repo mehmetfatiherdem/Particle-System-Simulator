@@ -1,16 +1,32 @@
 #pragma once
 
-#include "RenderPipeline/Transform/Transform.h"
-#include "MeshRenderer.h"
+#include "RenderPipeline/Transform/Transformable.h"
 
-class RenderableObject
+class Mesh;
+class Material;
+
+class RenderableObject : public Transformable
 {
 private:
-	Transform transform;
-	MeshRenderer meshRenderer;
-public:
-	RenderableObject(const Transform& transform, const MeshRenderer& meshRenderer) : transform(transform), meshRenderer(meshRenderer) { }
+	Mesh* mesh;
+	Material* material;
 
-	Transform& getTransform() { return transform; }
-	void render() const { meshRenderer.render(transform.getModelMatrix()); }
+public:
+	RenderableObject() = delete;
+	RenderableObject(Mesh* mesh, Material* material);
+	RenderableObject(const glm::vec3& position, Mesh* mesh, Material* material);
+	RenderableObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material);
+	RenderableObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material);
+	RenderableObject(const Transform& transform, Mesh* mesh, Material* material);
+	RenderableObject(const RenderableObject& renderableObject);
+	~RenderableObject();
+
+	RenderableObject& operator=(const RenderableObject& renderableObject);
+
+	void render();
+
+	const Mesh* getMesh() const { return mesh; }
+	Material* getMaterial() const { return material; }
+
+	void setMaterial(Material* material) { this->material = material; }
 };

@@ -1,10 +1,8 @@
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
-#include "RenderPipeline/Constants/PipelineConstants.h"
+#include "RenderPipeline/Light/Data/LightConstants.h"
 #include "GLSLObjectUtils.h"
-
-using namespace constants::light;
 
 unsigned int sizeOfLightsUBO()
 {

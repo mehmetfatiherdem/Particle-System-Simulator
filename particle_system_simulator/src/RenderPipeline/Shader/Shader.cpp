@@ -4,17 +4,19 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 
-Shader::Shader(std::string_view vertex, std::string_view fragment, LoadMethod method)
+Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, LoadMethod method)
 {
 	if(method == LoadMethod::FromFile)
 	{
 		std::string vertexShader = readShaderFile(vertex);
 		std::string fragmentShader = readShaderFile(fragment);
-		compileShaders(vertexShader.c_str(), fragmentShader.c_str());
+		std::string geometryShader = geometry.empty() ? "" : readShaderFile(geometry);
+
+		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), (geometryShader.empty() ? nullptr : geometryShader.c_str()));
 	}
 	else
 	{
-		compileShaders(vertex.data(), fragment.data());
+		compileShaders(vertex.data(), fragment.data(), geometry.data());
 	}
 }
 
@@ -54,7 +56,7 @@ void Shader::unuseShaders()
 	glUseProgram(0);
 }
 
-void Shader::compileShaders(const char* vertexCode, const char* fragmentCode)
+void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode)
 {
 	programID = glCreateProgram();
 
@@ -64,30 +66,32 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode)
 		return;
 	}
 
-	addShader(vertexCode, GL_VERTEX_SHADER);   //Add vertex shader to the shader program
-	addShader(fragmentCode, GL_FRAGMENT_SHADER); //Add fragment shader to the program
+	addShader(vertexCode, GL_VERTEX_SHADER);
+	addShader(fragmentCode, GL_FRAGMENT_SHADER);
+
+	if(geometryCode != nullptr)
+		addShader(geometryCode, GL_GEOMETRY_SHADER);
 
 	GLint result = 0;
 	GLchar eLog[2048] = { 0 };
 
-	glLinkProgram(programID);  //Linking the program (Creating the executables in the GPU)
-	glGetProgramiv(programID, GL_LINK_STATUS, &result);    //Get link status
+	glLinkProgram(programID);
+	glGetProgramiv(programID, GL_LINK_STATUS, &result);
 
 	if (!result)
 	{
-		glGetProgramInfoLog(programID, 2048 * sizeof(GLchar), NULL, eLog);     //Get the Info log for the shader program
+		glGetProgramInfoLog(programID, 2048 * sizeof(GLchar), NULL, eLog);
 		std::cerr << "Error linking program: " << eLog << std::endl;
 		destroyShader();
 		return;
 	}
 
-	//Validate the shader to make sure whether the shader is valid in the current context the Opengl is working in
 	glValidateProgram(programID);
-	glGetProgramiv(programID, GL_VALIDATE_STATUS, &result);    //Get validation status
+	glGetProgramiv(programID, GL_VALIDATE_STATUS, &result);
 
 	if (!result)
 	{
-		glGetProgramInfoLog(programID, sizeof(eLog), NULL, eLog);  //Get the Info log for the shader program
+		glGetProgramInfoLog(programID, sizeof(eLog), NULL, eLog);
 		std::cerr << "Error validating the program : " << eLog << std::endl;
 		destroyShader();
 		return;
@@ -96,32 +100,32 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode)
 
 void Shader::addShader(const char* shaderCode, GLenum shaderType)
 {
-	GLuint theShader = glCreateShader(shaderType);  //Create the individual shader of type shaderType (i.g.,vertex,fragment...)s
+	GLuint theShader = glCreateShader(shaderType);
 
-	const GLchar* theCode[1];   //The array of codes ( there can be multiple code files )
+	const GLchar* theCode[1];
 	theCode[0] = shaderCode;
 
-	GLint codeLength[1];    //The array of codes' lengths
+	GLint codeLength[1];
 	codeLength[0] = strlen(shaderCode);
 
-	glShaderSource(theShader, 1, theCode, codeLength);  //Setup the shader source code
-	glCompileShader(theShader); //Compile the shader source code
+	glShaderSource(theShader, 1, theCode, codeLength);
+	glCompileShader(theShader);
 
 	GLint result = 0;
 	GLchar eLog[2048] = { 0 };
 
-	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);   //Get compile status of the shader
+	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
 	if (!result)
 	{
-		glGetShaderInfoLog(theShader, 2048, NULL, eLog);    //Get the Info log for the shader
+		glGetShaderInfoLog(theShader, 2048, NULL, eLog);
 		std::cerr << "Error compiling the " << shaderType << " shader : " << eLog << '\n';
 		glDeleteShader(theShader);
 		destroyShader();
 		return;
 	}
 
-	glAttachShader(programID, theShader);  //Attach the shader to the shader program
-	glDeleteShader(theShader);	//Delete the shader code from memory
+	glAttachShader(programID, theShader);
+	glDeleteShader(theShader);
 }
 
 std::string Shader::readShaderFile(std::string_view address)
