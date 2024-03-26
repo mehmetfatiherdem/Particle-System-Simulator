@@ -1,10 +1,10 @@
 #include <cassert>
+#include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 #include "Data/BufferObjects.h"
 #include "Data/VertexAttributes.h"
 #include "Data/MeshProperties.h"
 #include "Mesh.h"
-
-#define buffer_size (this->modelMatrices ? 3 : 2)
 
 Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint>&& indices, const MeshProperties& props) : vertices(std::move(vertices)),
 	indices(std::move(indices)), VAO(0), buffers(), instanceCount(props.instanced ? 0 : 1), modelMatrices(nullptr),
@@ -56,8 +56,8 @@ Mesh::Mesh(Mesh&& mesh) noexcept
 	: VAO(mesh.VAO), buffers(), vertices(std::move(mesh.vertices)), indices(std::move(mesh.indices)), modelMatrices(mesh.modelMatrices),
 	currentCapacity(mesh.currentCapacity), chunkSize(mesh.chunkSize), instanceCount(mesh.instanceCount), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
 {
-	std::memcpy(this->buffers, mesh.buffers, buffer_size);
-	std::fill_n(mesh.buffers, buffer_size, 0);
+	std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+	std::fill_n(mesh.buffers, 3, 0);
 	mesh.VAO = 0;
 	mesh.currentCapacity = 0;
 	mesh.modelMatrices = nullptr;
@@ -65,7 +65,7 @@ Mesh::Mesh(Mesh&& mesh) noexcept
 
 Mesh::~Mesh()
 {
-	glDeleteBuffers(buffer_size, buffers);
+	glDeleteBuffers(this->modelMatrices ? 3 : 2, buffers);
 	glDeleteVertexArrays(1, &VAO);
 	if(modelMatrices)
 		delete[] modelMatrices;
@@ -82,8 +82,8 @@ Mesh& Mesh::operator=(Mesh&& mesh) noexcept
 		this->currentCapacity = mesh.currentCapacity;
 		this->chunkSize = mesh.chunkSize;
 		this->instanceCount = mesh.instanceCount;
-		std::memcpy(this->buffers, mesh.buffers, buffer_size);
-		std::fill_n(mesh.buffers, buffer_size, 0);
+		std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+		std::fill_n(mesh.buffers, 3, 0);
 		mesh.VAO = 0;
 		mesh.currentCapacity = 0;
 		mesh.modelMatrices = nullptr;

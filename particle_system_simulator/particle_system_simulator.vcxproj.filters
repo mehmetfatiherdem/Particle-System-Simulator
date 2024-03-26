@@ -22,9 +22,6 @@
     <Filter Include="src\Render Pipeline\Color">
       <UniqueIdentifier>{5c6af526-c747-4895-95ce-9f06b55fa309}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Render Pipeline\Constants">
-      <UniqueIdentifier>{b1ef1075-37d4-412f-9593-01bf5ae6ff9a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Render Pipeline\Initialization">
       <UniqueIdentifier>{c2b45cb1-b908-437e-8194-a8ea445382bd}</UniqueIdentifier>
     </Filter>
@@ -73,7 +70,10 @@
     <Filter Include="Resources\Shaders">
       <UniqueIdentifier>{ffc47059-e4c5-4f17-bd84-7fb5ae32281f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Render Pipeline\Light\Enums">
+    <Filter Include="src\Render Pipeline\Mesh\Data">
+      <UniqueIdentifier>{e15a683f-0d8b-479b-8f85-3aee02ea55ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Data">
       <UniqueIdentifier>{ca11dde3-a052-4c34-a05b-fc7b6ac9a87d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -135,9 +135,6 @@
     <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp">
       <Filter>src\Render Pipeline\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp">
-      <Filter>src\Render Pipeline\Object</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderPipeline\Object\RenderableObject.cpp">
       <Filter>src\Render Pipeline\Object</Filter>
     </ClCompile>
@@ -166,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Color\Color4.h">
       <Filter>src\Render Pipeline\Color</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Constants\PipelineConstants.h">
-      <Filter>src\Render Pipeline\Constants</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h">
       <Filter>src\Render Pipeline\Initialization</Filter>
@@ -212,9 +206,6 @@
     <ClInclude Include="src\RenderPipeline\Texture\Texture.h">
       <Filter>src\Render Pipeline\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Vertex.h">
-      <Filter>src\Render Pipeline\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h">
       <Filter>src\Render Pipeline\Shader</Filter>
     </ClInclude>
@@ -224,17 +215,32 @@
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h">
       <Filter>src\Render Pipeline\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h">
-      <Filter>src\Render Pipeline\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Object\RenderableObject.h">
       <Filter>src\Render Pipeline\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Light\Enums\LightDistance.h">
-      <Filter>src\Render Pipeline\Light\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="src\MeshConstruction\Shapes.h">
       <Filter>src\Mesh Construction</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h">
+      <Filter>src\Render Pipeline\Mesh\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\ShrinkMethod.h">
+      <Filter>src\Render Pipeline\Mesh\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h">
+      <Filter>src\Render Pipeline\Mesh\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h">
+      <Filter>src\Render Pipeline\Mesh\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h">
+      <Filter>src\Render Pipeline\Light\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h">
+      <Filter>src\Render Pipeline\Light\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h">
+      <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +251,9 @@
       <Filter>Resources\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\generic.vert">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\instanced.vert">
       <Filter>Resources\Shaders</Filter>
     </None>
   </ItemGroup>

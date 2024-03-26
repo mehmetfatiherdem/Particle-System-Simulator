@@ -42,6 +42,7 @@ RenderableObject& RenderableObject::operator=(const RenderableObject& renderable
 	material = renderableObject.material;
 
 	mesh->addInstance();
+	return *this;
 }
 
 RenderableObject::~RenderableObject()
@@ -56,7 +57,8 @@ void RenderableObject::render()
 {
 	if(mesh->isInstanced())
 	{
-		mesh->setModelMatrix(getModelMatrix());
+		material->useMaterial(getModelMatrix());
+		mesh->setModelMatrix(getModelMatrix());		//handle material better
 	}
 	else
 	{

@@ -8,7 +8,7 @@ class Material;
 class RenderableObject : public Transformable
 {
 private:
-	Mesh* mesh;
+	Mesh* mesh;			//normal mesh, instanced mesh
 	Material* material;
 
 public:

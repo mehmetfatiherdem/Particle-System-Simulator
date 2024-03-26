@@ -32,7 +32,6 @@
     <ClCompile Include="src\RenderPipeline\Light\SpotLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Material\Material.cpp" />
     <ClCompile Include="src\RenderPipeline\Mesh\Mesh.cpp" />
-    <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp" />
     <ClCompile Include="src\RenderPipeline\Object\RenderableObject.cpp" />
     <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp" />
     <ClCompile Include="src\RenderPipeline\Shader\Shader.cpp" />
@@ -49,10 +48,10 @@
     <ClInclude Include="src\RenderPipeline\Camera\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color4.h" />
-    <ClInclude Include="src\RenderPipeline\Constants\PipelineConstants.h" />
     <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h" />
+    <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h" />
+    <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h" />
     <ClInclude Include="src\RenderPipeline\Light\DirectionalLight.h" />
-    <ClInclude Include="src\RenderPipeline\Light\Enums\LightDistance.h" />
     <ClInclude Include="src\RenderPipeline\Light\LightBase\LightSource.h" />
     <ClInclude Include="src\RenderPipeline\Light\LightBase\PositionalLight.h" />
     <ClInclude Include="src\RenderPipeline\Light\LightManagement\LightTracker.h" />
@@ -61,9 +60,12 @@
     <ClInclude Include="src\RenderPipeline\Light\PointLight.h" />
     <ClInclude Include="src\RenderPipeline\Light\SpotLight.h" />
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h" />
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\ShrinkMethod.h" />
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
+    <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
-    <ClInclude Include="src\RenderPipeline\Mesh\Vertex.h" />
-    <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Object\RenderableObject.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
@@ -93,6 +95,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
+    <None Include="Resources\Shaders\instanced.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

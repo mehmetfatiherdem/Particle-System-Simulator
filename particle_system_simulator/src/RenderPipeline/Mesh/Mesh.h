@@ -46,6 +46,6 @@ public:
 	Vertex getVertexAt(uint i) const { return vertices[i]; }
 	uint getIndexAt(uint i) const { return indices[i]; }
 
-	bool isInstanced() const { return modelMatrices; }
+	bool isInstanced() const { return modelMatrices != nullptr; }
 	uint getInstanceCount() const { return instanceCount; }
 };
