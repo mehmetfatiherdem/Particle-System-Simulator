@@ -76,6 +76,18 @@
     <Filter Include="src\Render Pipeline\Light\Data">
       <UniqueIdentifier>{ca11dde3-a052-4c34-a05b-fc7b6ac9a87d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render Pipeline\Skybox">
+      <UniqueIdentifier>{3911f2d6-c493-4b92-a186-865d17119ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{5f91a59f-5953-4efc-ac00-066c15bdead3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Skybox">
+      <UniqueIdentifier>{995680c7-31d6-40a2-b930-bbb394844999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\General Utility\stb_wrapper">
+      <UniqueIdentifier>{9c33b2ab-2c7f-49c8-9976-6433fa05353b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -140,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="src\MeshConstruction\Shapes.cpp">
       <Filter>src\Mesh Construction</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Skybox\Skybox.cpp">
+      <Filter>src\Render Pipeline\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp">
+      <Filter>src\General Utility\stb_wrapper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +260,18 @@
     <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h">
       <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h">
+      <Filter>src\Render Pipeline\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\ArenaAllocator.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\stringify.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h">
+      <Filter>src\General Utility\stb_wrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\generic.geom">
@@ -256,5 +286,31 @@
     <None Include="Resources\Shaders\instanced.vert">
       <Filter>Resources\Shaders</Filter>
     </None>
+    <None Include="Resources\Shaders\skybox.frag">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\skybox.vert">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\Skybox\left.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Skybox\right.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Skybox\top.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Skybox\back.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Skybox\bottom.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Skybox\front.jpg">
+      <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
   </ItemGroup>
 </Project>

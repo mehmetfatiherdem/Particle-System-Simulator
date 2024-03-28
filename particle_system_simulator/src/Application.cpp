@@ -38,21 +38,26 @@ int main()
 
     Window window{800,600, "test run", true};
 
-    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.0f, 1.0f, 1.0f, 1.0f}}, 1.0f, 1.0f};
-    Mesh* mesh = createSphere(MeshProperties{true}, 1000, true);
+    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
+    //Mesh* mesh = createSphere(MeshProperties{true}, 1000, true);
+    Mesh* mesh = createCube(MeshProperties{false});
     Scene scene{window.getAspectRatio()};
 
-    scene.createObject(mesh, material);
-    scene.createObject(glm::vec3{1.0f,1.0f,-1.0f}, mesh, material);
-    scene.createObject(glm::vec3{2.0f, 2.0f, -2.0f}, mesh, material);
+    auto x = scene.createObject(mesh, material);
+    //auto y = scene.createObject(glm::vec3{1.0f,1.0f,-1.0f}, mesh, material);
+    //auto z = scene.createObject(glm::vec3{2.0f, 2.0f, -2.0f}, mesh, material);
 
     Camera& cam = scene.getCamera();
+    Transform& camt = cam.getTransform();
     cam.setCameraType(CameraType::Perspective);
-    cam.getTransform().setPosition(glm::vec3{0.0f,0.0f, 5.0f});
 
-    scene.createPointLight(glm::vec3{0,0,0}, glm::vec3{1,1,1}, LightDistance::AD_100);
-    scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.1f, 0.1f, 0.1f});
-    scene.createDirectionalLight(glm::normalize(glm::vec3{6.0f, -8.0f, -10.0f}), glm::vec3{0.1f, 0.1f, 0.1f});
+    //auto spot = scene.createSpotLight(glm::vec3{2.0f,2.0f,2.0f}, glm::vec3{0,0,0}, glm::vec3{1.0f,1.0f,1.0f}, LightDistance::AD_50, glm::radians(1.0f), glm::radians(2.0f));
+
+    //spot->lookAt(x->getTransform().getPosition());
+
+    //scene.createPointLight(glm::vec3{0,0,0}, glm::vec3{1,1,1}, LightDistance::AD_100);
+    scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+    //scene.createDirectionalLight(glm::normalize(glm::vec3{6.0f, -8.0f, -10.0f}), glm::vec3{0.1f, 0.1f, 0.1f});
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -64,6 +69,20 @@ int main()
     {
         glClearColor(0.6, 0.5, 0.4, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glm::vec2 delta{0,0};
+
+        if(window.getKeyAtIndex(GLFW_KEY_W))
+            delta += glm::vec2{0, 1.0f};
+        else if(window.getKeyAtIndex(GLFW_KEY_S))
+            delta += glm::vec2{0, -1.0f};
+
+        if(window.getKeyAtIndex(GLFW_KEY_A))
+            delta += glm::vec2{-1.0f, 0};
+        else if(window.getKeyAtIndex(GLFW_KEY_D))
+            delta += glm::vec2{1.0f, 0};
+
+        cam.getTransform().translate(glm::vec3{delta * 0.1f, 0});
 
         scene.render();
 

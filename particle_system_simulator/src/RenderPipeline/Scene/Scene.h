@@ -7,6 +7,7 @@
 #include "RenderPipeline/Light/Data/LightDistance.h"
 #include "RenderPipeline/Color/Color3.h"
 #include "RenderPipeline/Camera/Camera.h"
+#include "RenderPipeline/Skybox/Skybox.h"
 
 class DirectionalLight;
 class PointLight;
@@ -19,12 +20,14 @@ class Material;
 class Scene
 {
 private:
-	GlobalShaderManager shaderManager;
+	GlobalShaderManager shaderManager;		//Don't change the order of shaderManager and lightTracker because of their construction in the constructor
 	LightTracker lightTracker;
 
-	Camera camera;
 	std::vector<LightSource*> lightSources;
 	std::vector<MeshRenderer*> objects;
+
+	Camera camera;
+	Skybox skybox;
 
 	MeshRenderer* createObject(MeshRenderer* object);
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);

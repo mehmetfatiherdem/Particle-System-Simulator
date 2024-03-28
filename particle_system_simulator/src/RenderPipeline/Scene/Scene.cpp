@@ -7,9 +7,13 @@
 #include "RenderPipeline/Mesh/Mesh.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
+#include "GeneralUtility/stringify.h"
 #include "Scene.h"
 
-Scene::Scene(float aspectRatio) : shaderManager(), lightTracker(this->shaderManager), camera(glm::vec3{0.0f, 0.0f, -10.0f}, aspectRatio),
+#define SKYBOX(x) STRINGIFY(Resources/Textures/Skybox/x.jpg)
+
+Scene::Scene(float aspectRatio) : shaderManager(), lightTracker(this->shaderManager), camera(glm::vec3{0.0f, 0.0f, 10.0f}, aspectRatio),
+	skybox(SKYBOX(right), SKYBOX(left), SKYBOX(top), SKYBOX(bottom), SKYBOX(front), SKYBOX(back)),
 	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() { }
 
 Scene::~Scene()
@@ -35,7 +39,7 @@ void Scene::render()
 		object->render();
 	}
 
-	//render skybox
+	skybox.render();
 }
 
 #pragma region Light Operations

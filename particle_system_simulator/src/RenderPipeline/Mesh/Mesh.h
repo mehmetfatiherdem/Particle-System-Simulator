@@ -13,6 +13,7 @@ class Mesh
 {
 private:
 	friend class MeshRenderer;
+	friend class Skybox;
 
 	GLuint VAO;
 	GLuint buffers[3];

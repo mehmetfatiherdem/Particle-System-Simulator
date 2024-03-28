@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp" />
     <ClCompile Include="src\RenderPipeline\Shader\Shader.cpp" />
     <ClCompile Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.cpp" />
+    <ClCompile Include="src\RenderPipeline\Skybox\Skybox.cpp" />
     <ClCompile Include="src\RenderPipeline\Texture\Texture.cpp" />
     <ClCompile Include="src\RenderPipeline\Transform\Transform.cpp" />
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp" />
@@ -43,7 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\Aliases.h" />
+    <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
+    <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
+    <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
@@ -70,6 +75,7 @@
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />
+    <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h" />
     <ClInclude Include="src\RenderPipeline\Texture\Texture.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transform.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
@@ -96,6 +102,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="Resources\Shaders\instanced.vert" />
+    <None Include="Resources\Shaders\skybox.frag" />
+    <None Include="Resources\Shaders\skybox.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\Skybox\back.jpg" />
+    <Image Include="Resources\Textures\Skybox\bottom.jpg" />
+    <Image Include="Resources\Textures\Skybox\front.jpg" />
+    <Image Include="Resources\Textures\Skybox\left.jpg" />
+    <Image Include="Resources\Textures\Skybox\right.jpg" />
+    <Image Include="Resources\Textures\Skybox\top.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -166,7 +182,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STB_IMAGE_IMPLEMENTATION;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -184,7 +200,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STB_IMAGE_IMPLEMENTATION;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -202,7 +218,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STB_IMAGE_IMPLEMENTATION;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -220,7 +236,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>STB_IMAGE_IMPLEMENTATION;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
