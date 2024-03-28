@@ -32,7 +32,7 @@
     <ClCompile Include="src\RenderPipeline\Light\SpotLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Material\Material.cpp" />
     <ClCompile Include="src\RenderPipeline\Mesh\Mesh.cpp" />
-    <ClCompile Include="src\RenderPipeline\Object\RenderableObject.cpp" />
+    <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp" />
     <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp" />
     <ClCompile Include="src\RenderPipeline\Shader\Shader.cpp" />
     <ClCompile Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.cpp" />
@@ -66,7 +66,7 @@
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
-    <ClInclude Include="src\RenderPipeline\Object\RenderableObject.h" />
+    <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />

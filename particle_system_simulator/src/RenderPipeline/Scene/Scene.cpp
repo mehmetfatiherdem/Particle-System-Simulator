@@ -2,10 +2,15 @@
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
+#include "RenderPipeline/Object/MeshRenderer.h"
+#include "RenderPipeline/Object/MeshRendererSorter.h"
+#include "RenderPipeline/Mesh/Mesh.h"
+#include "RenderPipeline/Material/Material.h"
+#include "RenderPipeline/Shader/Shader.h"
 #include "Scene.h"
 
-Scene::Scene(float aspectRatio) : shaderManager(), lightTracker(this->shaderManager), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS),
-	camera(glm::vec3{0.0f, 0.0f, -10.0f}, aspectRatio) { }
+Scene::Scene(float aspectRatio) : shaderManager(), lightTracker(this->shaderManager), camera(glm::vec3{0.0f, 0.0f, -10.0f}, aspectRatio),
+	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() { }
 
 Scene::~Scene()
 {
@@ -13,15 +18,27 @@ Scene::~Scene()
 	{
 		delete light;
 	}
+	
+	for (auto object : objects)
+	{
+		delete object;
+	}
 }
 
-void Scene::update()
+void Scene::render()
 {
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
+
+	for(auto object : objects)
+	{
+		object->render();
+	}
+
+	//render skybox
 }
 
-#pragma region Light
+#pragma region Light Operations
 
 DirectionalLight* Scene::createDirectionalLight(const glm::vec3& direction, const Color3& color)
 {
@@ -31,6 +48,7 @@ DirectionalLight* Scene::createDirectionalLight(const glm::vec3& direction, cons
 	DirectionalLight* light = new DirectionalLight(lightTracker, color, direction);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
+	
 	return light;
 }
 
@@ -138,7 +156,7 @@ SpotLight* Scene::createSpotLight(const glm::vec3& position, const glm::vec3& di
 	return light;
 }
 
-void Scene::deleteLight(LightSource* light, std::function<void()>&& untrack)
+void Scene::destroyLight(LightSource* light, std::function<void()>&& untrack)
 {
 	auto end = lightSources.end();
 	auto iterator = std::find(lightSources.begin(), end, light);
@@ -163,23 +181,86 @@ void Scene::destroyLight(LightSource* light)
 
 void Scene::destroyLight(DirectionalLight* light)
 {
-	deleteLight(light, [this, &light]() {
+	destroyLight(light, [this, &light]() {
 		this->lightTracker.untrackLight(light);
 		});
 }
 
 void Scene::destroyLight(PointLight* light)
 {
-	deleteLight(light, [this, &light]() {
+	destroyLight(light, [this, &light]() {
 		this->lightTracker.untrackLight(light);
 		});
 }
 
 void Scene::destroyLight(SpotLight* light)
 {
-	deleteLight(light, [this, &light]() {
+	destroyLight(light, [this, &light]() {
 		this->lightTracker.untrackLight(light);
 		});
+}
+
+#pragma endregion
+
+#pragma region Object Operations
+
+MeshRenderer* Scene::createObject(MeshRenderer* object)
+{
+	bool inserted = false;
+
+	for(size_t i = 0; i < objects.size(); ++i)
+	{
+		if(!compare(*objects[i], *object))
+		{
+			objects.insert(objects.begin() + i, object);
+			inserted = true;
+			break;
+		}
+	}
+
+	if(!inserted)
+	{
+		objects.push_back(object);
+	}
+
+	return object;
+}
+
+void Scene::destroyObject(MeshRenderer* object)
+{
+	auto end = objects.end();
+	auto found = std::find(objects.begin(), end, object);
+
+	if(found != end)
+	{
+		objects.erase(found);
+		delete object;
+	}
+}
+
+MeshRenderer* Scene::createObject(Mesh* mesh, Material* material, Shader* shader)
+{
+	return createObject(new MeshRenderer{mesh, material, shader});
+}
+
+MeshRenderer* Scene::createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader)
+{
+	return createObject(new MeshRenderer{position, mesh, material, shader});
+}
+
+MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader)
+{
+	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+}
+
+MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader)
+{
+	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+}
+
+MeshRenderer* Scene::createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader)
+{
+	return createObject(new MeshRenderer{transform, mesh, material, shader});
 }
 
 #pragma endregion

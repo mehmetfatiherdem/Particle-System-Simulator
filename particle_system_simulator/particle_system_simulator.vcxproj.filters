@@ -135,7 +135,7 @@
     <ClCompile Include="src\RenderPipeline\Scene\Scene.cpp">
       <Filter>src\Render Pipeline\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderPipeline\Object\RenderableObject.cpp">
+    <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp">
       <Filter>src\Render Pipeline\Object</Filter>
     </ClCompile>
     <ClCompile Include="src\MeshConstruction\Shapes.cpp">
@@ -215,7 +215,7 @@
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h">
       <Filter>src\Render Pipeline\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Object\RenderableObject.h">
+    <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h">
       <Filter>src\Render Pipeline\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\MeshConstruction\Shapes.h">

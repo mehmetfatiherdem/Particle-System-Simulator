@@ -9,18 +9,16 @@ class Material
 {
 private:
 	Color4 color;
-	Texture* diffuseMap;  //texture0
-	Texture* specularMap; //texture1
+	Texture* diffuseMap;
+	Texture* specularMap;
 	float ambientStrength;
 	float shininess;
 
-	const Shader* shader;
 public:
 	Material() = delete;
-	Material(const Shader* shader, Texture* diffuseMap, Texture* specularMap, const Color4& color,
-		float ambientStrength, float shininess);
+	Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess);
 
-	void useMaterial(const glm::mat4& model) const;
+	void useMaterial(const Shader& shader) const;
 
 	Color4 getColor() const { return color; }
 	glm::vec4 getAmbientColor() const { return color.ambient; }

@@ -35,6 +35,18 @@ public:
 	void useShader() const;
 	static void unuseShaders();
 
+	static Shader& getGenericShader()
+	{
+		static Shader genericShader{"Resources/Shaders/generic.vert", "Resources/Shaders/generic.frag"};
+		return genericShader;
+	}
+
+	static Shader& getInstancedShader()
+	{
+		static Shader instancedShader{"Resources/Shaders/instanced.vert", "Resources/Shaders/generic.frag"};
+		return instancedShader;
+	}
+
 	void setBool(std::string_view variable, bool value) const;
 	void setInt(std::string_view variable, GLint value) const;
 	void setFloat(std::string_view variable, GLfloat value) const;

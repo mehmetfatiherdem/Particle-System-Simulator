@@ -12,7 +12,7 @@ struct MeshProperties;
 class Mesh
 {
 private:
-	friend class RenderableObject;
+	friend class MeshRenderer;
 
 	GLuint VAO;
 	GLuint buffers[3];

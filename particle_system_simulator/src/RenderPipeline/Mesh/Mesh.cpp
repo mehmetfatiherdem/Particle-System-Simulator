@@ -1,5 +1,4 @@
 #include <cassert>
-#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include "Data/BufferObjects.h"
 #include "Data/VertexAttributes.h"
