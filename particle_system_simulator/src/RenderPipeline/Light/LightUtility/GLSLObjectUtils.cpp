@@ -1,10 +1,8 @@
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
-#include "RenderPipeline/Constants/PipelineConstants.h"
+#include "RenderPipeline/Light/Data/LightConstants.h"
 #include "GLSLObjectUtils.h"
-
-using namespace constants::light;
 
 unsigned int sizeOfLightsUBO()
 {
@@ -38,11 +36,11 @@ unsigned int calculateLightDataOffset(LightSourceType type, unsigned int index)
 	}
 }
 
-DirectionalLightToBytes getGLSLRepresentation(const DirectionalLight& light)
+DirectionalLightGLSL getGLSLRepresentation(const DirectionalLight& light)
 {
 	Color3 color = light.getColor();
 
-	return DirectionalLightToBytes {
+	return DirectionalLightGLSL {
 		color.ambient,
 		0.0f,
 		color.diffuse,
@@ -54,12 +52,12 @@ DirectionalLightToBytes getGLSLRepresentation(const DirectionalLight& light)
 	};
 }
 
-PointLightToBytes getGLSLRepresentation(const PointLight& light)
+PointLightGLSL getGLSLRepresentation(const PointLight& light)
 {
 	Color3 color = light.getColor();
 	glm::vec3 attenuation = light.getAttenuation();
 
-	return PointLightToBytes {
+	return PointLightGLSL {
 		color.ambient,
 		0.0f,
 		color.diffuse,
@@ -75,12 +73,12 @@ PointLightToBytes getGLSLRepresentation(const PointLight& light)
 	};
 }
 
-SpotLightToBytes getGLSLRepresentation(const SpotLight& light)
+SpotLightGLSL getGLSLRepresentation(const SpotLight& light)
 {
 	Color3 color = light.getColor();
 	glm::vec3 attenuation = light.getAttenuation();
 
-	return SpotLightToBytes {
+	return SpotLightGLSL {
 		color.ambient,
 		0.0f,
 		color.diffuse,

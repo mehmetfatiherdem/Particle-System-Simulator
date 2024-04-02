@@ -1,0 +1,9 @@
+#pragma once
+
+enum VertexAttributes
+{
+	VERTEX_POSITION_LOCATION = 0,
+	VERTEX_NORMAL_LOCATION,
+	UV_LOCATION,
+	MODEL_MATRIX_LOCATION,
+};

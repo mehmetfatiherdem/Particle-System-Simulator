@@ -1,0 +1,8 @@
+#pragma once
+
+enum UniformBlockIndices
+{
+	MATRICES_UNIFORM_BLOCK_INDEX = 0,
+	LIGHTS_UNIFORM_BLOCK_INDEX,
+	VIEW_UNIFORM_BLOCK_INDEX,
+};

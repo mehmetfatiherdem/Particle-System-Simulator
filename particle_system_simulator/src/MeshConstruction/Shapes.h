@@ -2,8 +2,10 @@
 
 #include "RenderPipeline/Mesh/Mesh.h"
 
-Mesh createQuad();
-Mesh createCube();
-Mesh createFlatSphere(unsigned int sectorCount, unsigned int stackCount);
-Mesh createSmoothSphere(unsigned int sectorCount, unsigned int stackCount);
-Mesh createSphere(int approximateVertexCount, bool smooth = true);
+struct MeshProperties;
+
+Mesh* createQuad(const MeshProperties& props);
+Mesh* createCube(const MeshProperties& props);
+Mesh* createFlatSphere(const MeshProperties& props, unsigned int sectorCount, unsigned int stackCount);
+Mesh* createSmoothSphere(const MeshProperties& props, unsigned int sectorCount, unsigned int stackCount);
+Mesh* createSphere(const MeshProperties& props, int approximateVertexCount, bool smooth = true);

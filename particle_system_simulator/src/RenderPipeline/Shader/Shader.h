@@ -11,9 +11,11 @@
 class Shader
 {
 private:
+	static GLuint currentProgram;
+
 	GLuint programID;
 
-	void compileShaders(const char* vertexCode, const char* fragmentCode);
+	void compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode);
 	void addShader(const char* shaderCode, GLenum shaderType);
 	std::string readShaderFile(std::string_view file);
 	void destroyShader();
@@ -26,14 +28,25 @@ public:
 	};
 
 	Shader() = delete;
-	Shader(std::string_view vertex, std::string_view fragment, LoadMethod method = LoadMethod::FromFile);
+	Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry = "", LoadMethod method = LoadMethod::FromFile);
 	Shader(Shader&& shader) noexcept;
 	~Shader();
 
 	Shader& operator=(Shader&& shader) noexcept;
 
-	void useShader() const;
-	static void unuseShaders();
+	bool useShader() const;
+
+	static Shader& getGenericShader()
+	{
+		static Shader genericShader{"Resources/Shaders/generic.vert", "Resources/Shaders/generic.frag"};
+		return genericShader;
+	}
+
+	static Shader& getInstancedShader()
+	{
+		static Shader instancedShader{"Resources/Shaders/instanced.vert", "Resources/Shaders/generic.frag"};
+		return instancedShader;
+	}
 
 	void setBool(std::string_view variable, bool value) const;
 	void setInt(std::string_view variable, GLint value) const;

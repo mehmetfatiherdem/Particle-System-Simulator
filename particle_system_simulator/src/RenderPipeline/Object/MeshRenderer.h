@@ -1,22 +1,38 @@
 #pragma once
 
-#include <glm/mat4x4.hpp>
-#include "RenderPipeline/Mesh/Mesh.h"
-#include "RenderPipeline/Material/Material.h"
+#include "RenderPipeline/Transform/Transformable.h"
 
-class MeshRenderer
+class Mesh;
+class Material;
+class Shader;
+
+class MeshRenderer : public Transformable
 {
 private:
-	const Mesh* mesh;
+	Mesh* mesh;
 	Material* material;
+	Shader* shader;
+
+	static Shader* lastShader;
+	static Material* lastMaterial;
+	
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(const Mesh* mesh, Material* material);
+	MeshRenderer(Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const MeshRenderer& object);
+	~MeshRenderer();
 
-	void render(const glm::mat4& model) const;
+	MeshRenderer& operator=(const MeshRenderer& object);
+
+	void render();
 
 	const Mesh* getMesh() const { return mesh; }
 	Material* getMaterial() const { return material; }
+	Shader* getShader() const { return shader; }
 
 	void setMaterial(Material* material) { this->material = material; }
 };

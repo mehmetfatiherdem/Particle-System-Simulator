@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <GL/glew.h>
+#include <variant>
 #include <GLFW/glfw3.h>
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_float.hpp>
@@ -14,76 +15,77 @@
 #include "RenderPipeline/Light/SpotLight.h"
 #include "RenderPipeline/Transform/Transform.h"
 #include "RenderPipeline/Mesh/Mesh.h"
-#include "RenderPipeline/Object/MeshRenderer.h"
 #include "RenderPipeline/Shader/Shader.h"
 #include "RenderPipeline/Texture/Texture.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Camera/Camera.h"
-#include "RenderPipeline/Object/RenderableObject.h"
+#include "RenderPipeline/Object/MeshRenderer.h"
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Scene/Scene.h"
 #include "MeshConstruction/Shapes.h"
+#include "RenderPipeline/Mesh/Data/MeshProperties.h"
+
+void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+{
+    std::cerr << "OpenGL Debug Message: " << message << std::endl;
+}
 
 int main()
 {
     Initialization::initializeAll();    //Somehow doesn't initialize opengl settings so I initialize them again before the render loop
+    //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
+    //glDebugMessageCallbackARB(debugCallback, nullptr);  //TODO: learn how to actually make this work
 
     Window window{800,600, "test run", true};
 
-    //Mesh mesh = createQuad();
-    Mesh mesh = createSphere(1000, true);
-
-    Shader shader{"Resources/Shaders/vertex.vert", "Resources/Shaders/fragment.frag"};
-    Material material{&shader, nullptr, nullptr, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, 1, 1};
-    MeshRenderer meshRenderer{&mesh, &material};
-    Transform transform{};
-    RenderableObject object{transform, meshRenderer};
-
+    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
+    //Mesh* mesh = createSphere(MeshProperties{true}, 1000, true);
+    Mesh* mesh = createCube(MeshProperties{false});
     Scene scene{window.getAspectRatio()};
 
+    auto x = scene.createObject(glm::vec3{2,0,0}, mesh, material);
+    //auto y = scene.createObject(glm::vec3{1.0f,1.0f,-1.0f}, mesh, material);
+    //auto z = scene.createObject(glm::vec3{2.0f, 2.0f, -2.0f}, mesh, material);
+
     Camera& cam = scene.getCamera();
+    Transform& camt = cam.getTransform();
     cam.setCameraType(CameraType::Perspective);
-    Transform& camTransform = cam.getTransform();
-    camTransform.setPosition(glm::vec3{0.0f, 0.0f, 5.0f});
 
-    glm::vec3 rot{glm::radians(0.0f), 2*glm::radians(0.1f), 3*glm::radians(0.0f)};
-    glm::vec3 deltaColor{0.0f, 0.001f, 0};
-    unsigned int counter = 0;
+    //auto spot = scene.createSpotLight(glm::vec3{2.0f,2.0f,2.0f}, glm::vec3{0,0,0}, glm::vec3{1.0f,1.0f,1.0f}, LightDistance::AD_50, glm::radians(1.0f), glm::radians(2.0f));
 
-    PointLight* light = scene.createPointLight(glm::vec3{0.0f,0.0f,2.0f}, Color3{glm::vec3{1.0f, 0.0f, 0.0f}}, LightDistance::AD_100);
+    //spot->lookAt(x->getTransform().getPosition());
+
+    //scene.createPointLight(glm::vec3{0,0,0}, glm::vec3{1,1,1}, LightDistance::AD_100);
+    scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+    //scene.createDirectionalLight(glm::normalize(glm::vec3{6.0f, -8.0f, -10.0f}), glm::vec3{0.1f, 0.1f, 0.1f});
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_TRUE);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 
     while(!window.shouldClose())
     {
-        glClearColor(0, 0, 0, 1);
+        glClearColor(0.6, 0.5, 0.4, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        auto pos = camTransform.getPosition();
+        glm::vec2 delta{0,0};
 
         if(window.getKeyAtIndex(GLFW_KEY_W))
-            camTransform.setPosition(pos + glm::vec3{0, 0.1f,0});
+            delta += glm::vec2{0, 1.0f};
         else if(window.getKeyAtIndex(GLFW_KEY_S))
-            camTransform.setPosition(pos + glm::vec3{0, -0.1f, 0});
+            delta += glm::vec2{0, -1.0f};
+
         if(window.getKeyAtIndex(GLFW_KEY_A))
-            camTransform.setPosition(pos + glm::vec3{-0.1f, 0, 0});
+            delta += glm::vec2{-1.0f, 0};
         else if(window.getKeyAtIndex(GLFW_KEY_D))
-            camTransform.setPosition(pos + glm::vec3{0.1f,0,0});
+            delta += glm::vec2{1.0f, 0};
 
-        object.getTransform().rotate(rot);
-
-        light->setColor(light->getColor().ambient + deltaColor);
-        scene.update();
-        object.render();
-
-        if(++counter % 1000 == 0)
-        {
-            counter = 0;
-            deltaColor *= -1;
-        }
+        cam.getTransform().translate(glm::vec3{delta * 0.1f, 0});
+        camt.rotate(glm::vec3{0.001f,0.001f,0.001f});
+        scene.render();
 
         window.swapBuffers();
         window.pollEvents();

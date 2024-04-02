@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderPipeline/Constants/PipelineConstants.h"
+#include "RenderPipeline/Light/Data/LightConstants.h"
 #include "GeneralUtility/Aliases.h"
 
 class LightSource;
@@ -8,8 +8,6 @@ class DirectionalLight;
 class PointLight;
 class SpotLight;
 class GlobalShaderManager;
-
-using namespace constants::light;
 
 class LightTracker
 {

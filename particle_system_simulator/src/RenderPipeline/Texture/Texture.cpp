@@ -1,16 +1,14 @@
 #include <cassert>
 #include <iostream>
-#include <stb/stb_image.h>
+#include "GeneralUtility/stb_wrapper/stb_wrapper.h"
 #include "Texture.h"
 
 Texture::Texture(std::string_view textureAddress, unsigned int textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
 	GLint textureWrappingMethod_T, GLint textureMinFilter, GLint textureMagFilter,GLint internalFormat,GLenum format)
 	: textureUnit(textureUnit), textureType(textureType), textureID(0)
 {
-	//assert(textureUnit < 16 && ("Failed to set the texture unit to " + textureUnit + ", maximum allowed texture unit is 15!"));
-
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* textureData = stbi_load(textureAddress.data(), &width, &height, &bitDepth, 0);
+	w_stbi_set_flip_vertically_on_load(true);
+	unsigned char* textureData = w_stbi_load(textureAddress.data(), &width, &height, &bitDepth, 0);
 
 	if(!textureData)
 	{
@@ -31,7 +29,7 @@ Texture::Texture(std::string_view textureAddress, unsigned int textureUnit, GLen
 	glGenerateMipmap(textureType);
 	glBindTexture(textureType, 0);
 
-	stbi_image_free(textureData);
+	w_stbi_image_free(textureData);
 }
 
 Texture::Texture(Texture&& texture) noexcept : textureID(texture.textureID), textureType(texture.textureType), textureUnit(texture.textureUnit),
@@ -60,6 +58,7 @@ Texture& Texture::operator=(Texture&& texture) noexcept
 	texture.width = 0;
 	texture.height = 0;
 	texture.bitDepth = 0;
+	return *this;
 }
 
 void Texture::useTexture() const
