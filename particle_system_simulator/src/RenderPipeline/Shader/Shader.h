@@ -11,6 +11,8 @@
 class Shader
 {
 private:
+	static GLuint currentProgram;
+
 	GLuint programID;
 
 	void compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode);
@@ -32,8 +34,7 @@ public:
 
 	Shader& operator=(Shader&& shader) noexcept;
 
-	void useShader() const;
-	static void unuseShaders();
+	bool useShader() const;
 
 	static Shader& getGenericShader()
 	{

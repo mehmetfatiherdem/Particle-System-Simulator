@@ -4,6 +4,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 
+GLuint Shader::currentProgram = 0;
+
 Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, LoadMethod method)
 {
 	if(method == LoadMethod::FromFile)
@@ -46,21 +48,21 @@ void Shader::destroyShader()
 	programID = 0;
 }
 
-void Shader::useShader() const
+bool Shader::useShader() const
 {
-	glUseProgram(programID);
-}
+	if(currentProgram == programID)
+		return false;
 
-void Shader::unuseShaders()
-{
-	glUseProgram(0);
+	glUseProgram(programID);
+	currentProgram = programID;
+	return true;
 }
 
 void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode)
 {
 	programID = glCreateProgram();
 
-	if (!programID)
+	if(!programID)
 	{
 		std::cerr << "Failed to create shader!\n";
 		return;
@@ -73,12 +75,12 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 		addShader(geometryCode, GL_GEOMETRY_SHADER);
 
 	GLint result = 0;
-	GLchar eLog[2048] = { 0 };
+	GLchar eLog[2048] = {0};
 
 	glLinkProgram(programID);
 	glGetProgramiv(programID, GL_LINK_STATUS, &result);
 
-	if (!result)
+	if(!result)
 	{
 		glGetProgramInfoLog(programID, 2048 * sizeof(GLchar), NULL, eLog);
 		std::cerr << "Error linking program: " << eLog << std::endl;
@@ -89,7 +91,7 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	glValidateProgram(programID);
 	glGetProgramiv(programID, GL_VALIDATE_STATUS, &result);
 
-	if (!result)
+	if(!result)
 	{
 		glGetProgramInfoLog(programID, sizeof(eLog), NULL, eLog);
 		std::cerr << "Error validating the program : " << eLog << std::endl;
@@ -112,10 +114,10 @@ void Shader::addShader(const char* shaderCode, GLenum shaderType)
 	glCompileShader(theShader);
 
 	GLint result = 0;
-	GLchar eLog[2048] = { 0 };
+	GLchar eLog[2048] = {0};
 
 	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
-	if (!result)
+	if(!result)
 	{
 		glGetShaderInfoLog(theShader, 2048, NULL, eLog);
 		std::cerr << "Error compiling the " << shaderType << " shader : " << eLog << '\n';
@@ -132,7 +134,7 @@ std::string Shader::readShaderFile(std::string_view address)
 {
 	std::ifstream fs(address.data(), std::ios::in);
 
-	if (!fs.is_open())
+	if(!fs.is_open())
 	{
 		std::cerr << "Error opening the file : " << address << '\n';
 		return "";
@@ -141,7 +143,7 @@ std::string Shader::readShaderFile(std::string_view address)
 	std::string content = "";
 	std::string line = "";
 
-	while (!fs.eof())
+	while(!fs.eof())
 	{
 		std::getline(fs, line);
 		line.append(1, '\n');

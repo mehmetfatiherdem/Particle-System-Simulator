@@ -33,8 +33,8 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 int main()
 {
     Initialization::initializeAll();    //Somehow doesn't initialize opengl settings so I initialize them again before the render loop
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
-    glDebugMessageCallbackARB(debugCallback, nullptr);  //TODO: learn how to actually make this work
+    //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
+    //glDebugMessageCallbackARB(debugCallback, nullptr);  //TODO: learn how to actually make this work
 
     Window window{800,600, "test run", true};
 
@@ -43,7 +43,7 @@ int main()
     Mesh* mesh = createCube(MeshProperties{false});
     Scene scene{window.getAspectRatio()};
 
-    auto x = scene.createObject(mesh, material);
+    auto x = scene.createObject(glm::vec3{2,0,0}, mesh, material);
     //auto y = scene.createObject(glm::vec3{1.0f,1.0f,-1.0f}, mesh, material);
     //auto z = scene.createObject(glm::vec3{2.0f, 2.0f, -2.0f}, mesh, material);
 
@@ -61,6 +61,7 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_TRUE);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
@@ -83,7 +84,7 @@ int main()
             delta += glm::vec2{1.0f, 0};
 
         cam.getTransform().translate(glm::vec3{delta * 0.1f, 0});
-
+        camt.rotate(glm::vec3{0.001f,0.001f,0.001f});
         scene.render();
 
         window.swapBuffers();

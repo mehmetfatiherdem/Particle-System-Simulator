@@ -16,8 +16,6 @@ private:
 	static Shader* lastShader;
 	static Material* lastMaterial;
 	
-	void useMaterial() const;
-	void useShader() const;
 public:
 	MeshRenderer() = delete;
 	MeshRenderer(Mesh* mesh, Material* material, Shader* shader = nullptr);

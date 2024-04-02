@@ -15,12 +15,6 @@ struct DirectionalLightGLSL
 	float padding4;
 };
 
-union DirectionalLightToBytes
-{
-	DirectionalLightGLSL directionalLight;
-	signed char bytes[sizeof(DirectionalLightGLSL)];
-};
-
 struct PointLightGLSL
 {
 	glm::vec3 ambient;
@@ -35,12 +29,6 @@ struct PointLightGLSL
 	float linear;
 	float quadratic;
 	float padding5;
-};
-
-union PointLightToBytes
-{
-	PointLightGLSL pointLight;
-	signed char bytes[sizeof(PointLightGLSL)];
 };
 
 struct SpotLightGLSL
@@ -65,12 +53,6 @@ struct SpotLightGLSL
 	float padding7;
 };
 
-union SpotLightToBytes
-{
-	SpotLightGLSL spotLight;
-	signed char bytes[sizeof(SpotLightGLSL)];
-};
-
 #pragma pack(pop)				//Enable default padding again
 
 class DirectionalLight;
@@ -82,6 +64,6 @@ unsigned int sizeOfLightsUBO();
 unsigned int calculateNumberDataOffset(LightSourceType type);
 unsigned int calculateLightDataOffset(LightSourceType type, unsigned int index);
 
-DirectionalLightToBytes getGLSLRepresentation(const DirectionalLight& light);
-PointLightToBytes getGLSLRepresentation(const PointLight& light);
-SpotLightToBytes getGLSLRepresentation(const SpotLight& light);
+DirectionalLightGLSL getGLSLRepresentation(const DirectionalLight& light);
+PointLightGLSL getGLSLRepresentation(const PointLight& light);
+SpotLightGLSL getGLSLRepresentation(const SpotLight& light);

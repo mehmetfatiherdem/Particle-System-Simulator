@@ -34,12 +34,13 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
+
 	for(auto object : objects)
 	{
 		object->render();
 	}
 
-	skybox.render();
+	skybox.render(camera.getProjectionMatrix(), camera.getViewMatrix());
 }
 
 #pragma region Light Operations

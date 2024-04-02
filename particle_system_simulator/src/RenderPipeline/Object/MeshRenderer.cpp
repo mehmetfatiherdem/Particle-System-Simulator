@@ -67,28 +67,12 @@ MeshRenderer& MeshRenderer::operator=(const MeshRenderer& object)
 	return *this;
 }
 
-void MeshRenderer::useMaterial() const
-{
-	lastMaterial = this->material;
-	this->material->useMaterial(*this->shader);
-}
-
-void MeshRenderer::useShader() const
-{
-	lastShader = this->shader;
-	this->shader->useShader();
-}
-
 void MeshRenderer::render()
 {
-	if(this->shader != lastShader)
+	if(shader->useShader() || material != lastMaterial)
 	{
-		useShader();
-		useMaterial();
-	}
-	else if(this->material != lastMaterial)
-	{
-		useMaterial();
+		lastMaterial = this->material;
+		this->material->useMaterial(*shader);
 	}
 
 	if(mesh->isInstanced())

@@ -107,10 +107,14 @@ Skybox::~Skybox()
 	textureID = 0;
 }
 
-void Skybox::render()
+void Skybox::render(const glm::mat4& projection, const glm::mat4& view)
 {
-	glDepthMask(GL_FALSE);
+	glDepthMask(GL_TRUE);
+	glCullFace(GL_FRONT);
+
 	shader.useShader();
+	shader.setMatrix4("projection", projection);
+	shader.setMatrix4("view", glm::mat4(glm::mat3(view)));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
@@ -118,5 +122,6 @@ void Skybox::render()
 	glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
+	glCullFace(GL_BACK);
 	glDepthMask(GL_TRUE);
 }
