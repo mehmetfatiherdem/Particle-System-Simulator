@@ -32,7 +32,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 
 int main()
 {
-    Initialization::initializeAll();    //Somehow doesn't initialize opengl settings so I initialize them again before the render loop
+    Initialization::initializeSettings();    //Somehow doesn't initialize opengl settings so I initialize them again before the render loop
     //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
     //glDebugMessageCallbackARB(debugCallback, nullptr);  //TODO: learn how to actually make this work
 

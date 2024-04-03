@@ -26,4 +26,11 @@
 #include "RenderPipeline/Mesh/Data/MeshProperties.h"
 #include "RenderPipeline/Application.h"
 
-Application::Application() : window(800, 600, "Particle Engine"), scene(this->window.getAspectRatio()) { }
+Application::Application() : window(800, 600, "Particle Engine"), scene(this->window.getAspectRatio()) 
+{
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glDepthFunc(GL_LEQUAL);
+	glDepthMask(GL_TRUE);
+}
