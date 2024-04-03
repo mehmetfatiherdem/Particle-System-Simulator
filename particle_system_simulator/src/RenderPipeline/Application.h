@@ -9,8 +9,8 @@ private:
     Window window;
     Scene scene;
 
-    Application();
 public:
+    Application();
 
     static Application& getInstance()
     {
@@ -20,7 +20,6 @@ public:
 
     void run();
     void update();
-
 
     Window& getWindow() { return this->window; }
     Scene& getScene() { return this->scene; }

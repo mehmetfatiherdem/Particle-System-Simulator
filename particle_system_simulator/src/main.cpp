@@ -49,19 +49,6 @@ int main()
         glClearColor(0.6, 0.5, 0.4, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glm::vec2 delta{0,0};
-
-        if(window.getKeyAtIndex(GLFW_KEY_W))
-            delta += glm::vec2{0, 1.0f};
-        else if(window.getKeyAtIndex(GLFW_KEY_S))
-            delta += glm::vec2{0, -1.0f};
-
-        if(window.getKeyAtIndex(GLFW_KEY_A))
-            delta += glm::vec2{-1.0f, 0};
-        else if(window.getKeyAtIndex(GLFW_KEY_D))
-            delta += glm::vec2{1.0f, 0};
-
-        cam.getTransform().translate(glm::vec3{delta * 0.1f, 0});
         scene.render();
 
         window.swapBuffers();

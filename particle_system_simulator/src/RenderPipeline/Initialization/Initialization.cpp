@@ -36,7 +36,5 @@ void initializeSettings()
 		return;
 	}
 
-	return;
-
 	glfwDestroyWindow(tempWindow);
 }

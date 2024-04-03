@@ -1,8 +1,9 @@
 #pragma once
 
+#include <vector>
 #include <GLFW/glfw3.h>
 
-enum class Keycode
+enum class KeyCode
 {
 	KEY_W = GLFW_KEY_W,
 	KEY_A = GLFW_KEY_A,
@@ -18,6 +19,16 @@ enum class Keycode
 	KEY_Z = GLFW_KEY_Z,
 	KEY_X = GLFW_KEY_X,
 	KEY_C = GLFW_KEY_C,
+	KEY_0 = GLFW_KEY_0,
+	KEY_1 = GLFW_KEY_1,
+	KEY_2 = GLFW_KEY_2,
+	KEY_3 = GLFW_KEY_3,
+	KEY_4 = GLFW_KEY_4,
+	KEY_5 = GLFW_KEY_5,
+	KEY_6 = GLFW_KEY_6,
+	KEY_7 = GLFW_KEY_7,
+	KEY_8 = GLFW_KEY_8,
+	KEY_9 = GLFW_KEY_9,
 	ARROW_UP = GLFW_KEY_PAGE_UP,
 	ARROW_LEFT = GLFW_KEY_HOME,
 	ARROW_BACK = GLFW_KEY_PAGE_DOWN,
@@ -26,9 +37,5 @@ enum class Keycode
 	CTRL = GLFW_KEY_LEFT_CONTROL,
 	ESCAPE = GLFW_KEY_ESCAPE,
 	SPACE = GLFW_KEY_SPACE,
+	UNDEFINED = -1,
 };
-
-constexpr unsigned int castKeycode(Keycode keycode)
-{
-	return static_cast<unsigned int>(keycode);
-}

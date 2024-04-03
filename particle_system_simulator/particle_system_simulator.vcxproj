@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
+    <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
@@ -51,7 +52,11 @@
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
+    <ClInclude Include="src\Input Management\Data\Action.h" />
+    <ClInclude Include="src\Input Management\Data\KeyCode.h" />
+    <ClInclude Include="src\Input Management\Data\MouseButton.h" />
     <ClInclude Include="src\Input Management\Input.h" />
+    <ClInclude Include="src\Input Management\Utility\InputUtility.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Camera.h" />

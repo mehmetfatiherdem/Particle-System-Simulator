@@ -34,9 +34,6 @@
     <Filter Include="src\Render Pipeline\Light\Light Management">
       <UniqueIdentifier>{1064340d-24dc-4acc-857c-629d40396a2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Render Pipeline\Light\Light Utility">
-      <UniqueIdentifier>{d21c67e5-6ce7-4f60-9a44-fb51e7f3113c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Render Pipeline\Material">
       <UniqueIdentifier>{f8eba53b-674e-4cba-9ff8-d7b852579505}</UniqueIdentifier>
     </Filter>
@@ -88,11 +85,20 @@
     <Filter Include="src\General Utility\stb_wrapper">
       <UniqueIdentifier>{9c33b2ab-2c7f-49c8-9976-6433fa05353b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Input Management">
+      <UniqueIdentifier>{674dcee0-0551-40c1-8bf7-ee9f2cae9f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Input Management\Data">
+      <UniqueIdentifier>{8cb48a35-c814-45ac-88d1-8e7a0f2ef984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Light\Utility">
+      <UniqueIdentifier>{d21c67e5-6ce7-4f60-9a44-fb51e7f3113c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Input Management\Utility">
+      <UniqueIdentifier>{5279eb9f-2086-421f-9f58-37b4181a2050}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
       <Filter>src\Resource Management</Filter>
     </ClCompile>
@@ -124,7 +130,7 @@
       <Filter>src\Render Pipeline\Light\Light Management</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.cpp">
-      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderPipeline\Material\Material.cpp">
       <Filter>src\Render Pipeline\Material</Filter>
@@ -158,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp">
       <Filter>src\General Utility\stb_wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input Management\Input.cpp">
+      <Filter>src\Input Management</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Application.cpp">
+      <Filter>src\Render Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input Management\Utility\InputUtility.cpp">
+      <Filter>src\Input Management\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,10 +222,10 @@
       <Filter>src\Render Pipeline\Light\Light Management</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.h">
-      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\LightUtility\LightSourceType.h">
-      <Filter>src\Render Pipeline\Light\Light Utility</Filter>
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Material\Material.h">
       <Filter>src\Render Pipeline\Material</Filter>
@@ -271,6 +289,24 @@
     </ClInclude>
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h">
       <Filter>src\General Utility\stb_wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input Management\Data\KeyCode.h">
+      <Filter>src\Input Management\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input Management\Data\MouseButton.h">
+      <Filter>src\Input Management\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input Management\Input.h">
+      <Filter>src\Input Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Application.h">
+      <Filter>src\Render Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input Management\Data\Action.h">
+      <Filter>src\Input Management\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input Management\Utility\InputUtility.h">
+      <Filter>src\Input Management\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
