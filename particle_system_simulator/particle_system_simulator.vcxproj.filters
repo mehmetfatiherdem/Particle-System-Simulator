@@ -129,9 +129,6 @@
     <ClCompile Include="src\RenderPipeline\Light\LightManagement\LightTracker.cpp">
       <Filter>src\Render Pipeline\Light\Light Management</Filter>
     </ClCompile>
-    <ClCompile Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.cpp">
-      <Filter>src\Render Pipeline\Light\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderPipeline\Material\Material.cpp">
       <Filter>src\Render Pipeline\Material</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp">
       <Filter>src\Input Management\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.cpp">
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\Aliases.h">
@@ -220,12 +220,6 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\LightManagement\LightTracker.h">
       <Filter>src\Render Pipeline\Light\Light Management</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.h">
-      <Filter>src\Render Pipeline\Light\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Light\LightUtility\LightSourceType.h">
-      <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Material\Material.h">
       <Filter>src\Render Pipeline\Material</Filter>
@@ -307,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="src\Input Management\Utility\InputUtility.h">
       <Filter>src\Input Management\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.h">
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h">
+      <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

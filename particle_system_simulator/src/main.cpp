@@ -3,7 +3,6 @@
 #include <cmath>
 
 #include <GL/glew.h>
-#include <variant>
 #include <GLFW/glfw3.h>
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_float.hpp>

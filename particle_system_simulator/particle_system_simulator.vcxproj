@@ -31,9 +31,9 @@
     <ClCompile Include="src\RenderPipeline\Light\LightBase\LightSource.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\PositionalLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightManagement\LightTracker.cpp" />
-    <ClCompile Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\PointLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\SpotLight.cpp" />
+    <ClCompile Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.cpp" />
     <ClCompile Include="src\RenderPipeline\Material\Material.cpp" />
     <ClCompile Include="src\RenderPipeline\Mesh\Mesh.cpp" />
     <ClCompile Include="src\RenderPipeline\Object\MeshRenderer.cpp" />
@@ -69,10 +69,10 @@
     <ClInclude Include="src\RenderPipeline\Light\LightBase\LightSource.h" />
     <ClInclude Include="src\RenderPipeline\Light\LightBase\PositionalLight.h" />
     <ClInclude Include="src\RenderPipeline\Light\LightManagement\LightTracker.h" />
-    <ClInclude Include="src\RenderPipeline\Light\LightUtility\GLSLObjectUtils.h" />
-    <ClInclude Include="src\RenderPipeline\Light\LightUtility\LightSourceType.h" />
     <ClInclude Include="src\RenderPipeline\Light\PointLight.h" />
     <ClInclude Include="src\RenderPipeline\Light\SpotLight.h" />
+    <ClInclude Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.h" />
+    <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h" />
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h" />

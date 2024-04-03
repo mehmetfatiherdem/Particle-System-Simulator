@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <GLFW/glfw3.h>
 
 enum class KeyCode

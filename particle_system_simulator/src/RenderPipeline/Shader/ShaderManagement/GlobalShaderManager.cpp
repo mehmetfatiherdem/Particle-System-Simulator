@@ -1,5 +1,5 @@
 #include <glm/gtc/type_ptr.hpp>
-#include "RenderPipeline/Light/LightUtility/GLSLObjectUtils.h"
+#include "RenderPipeline/Light/Utility/GLSLObjectUtils.h"
 #include "UBOConstants.h"
 #include "GlobalShaderManager.h"
 

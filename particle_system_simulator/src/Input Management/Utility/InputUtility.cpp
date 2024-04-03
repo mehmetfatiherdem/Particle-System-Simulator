@@ -1,11 +1,11 @@
 #include "InputUtility.h"
 
-constexpr unsigned int fromKeyCode(KeyCode keycode)
+unsigned int fromKeyCode(KeyCode keycode)
 {
 	return static_cast<unsigned int>(keycode);
 }
 
-constexpr KeyCode toKeyCode(unsigned int code)
+KeyCode toKeyCode(unsigned int code)
 {
 	switch(KeyCode keyCode = static_cast<KeyCode>(code))
 	{
@@ -87,12 +87,12 @@ std::vector<KeyCode> getAllKeyCodes()
 	return keyCodes;
 }
 
-constexpr unsigned int fromMouseButton(MouseButton button)
+unsigned int fromMouseButton(MouseButton button)
 {
 	return static_cast<unsigned int>(button);
 }
 
-constexpr MouseButton toMouseButton(unsigned int button)
+MouseButton toMouseButton(unsigned int button)
 {
 	switch(auto mouseButton = static_cast<MouseButton>(button))
 	{
