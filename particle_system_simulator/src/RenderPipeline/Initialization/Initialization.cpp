@@ -1,5 +1,4 @@
 #include <iostream>
-#include <GL/glew.h>
 #include "Initialization.h"
 
 void initializeSettings()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string_view>
-#include <GL/glew.h>
+#include "GeneralUtility/gl2fw3.h"
 #include "RenderPipeline/Shader/Shader.h"
 
 class Camera;

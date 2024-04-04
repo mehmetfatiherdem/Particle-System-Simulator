@@ -8,18 +8,14 @@ class Application
 private:
     Window window;
     Scene scene;
+    const unsigned int clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
 public:
     Application();
 
-    static Application& getInstance()
-    {
-        static Application app;
-        return app;
-    }
+    static Application& getInstance();
 
     void run();
-    void update();
 
     Window& getWindow() { return this->window; }
     Scene& getScene() { return this->scene; }

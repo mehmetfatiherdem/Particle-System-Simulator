@@ -1,9 +1,10 @@
 #include <iostream>
 #include "Input Management/Utility/InputUtility.h"
+#include "RenderPipeline/Application.h"
 #include "Window.h"
 
 Window::Window(unsigned int width, unsigned int height, std::string_view title, bool cursorEnabled, bool escapeCloses) : width(width), height(height),
-	cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f), mousePosPrev(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(),
+	cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f), mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(),
 	window(nullptr)
 {
 	window = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
@@ -35,7 +36,6 @@ Window::Window(unsigned int width, unsigned int height, std::string_view title, 
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	mousePos = glm::vec2{mouseX, mouseY};
-	mousePosPrev = mousePos;
 
 	std::vector<KeyCode> allKeys = getAllKeyCodes();
 	std::vector<MouseButton> allMouseButtons = getAllMouseButtons();
@@ -58,7 +58,7 @@ Window::~Window()
 
 void Window::resizeCallback(GLFWwindow* window, int width, int height)
 {
-	//TODO
+	Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
 }
 
 void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
@@ -98,8 +98,9 @@ void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int
 void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	ownerWindow->mousePosPrev = ownerWindow->mousePos;
-	ownerWindow->mousePos = glm::vec2{xPos, yPos};
+	glm::vec2 newPos = glm::vec2{xPos, yPos};
+	ownerWindow->mouseDelta = newPos - ownerWindow->mousePos;
+	ownerWindow->mousePos = newPos;
 }
 
 void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
@@ -152,4 +153,5 @@ void Window::endFrame()
 	}
 
 	scroll = 0;
+	mouseDelta = glm::vec2{0.0f, 0.0f};
 }

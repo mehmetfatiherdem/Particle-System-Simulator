@@ -25,7 +25,8 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
-    <ClCompile Include="src\RenderPipeline\Camera\Camera.cpp" />
+    <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
+    <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
     <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\DirectionalLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\LightSource.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="src\GeneralUtility\Aliases.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
+    <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
@@ -59,7 +61,9 @@
     <ClInclude Include="src\Input Management\Utility\InputUtility.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
-    <ClInclude Include="src\RenderPipeline\Camera\Camera.h" />
+    <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
+    <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />
+    <ClInclude Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color4.h" />
     <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h" />

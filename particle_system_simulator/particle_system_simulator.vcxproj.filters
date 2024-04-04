@@ -97,6 +97,15 @@
     <Filter Include="src\Input Management\Utility">
       <UniqueIdentifier>{5279eb9f-2086-421f-9f58-37b4181a2050}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render Pipeline\Camera\Camera Base">
+      <UniqueIdentifier>{aec9a92a-f2a1-4a94-9800-efa75c2cade0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Camera\Scene Camera">
+      <UniqueIdentifier>{b7d3b483-43af-496b-be4b-db54a9e7c022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Camera\Data">
+      <UniqueIdentifier>{39411b3b-4d02-4a90-915e-32410aa029cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -104,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="src\UserInterface\Window.cpp">
       <Filter>src\User Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderPipeline\Camera\Camera.cpp">
-      <Filter>src\Render Pipeline\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp">
       <Filter>src\Render Pipeline\Initialization</Filter>
@@ -177,6 +183,12 @@
     <ClCompile Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.cpp">
       <Filter>src\Render Pipeline\Light\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp">
+      <Filter>src\Render Pipeline\Camera\Scene Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp">
+      <Filter>src\Render Pipeline\Camera\Camera Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\Aliases.h">
@@ -190,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="src\UserInterface\Window.h">
       <Filter>src\User Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Camera\Camera.h">
-      <Filter>src\Render Pipeline\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Color\Color3.h">
       <Filter>src\Render Pipeline\Color</Filter>
@@ -307,6 +316,18 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h">
       <Filter>src\Render Pipeline\Light\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.h">
+      <Filter>src\Render Pipeline\Camera\Scene Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h">
+      <Filter>src\Render Pipeline\Camera\Camera Base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h">
+      <Filter>src\Render Pipeline\Camera\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\gl2fw3.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

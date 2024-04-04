@@ -23,7 +23,7 @@ private:
 	std::map<MouseButton, Action> mouseButtons;
 
 	glm::vec2 mousePos;
-	glm::vec2 mousePosPrev;
+	glm::vec2 mouseDelta;
 	float scroll;
 
 	static void resizeCallback(GLFWwindow* window, int width, int height);
@@ -45,9 +45,9 @@ public:
 	glm::vec2 getMousePosition() const { return mousePos; }
 	float getMouseX() const { return mousePos.x; }
 	float getMouseY() const { return mousePos.y; }
-	glm::vec2 getMouseDelta() const { return mousePos - mousePosPrev; }
-	float getMouseDeltaX() const { return (mousePos - mousePosPrev).x; }
-	float getMouseDeltaY() const { return (mousePos - mousePosPrev).y; }
+	glm::vec2 getMouseDelta() const { return mouseDelta; }
+	float getMouseDeltaX() const { return mouseDelta.x; }
+	float getMouseDeltaY() const { return mouseDelta.y; }
 	float getScroll() const { return scroll; }
 
 	unsigned int getWidth() const { return width; }

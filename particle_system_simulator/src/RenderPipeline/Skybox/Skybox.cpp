@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include "RenderPipeline/Camera/Camera.h"
 #include "GeneralUtility/stb_wrapper/stb_wrapper.h"
 #include "Skybox.h"
 

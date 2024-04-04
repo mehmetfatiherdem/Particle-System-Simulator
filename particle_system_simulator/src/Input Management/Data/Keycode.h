@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "GeneralUtility/gl2fw3.h"
 
 enum class KeyCode
 {

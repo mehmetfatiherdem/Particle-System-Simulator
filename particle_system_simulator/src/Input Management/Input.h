@@ -8,9 +8,9 @@
 class Input
 {
 public:
-	static bool getKey(KeyCode keyCode);		//pressed || held
-	static bool getKeyDown(KeyCode keyCode);		//pressed
-	static bool getKeyUp(KeyCode keyCode);		//released
+	static bool getKey(KeyCode keyCode);
+	static bool getKeyDown(KeyCode keyCode);
+	static bool getKeyUp(KeyCode keyCode);
 	static bool getMouseButton(MouseButton button);
 	static bool getMouseButtonDown(MouseButton button);
 	static bool getMouseButtonUp(MouseButton button);
