@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <GL/glew.h>
 #include <glm/mat4x4.hpp>
+#include "GeneralUtility/gl2fw3.h"
 #include "GeneralUtility/Aliases.h"
 #include "Data/Vertex.h"
 #include "Data/ShrinkMethod.h"

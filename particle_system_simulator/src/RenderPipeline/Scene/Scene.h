@@ -6,7 +6,7 @@
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
 #include "RenderPipeline/Light/Data/LightDistance.h"
 #include "RenderPipeline/Color/Color3.h"
-#include "RenderPipeline/Camera/Camera.h"
+#include "RenderPipeline/Camera/SceneCamera/SceneCamera.h"
 #include "RenderPipeline/Skybox/Skybox.h"
 
 class DirectionalLight;
@@ -26,7 +26,7 @@ private:
 	std::vector<LightSource*> lightSources;
 	std::vector<MeshRenderer*> objects;
 
-	Camera camera;
+	SceneCamera camera;
 	Skybox skybox;
 
 	MeshRenderer* createObject(MeshRenderer* object);
@@ -34,9 +34,10 @@ private:
 
 public:
 	Scene() = delete;
-	Scene(float aspectRatio);
+	Scene(unsigned int windowWidth, unsigned int windowHeight);
 	~Scene();
 
+	void update();
 	void render();
 	
 #pragma region Light Operations

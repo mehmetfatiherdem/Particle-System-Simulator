@@ -1,9 +1,9 @@
 #pragma once
 
-#include <GL/glew.h>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include "GeneralUtility/Aliases.h"
+#include "GeneralUtility/gl2fw3.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
 
 class DirectionalLight;

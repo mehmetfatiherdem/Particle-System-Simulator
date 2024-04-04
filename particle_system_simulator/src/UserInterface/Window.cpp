@@ -1,11 +1,11 @@
 #include <iostream>
+#include "Input Management/Utility/InputUtility.h"
+#include "RenderPipeline/Application.h"
 #include "Window.h"
 
-GLfloat Window::currentFrame = 0.0f;
-GLfloat Window::lastFrame = 0.0f;
-
-Window::Window(unsigned int width, unsigned int height, std::string_view title, bool cursorEnabled) : width(width), height(height), cursorEnabled(cursorEnabled),
-	mouseLastPos(0.0f, 0.0f), mouseDelta(0.0f, 0.0f), scrollDelta(0.0f)
+Window::Window(unsigned int width, unsigned int height, std::string_view title, bool cursorEnabled, bool escapeCloses) : width(width), height(height),
+	cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f), mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(),
+	window(nullptr)
 {
 	window = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
 
@@ -17,14 +17,7 @@ Window::Window(unsigned int width, unsigned int height, std::string_view title, 
 		return;
 	}
 
-	currentFrame = 0;
-	lastFrame = 0;
-
-	for(size_t i = 0; i < 16; i++)
-		keys[i] = 0;
-
-	if(!cursorEnabled)
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	int bufferWidth, bufferHeight;
 
 	glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
 	glfwMakeContextCurrent(window);
@@ -32,102 +25,133 @@ Window::Window(unsigned int width, unsigned int height, std::string_view title, 
 
 	glfwSetWindowUserPointer(window, this);
 	glfwSetKeyCallback(window, keyCallback);
+	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwSetCursorPosCallback(window, cursorPosCallback);
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetFramebufferSizeCallback(window, resizeCallback);
+
+	if(!cursorEnabled)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	mousePos = glm::vec2{mouseX, mouseY};
+
+	std::vector<KeyCode> allKeys = getAllKeyCodes();
+	std::vector<MouseButton> allMouseButtons = getAllMouseButtons();
+
+	for(auto keyCode : allKeys)
+	{
+		keys.insert(std::make_pair(keyCode, Action::IN_REST));
+	}
+
+	for(auto mouseButton : allMouseButtons)
+	{
+		mouseButtons.insert(std::make_pair(mouseButton, Action::IN_REST));
+	}
+}
+
+Window::~Window()
+{
+	glfwDestroyWindow(window);
 }
 
 void Window::resizeCallback(GLFWwindow* window, int width, int height)
 {
-	//TODO
+	Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
 }
 
-void Window::keyCallback(GLFWwindow* window, int key, int code, int action, int mode)
+void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
 {
-	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));	//Get the owner Window class from GLFW
+	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	KeyCode keyCode = toKeyCode(key);
 
-	if(action == GLFW_PRESS)	//If the action is a key press
+	if(action == GLFW_PRESS)
 	{
-		if(key == GLFW_KEY_ESCAPE)	//If the key pressed is Escape
-			glfwSetWindowShouldClose(window, GL_TRUE);	//Set the window should close
+		if(ownerWindow->escapeCloses && keyCode == KeyCode::ESCAPE)
+		{
+			glfwSetWindowShouldClose(window, GL_TRUE);
+		}
 
-		ownerWindow->setKeyAtIndex(key, true);
+		ownerWindow->keys[keyCode] = Action::PRESSED;
 	}
 	else if(action == GLFW_RELEASE)
 	{
-		ownerWindow->setKeyAtIndex(key, false);
+		ownerWindow->keys[keyCode] = Action::RELEASED;
+	}
+}
+
+void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+	if(action == GLFW_PRESS)
+	{
+		ownerWindow->mouseButtons[toMouseButton(button)] = Action::PRESSED;
+	}
+	else if(action == GLFW_RELEASE)
+	{
+		ownerWindow->mouseButtons[toMouseButton(button)] = Action::RELEASED;
 	}
 }
 
 void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-
-	if(ownerWindow->mouseFirstMove)
-	{
-		ownerWindow->mouseDelta.x = xPos - ownerWindow->mouseLastPos.x;
-		ownerWindow->mouseDelta.y = ownerWindow->mouseLastPos.x - yPos;
-	}
-	else
-	{
-		ownerWindow->mouseFirstMove = true;
-	}
-
-	ownerWindow->mouseLastPos.x = xPos;
-	ownerWindow->mouseLastPos.y = yPos;
+	glm::vec2 newPos = glm::vec2{xPos, yPos};
+	ownerWindow->mouseDelta = newPos - ownerWindow->mousePos;
+	ownerWindow->mousePos = newPos;
 }
 
 void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	ownerWindow->scrollDelta = yOffset;
+	ownerWindow->scroll = yOffset;
 }
 
-void Window::updateTime()
+void Window::pollEvents()
 {
-	lastFrame = currentFrame;
-	currentFrame = glfwGetTime();
+	glfwPollEvents();
 }
 
-void Window::setKeyAtIndex(int index, bool value)
+bool Window::shouldClose() const
 {
-	if(index < 0 || index > 1023)
-		return;
-
-	int maskIndex = index / 64;
-	int digitIndex = index % 64;
-
-	uint64_t mask = static_cast<uint64_t>(1) << digitIndex;
-
-	if(value)
-		keys[maskIndex] |= mask;
-	else
-		keys[maskIndex] &= (~mask);
+	return glfwWindowShouldClose(window);
 }
 
-void Window::getMouseDelta(GLdouble* deltaX, GLdouble* deltaY)
+void Window::swapBuffers() const
 {
-	*deltaX = mouseDelta.x;
-	*deltaY = mouseDelta.y;
+	glfwSwapBuffers(window);
+}
+
+void Window::endFrame()
+{
+	for(auto iterator : keys)
+	{
+		switch(iterator.second)
+		{
+		case Action::PRESSED:
+			iterator.second = Action::HELD_DOWN;
+			break;
+		case Action::RELEASED:
+			iterator.second = Action::IN_REST;
+			break;
+		}
+	}
+
+	for(auto iterator : mouseButtons)
+	{
+		switch(iterator.second)
+		{
+		case Action::PRESSED:
+			iterator.second = Action::HELD_DOWN;
+			break;
+		case Action::RELEASED:
+			iterator.second = Action::IN_REST;
+			break;
+		}
+	}
+
+	scroll = 0;
 	mouseDelta = glm::vec2{0.0f, 0.0f};
-}
-
-GLdouble Window::getScrollDelta()
-{
-	GLdouble delta = scrollDelta;
-	scrollDelta = 0.0f;
-	return delta;
-}
-
-bool Window::getKeyAtIndex(int index) const
-{
-	if (index < 0 || index > 1023)
-		return false;
-
-	int maskIndex = index / 64;
-	int digitIndex = index % 64;
-
-	uint64_t num = keys[maskIndex];
-
-	return num & (static_cast<uint64_t>(1) << digitIndex);
 }

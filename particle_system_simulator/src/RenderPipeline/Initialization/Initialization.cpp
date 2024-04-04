@@ -1,14 +1,13 @@
 #include <iostream>
 #include "Initialization.h"
-#include "RenderPipeline/Camera/Camera.h"
 
-GLFWwindow* Initialization::initializeGLFW()
+void initializeSettings()
 {
 	if(!glfwInit())
 	{
 		std::cerr << "GLFW initialization failed!\n";
 		glfwTerminate();
-		return nullptr;
+		return;
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -22,42 +21,19 @@ GLFWwindow* Initialization::initializeGLFW()
 	{
 		std::cerr << "GLFW initialization failed!\n";
 		glfwTerminate();
-		return nullptr;
+		return;
 	}
 
 	glfwMakeContextCurrent(tempWindow);
 
-	return tempWindow;
-}
+	glewExperimental = GL_TRUE;
 
-void Initialization::initializeGLEW()
-{
-	glewExperimental = GL_TRUE;     //Enable modern extension features
-
-	if(glewInit() != GLEW_OK)   //Initializes the GLEW and returns a success value
+	if(glewInit() != GLEW_OK)
 	{
 		std::cerr << "GLEW initialization failed!\n";
 		glfwTerminate();
 		return;
 	}
-	
-	return;
-}
 
-void Initialization::initializeOpenGL()
-{
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glDepthMask(GL_TRUE);
-	//glPolygonOffset(0.001f, 1.0f);
-	glEnable(GL_CULL_FACE);
-	//glEnable(GL_ALPHA);
-}
-
-void Initialization::initializeAll()
-{
-	initializeOpenGL();
-	GLFWwindow* tempWindow = initializeGLFW();
-	initializeGLEW();
 	glfwDestroyWindow(tempWindow);
 }
