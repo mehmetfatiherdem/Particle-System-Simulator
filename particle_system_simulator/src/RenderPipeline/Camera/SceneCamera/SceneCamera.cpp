@@ -1,42 +1,55 @@
 #include "Input Management/Input.h"
+#include "Time Management/Time.h"
 #include "Input Management/Data/KeyCode.h"
 #include "Input Management/Data/MouseButton.h"
+#include "GeneralUtility/MathConstants.h"
 #include "SceneCamera.h"
-#include <iostream>
 
 SceneCamera::SceneCamera(const glm::vec3& position, unsigned int width, unsigned int height, CameraType cameraType, float fov, float near, float far,
-	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed) :
+	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed, float zoomSensitivity) :
 	Camera(position, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed), slowMovementSpeed(slowMovementSpeed),
-	fastMovementSpeed(fastMovementSpeed) { }
+	fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
 
 SceneCamera::SceneCamera(const glm::vec3& position, const glm::vec3& rotation, unsigned int width, unsigned int height, CameraType cameraType, float fov,
-	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed) :
-	Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
-	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed) { }
+	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed,
+	float zoomSensitivity) : Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
+	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
 
 SceneCamera::SceneCamera(const glm::vec3& position, const glm::quat& rotation, unsigned int width, unsigned int height, CameraType cameraType, float fov,
-	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed) :
-	Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
-	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed) { }
+	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed,
+	float zoomSensitivity) : Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
+	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
 
 SceneCamera::SceneCamera(const Transform& transform, unsigned int width, unsigned int height, CameraType cameraType, float fov, float near, float far,
-	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed) :
+	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed, float zoomSensitivity) :
 	Camera(transform, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed), slowMovementSpeed(slowMovementSpeed),
-	fastMovementSpeed(fastMovementSpeed) { }
+	fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
 
 void SceneCamera::update()
 {
+	if(Input::getKeyDown(KeyCode::KEY_Z))
+	{
+		cameraType = static_cast<CameraType>(!static_cast<bool>(cameraType));
+	}
+
+	fov += -150 * Input::getScroll() * zoomSensitivity * Time::deltaTime();
+
+	if(fov <= 0)
+	{
+		fov = std::numeric_limits<float>::epsilon();
+	}
+	else if(fov >= PI)
+	{
+		fov = PI - std::numeric_limits<float>::epsilon();
+	}
+
 	if(!Input::getMouseButton(MouseButton::MOUSE_RIGHT))
 		return;
 
-	glm::vec2 mouseDelta = Input::getMouseDelta();
-	float yRotation = -rotationSpeed * (mouseDelta.x / width);
-	float xRotation = -rotationSpeed * (mouseDelta.y / height);
+	glm::vec2 rot = -150 * rotationSpeed * Input::getMouseDelta() * Time::deltaTime();
 
-	transform.rotateAround(transform.WORLD_UP, yRotation);
-	transform.rotateAround(transform.getRightVector(), xRotation);
-
-	std::cout << transform.getEulerRotation().z << "\n";
+	transform.rotateAround(transform.WORLD_UP, rot.x);
+	transform.rotateAround(transform.getRightVector(), rot.y);
 
 	glm::vec3 move{0.0f, 0.0f, 0.0f};
 
@@ -69,5 +82,5 @@ void SceneCamera::update()
 
 	float movementSpeed = Input::getKey(KeyCode::SHIFT) ? fastMovementSpeed : slowMovementSpeed;
 
-	transform.translate(movementSpeed * move);
+	transform.translate(movementSpeed * move * Time::deltaTime());
 }

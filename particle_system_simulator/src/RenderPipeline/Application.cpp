@@ -21,12 +21,14 @@
 #include "MeshConstruction/Shapes.h"
 #include "RenderPipeline/Mesh/Data/MeshProperties.h"
 #include "RenderPipeline/Application.h"
+#include "Input Management/Input.h"
+#include "Time Management/Time.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
 }
@@ -46,9 +48,17 @@ void Application::run()
 
     Camera& cam = scene.getCamera();
     Transform& camt = cam.getTransform();
-    cam.setCameraType(CameraType::Perspective);
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+
+    unsigned int polygonModes[2] = {GL_FILL, GL_LINE};
+    void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
+    bool currentMode = 0;
+
+    Time::start();
+
+    float sec = 0;
+    glm::vec2 deltaMouse{0,0};
 
     while(!window.shouldClose())
     {
@@ -56,10 +66,19 @@ void Application::run()
         glClear(clearMask);
 
         window.pollEvents();
+
+        if(Input::getKeyDown(KeyCode::KEY_X))
+        {
+            currentMode = !currentMode;
+            glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
+            glToggle[currentMode](GL_CULL_FACE);
+        }
+
         scene.update();
         scene.render();
 
         window.swapBuffers();
         window.endFrame();
+        Time::endFrame();
     }
 }
