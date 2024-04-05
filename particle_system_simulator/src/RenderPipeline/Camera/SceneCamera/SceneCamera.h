@@ -8,24 +8,25 @@ private:
 	float rotationSpeed;
 	float slowMovementSpeed;
 	float fastMovementSpeed;
+	float zoomSensitivity;
 
 public:
 	SceneCamera() = delete;
 	SceneCamera(const glm::vec3& position, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f,
-		float bottom = -4.5f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f);
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
+		float bottom = -1.0f, float rotationSpeed = glm::radians(180.0f), float slowMovementSpeed = 5.0f, float fastMovementSpeed = 15.0f, float zoomSensitivity = glm::radians(5.0f));
 
 	SceneCamera(const glm::vec3& position, const glm::vec3& rotation, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f,
-		float bottom = -4.5f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f);
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
+		float bottom = -1.0f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f, float zoomSensitivity = 0.05f);
 
 	SceneCamera(const glm::vec3& position, const glm::quat& rotation, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f,
-		float bottom = -4.5f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f);
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
+		float bottom = -1.0f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f, float zoomSensitivity = 0.05f);
 
 	SceneCamera(const Transform& transform, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f,
-		float bottom = -4.5f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f);
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
+		float bottom = -1.0f, float rotationSpeed = 1.2f, float slowMovementSpeed = 0.18f, float fastMovementSpeed = 0.72f, float zoomSensitivity = 0.05f);
 
 	void update();
 

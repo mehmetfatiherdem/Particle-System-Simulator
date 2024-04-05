@@ -106,6 +106,9 @@
     <Filter Include="src\Render Pipeline\Camera\Data">
       <UniqueIdentifier>{39411b3b-4d02-4a90-915e-32410aa029cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Time Management">
+      <UniqueIdentifier>{291bd35d-a34b-464f-b627-c1645c5311c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp">
       <Filter>src\Render Pipeline\Camera\Camera Base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Time Management\Time.cpp">
+      <Filter>src\Time Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +333,15 @@
       <Filter>src\Render Pipeline\Camera\Data</Filter>
     </ClInclude>
     <ClInclude Include="src\GeneralUtility\gl2fw3.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\MathConstants.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Time Management\Time.h">
+      <Filter>src\Time Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\MathUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,5 +20,5 @@ public:
 	Skybox(std::string_view right, std::string_view left, std::string_view back, std::string_view front, std::string_view top, std::string_view bottom);
 	~Skybox();
 
-	void render(const glm::mat4& projection, const glm::mat4& view);
+	void render(const glm::mat4& view, const glm::mat4& projection);
 };

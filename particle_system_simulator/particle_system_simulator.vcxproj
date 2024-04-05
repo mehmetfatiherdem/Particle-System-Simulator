@@ -45,6 +45,7 @@
     <ClCompile Include="src\RenderPipeline\Texture\Texture.cpp" />
     <ClCompile Include="src\RenderPipeline\Transform\Transform.cpp" />
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp" />
+    <ClCompile Include="src\Time Management\Time.cpp" />
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +53,8 @@
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
+    <ClInclude Include="src\GeneralUtility\MathConstants.h" />
+    <ClInclude Include="src\GeneralUtility\MathUtility.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
@@ -93,6 +96,7 @@
     <ClInclude Include="src\RenderPipeline\Transform\Transform.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
     <ClInclude Include="src\ResourceManagement\ResourceManager.h" />
+    <ClInclude Include="src\Time Management\Time.h" />
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>

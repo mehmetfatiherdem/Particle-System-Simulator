@@ -45,7 +45,7 @@ void Scene::render()
 		object->render();
 	}
 
-	skybox.render(camera.getProjectionMatrix(), camera.getViewMatrix());
+	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
 }
 
 #pragma region Light Operations

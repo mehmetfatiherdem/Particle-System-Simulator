@@ -32,8 +32,8 @@ public:
 	Camera(const Transform& transform, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
 
 	glm::mat4 getViewMatrix() const;
-	glm::mat4 getProjectionMatrix() const;
-	glm::mat4 getViewProjectionMatrix() const;
+	glm::mat4 getProjectionMatrix(float useFov = -1.0f) const;
+	glm::mat4 getViewProjectionMatrix(float useFov = -1.0f) const;
 
 	unsigned int getWidth() const { return width; }
 	unsigned int getHeight() const { return height; }

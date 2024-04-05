@@ -18,6 +18,7 @@ private:
 	unsigned int height;
 	bool cursorEnabled;
 	bool escapeCloses;
+	bool vsync;
 	
 	std::map<KeyCode, Action> keys;
 	std::map<MouseButton, Action> mouseButtons;
@@ -34,7 +35,8 @@ private:
 
 public:
 	Window() = delete;
-	Window(unsigned int width, unsigned int height, std::string_view title, bool cursorEnabled = true, bool escapeCloses = true);
+	Window(unsigned int width, unsigned int height, std::string_view title, bool vsync = false, bool cursorEnabled = true,
+		bool escapeCloses = true);
 	~Window();
 
 	static void pollEvents();
@@ -49,6 +51,7 @@ public:
 	float getMouseDeltaX() const { return mouseDelta.x; }
 	float getMouseDeltaY() const { return mouseDelta.y; }
 	float getScroll() const { return scroll; }
+	bool getVsync() const { return vsync; }
 
 	unsigned int getWidth() const { return width; }
 	unsigned int getHeight() const { return height; }

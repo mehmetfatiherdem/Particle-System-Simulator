@@ -1,11 +1,13 @@
 #include <iostream>
+#include <cmath>
 #include "Input Management/Utility/InputUtility.h"
 #include "RenderPipeline/Application.h"
+#include "GeneralUtility/MathUtility.h"
 #include "Window.h"
 
-Window::Window(unsigned int width, unsigned int height, std::string_view title, bool cursorEnabled, bool escapeCloses) : width(width), height(height),
-	cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f), mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(),
-	window(nullptr)
+Window::Window(unsigned int width, unsigned int height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :
+	width(width), height(height), vsync(vsync), cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f),
+	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr)
 {
 	window = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
 
@@ -23,6 +25,8 @@ Window::Window(unsigned int width, unsigned int height, std::string_view title, 
 	glfwMakeContextCurrent(window);
 	glViewport(0, 0, bufferWidth, bufferHeight);
 
+	glfwSwapInterval(vsync);
+
 	glfwSetWindowUserPointer(window, this);
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -30,8 +34,7 @@ Window::Window(unsigned int width, unsigned int height, std::string_view title, 
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetFramebufferSizeCallback(window, resizeCallback);
 
-	if(!cursorEnabled)
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, cursorEnabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -58,7 +61,13 @@ Window::~Window()
 
 void Window::resizeCallback(GLFWwindow* window, int width, int height)
 {
+	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	ownerWindow->width = width;
+	ownerWindow->height = height;
 	Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
+
+	glfwGetFramebufferSize(window, &width, &height);
+	glViewport(0, 0, width, height);
 }
 
 void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
@@ -98,8 +107,8 @@ void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int
 void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	glm::vec2 newPos = glm::vec2{xPos, yPos};
-	ownerWindow->mouseDelta = newPos - ownerWindow->mousePos;
+	glm::vec2 newPos = glm::vec2{xPos / ownerWindow->width, yPos / ownerWindow->height};
+	ownerWindow->mouseDelta += (newPos - ownerWindow->mousePos);
 	ownerWindow->mousePos = newPos;
 }
 
@@ -126,28 +135,28 @@ void Window::swapBuffers() const
 
 void Window::endFrame()
 {
-	for(auto iterator : keys)
+	for(auto iterator = keys.begin(); iterator != keys.end(); ++iterator)
 	{
-		switch(iterator.second)
+		switch(iterator._Ptr->_Myval.second)
 		{
 		case Action::PRESSED:
-			iterator.second = Action::HELD_DOWN;
+			iterator._Ptr->_Myval.second = Action::HELD_DOWN;
 			break;
 		case Action::RELEASED:
-			iterator.second = Action::IN_REST;
+			iterator._Ptr->_Myval.second = Action::IN_REST;
 			break;
 		}
 	}
 
-	for(auto iterator : mouseButtons)
+	for(auto iterator = mouseButtons.begin(); iterator != mouseButtons.end(); ++iterator)
 	{
-		switch(iterator.second)
+		switch(iterator._Ptr->_Myval.second)
 		{
 		case Action::PRESSED:
-			iterator.second = Action::HELD_DOWN;
+			iterator._Ptr->_Myval.second = Action::HELD_DOWN;
 			break;
 		case Action::RELEASED:
-			iterator.second = Action::IN_REST;
+			iterator._Ptr->_Myval.second = Action::IN_REST;
 			break;
 		}
 	}
