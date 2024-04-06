@@ -14,6 +14,7 @@ class Mesh
 private:
 	friend class MeshRenderer;
 	friend class Skybox;
+	friend class Cursor;
 
 	GLuint VAO;
 	GLuint buffers[3];

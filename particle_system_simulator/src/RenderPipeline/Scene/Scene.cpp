@@ -1,3 +1,4 @@
+#include <string>
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
@@ -10,11 +11,13 @@
 #include "GeneralUtility/stringify.h"
 #include "Scene.h"
 
-#define SKYBOX(x) STRINGIFY(Resources/Textures/Skybox/x.jpg)
+constexpr std::string getTextureAddresses()
+{
+	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
+}
 
 Scene::Scene(unsigned int windowWidth, unsigned int windowHeight) : shaderManager(), lightTracker(this->shaderManager),
-	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), skybox(SKYBOX(right), SKYBOX(left), SKYBOX(top), SKYBOX(bottom),
-	SKYBOX(front), SKYBOX(back)), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() { }
+	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skybox(getTextureAddresses()) { }
 
 Scene::~Scene()
 {
