@@ -109,6 +109,9 @@
     <Filter Include="src\Time Management">
       <UniqueIdentifier>{291bd35d-a34b-464f-b627-c1645c5311c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ECS">
+      <UniqueIdentifier>{517f6745-58f0-45be-85e3-194cf9e93ff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -194,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="src\Time Management\Time.cpp">
       <Filter>src\Time Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="IComponent.cpp">
+      <Filter>src\ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,6 +353,13 @@
     <ClInclude Include="src\GeneralUtility\MathUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Entity.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\generic.geom">
@@ -384,5 +400,8 @@
     <Image Include="Resources\Textures\Skybox\front.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="particle_system_simulator.rc" />
   </ItemGroup>
 </Project>
