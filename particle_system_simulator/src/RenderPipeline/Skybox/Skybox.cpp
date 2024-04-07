@@ -6,8 +6,8 @@
 #include "RenderPipeline/Mesh/Mesh.h"
 #include "RenderPipeline/Mesh/Data/MeshProperties.h"
 
-Skybox::Skybox(std::string_view cubemapTexture) : shader("Resources/Shaders/skybox.vert", "Resources/Shaders/skybox.frag"),
-	skybox(createCube(MeshProperties{false})), texture(cubemapTexture, 0, GL_TEXTURE_CUBE_MAP) { }
+Skybox::Skybox(std::string_view cubemapTexture) : shader("Resources/Shaders/Skybox/skybox.vert", "Resources/Shaders/Skybox/skybox.frag"),
+	skybox(createCube(VertexAttributes::skybox())), texture(cubemapTexture, 0, GL_TEXTURE_CUBE_MAP) { }
 
 Skybox::~Skybox()
 {

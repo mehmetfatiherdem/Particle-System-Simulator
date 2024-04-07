@@ -112,6 +112,21 @@
     <Filter Include="src\Render Pipeline\Cursor">
       <UniqueIdentifier>{524233f2-d844-491f-a208-3952de808006}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Textures\Cursor">
+      <UniqueIdentifier>{50dea9e3-e922-4a71-a99d-3f2c9f49c503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Generic">
+      <UniqueIdentifier>{8bf6d39e-0b18-4fed-b182-4cd51cac27b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Instanced">
+      <UniqueIdentifier>{5a095364-df09-4649-bab8-1617cc96dc78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Skybox">
+      <UniqueIdentifier>{62902a33-b40f-4865-8b15-70138c47dca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Cursor">
+      <UniqueIdentifier>{ad1e5c97-6ff4-4970-acb0-9bc36bef355f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -355,26 +370,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\generic.geom">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\instanced.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
@@ -393,5 +388,34 @@
     <Image Include="Resources\Textures\Skybox\front.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
+    <Image Include="Resources\Textures\Cursor\cursor.png">
+      <Filter>Resources\Textures\Cursor</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Cursor\cursor.frag">
+      <Filter>Resources\Shaders\Cursor</Filter>
+    </None>
+    <None Include="Resources\Shaders\Cursor\cursor.vert">
+      <Filter>Resources\Shaders\Cursor</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.frag">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.geom">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.vert">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Instanced\instanced.vert">
+      <Filter>Resources\Shaders\Instanced</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.frag">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.vert">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
   </ItemGroup>
 </Project>

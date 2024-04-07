@@ -42,7 +42,7 @@ Application& Application::getInstance()
 void Application::run()
 {
     Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
-    Mesh* mesh = createCube(MeshProperties{false});
+    Mesh* mesh = createCube(VertexAttributes::instanced());
 
     auto x = scene.createObject(glm::vec3{0,0,0}, mesh, material);
 

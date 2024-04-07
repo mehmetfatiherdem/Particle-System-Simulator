@@ -6,15 +6,16 @@
 
 GLuint Shader::currentProgram = 0;
 
-Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, LoadMethod method)
+Shader::Shader(std::string_view vertex, std::string_view fragment, const VertexAttributes& vertexAttribs,
+	LoadMethod method) : Shader(vertex, fragment, "", vertexAttribs, method) { }
+
+Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& vertexAttribs,
+	LoadMethod method) : vertexAttribs(vertexAttribs)
 {
 	if(method == LoadMethod::FromFile)
 	{
-		std::string vertexShader = readShaderFile(vertex);
-		std::string fragmentShader = readShaderFile(fragment);
-		std::string geometryShader = geometry.empty() ? "" : readShaderFile(geometry);
-
-		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), (geometryShader.empty() ? nullptr : geometryShader.c_str()));
+		compileShaders(readShaderFile(vertex).c_str(), readShaderFile(fragment).c_str(),
+			geometry.empty() ? nullptr : readShaderFile(geometry).c_str());
 	}
 	else
 	{
@@ -22,14 +23,14 @@ Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_v
 	}
 }
 
-Shader::Shader(Shader&& shader) noexcept : programID(shader.programID)
+Shader::Shader(Shader&& shader) noexcept : programID(shader.programID), vertexAttribs(shader.vertexAttribs)
 {
 	shader.programID = 0;
 }
 
 Shader::~Shader()
 {
-	destroyShader();
+	cleanup();
 }
 
 Shader& Shader::operator=(Shader&& shader) noexcept
@@ -39,7 +40,7 @@ Shader& Shader::operator=(Shader&& shader) noexcept
 	return *this;
 }
 
-void Shader::destroyShader()
+void Shader::cleanup()
 {
 	if(programID == 0)
 		return;
@@ -72,7 +73,9 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	addShader(fragmentCode, GL_FRAGMENT_SHADER);
 
 	if(geometryCode != nullptr)
+	{
 		addShader(geometryCode, GL_GEOMETRY_SHADER);
+	}
 
 	GLint result = 0;
 	GLchar eLog[2048] = {0};
@@ -84,7 +87,7 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	{
 		glGetProgramInfoLog(programID, 2048 * sizeof(GLchar), NULL, eLog);
 		std::cerr << "Error linking program: " << eLog << std::endl;
-		destroyShader();
+		cleanup();
 		return;
 	}
 
@@ -95,7 +98,7 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	{
 		glGetProgramInfoLog(programID, sizeof(eLog), NULL, eLog);
 		std::cerr << "Error validating the program : " << eLog << std::endl;
-		destroyShader();
+		cleanup();
 		return;
 	}
 }
@@ -122,7 +125,7 @@ void Shader::addShader(const char* shaderCode, GLenum shaderType)
 		glGetShaderInfoLog(theShader, 2048, NULL, eLog);
 		std::cerr << "Error compiling the " << shaderType << " shader : " << eLog << '\n';
 		glDeleteShader(theShader);
-		destroyShader();
+		cleanup();
 		return;
 	}
 
@@ -152,6 +155,30 @@ std::string Shader::readShaderFile(std::string_view address)
 
 	fs.close();
 	return content;
+}
+
+Shader& Shader::genericShader()
+{
+	static Shader shader{"Resources/Shaders/Generic/generic.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::generic()};
+	return shader;
+}
+
+Shader& Shader::instancedShader()
+{
+	static Shader shader{"Resources/Shaders/Instanced/instanced.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::instanced()};
+	return shader;
+}
+
+Shader& Shader::skyboxShader()
+{
+	static Shader shader{"Resources/Shaders/Skybox/skybox.vert", "Resources/Shaders/Skybox/skybox.frag", VertexAttributes::skybox()};
+	return shader;
+}
+
+Shader& Shader::cursorShader()
+{
+	static Shader shader{"Resources/Shaders/Cursor/cursor.vert", "Resources/Shaders/Cursor/cursor.frag", VertexAttributes::cursor()};
+	return shader;
 }
 
 void Shader::setBool(std::string_view variable, bool value) const

@@ -11,7 +11,7 @@
 #include "GeneralUtility/stringify.h"
 #include "Scene.h"
 
-constexpr std::string getTextureAddresses()
+std::string getTextureAddresses()
 {
 	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
 }

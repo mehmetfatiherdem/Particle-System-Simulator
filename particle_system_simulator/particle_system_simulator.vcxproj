@@ -102,35 +102,23 @@
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\generic.frag">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </None>
-    <None Include="Resources\Shaders\generic.geom">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </None>
-    <None Include="Resources\Shaders\generic.vert">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </None>
-    <None Include="Resources\Shaders\instanced.vert" />
-    <None Include="Resources\Shaders\skybox.frag" />
-    <None Include="Resources\Shaders\skybox.vert" />
-  </ItemGroup>
-  <ItemGroup>
+    <Image Include="Resources\Textures\Cursor\cursor.png" />
     <Image Include="Resources\Textures\Skybox\back.jpg" />
     <Image Include="Resources\Textures\Skybox\bottom.jpg" />
     <Image Include="Resources\Textures\Skybox\front.jpg" />
     <Image Include="Resources\Textures\Skybox\left.jpg" />
     <Image Include="Resources\Textures\Skybox\right.jpg" />
     <Image Include="Resources\Textures\Skybox\top.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Cursor\cursor.frag" />
+    <None Include="Resources\Shaders\Cursor\cursor.vert" />
+    <None Include="Resources\Shaders\Generic\generic.frag" />
+    <None Include="Resources\Shaders\Generic\generic.geom" />
+    <None Include="Resources\Shaders\Generic\generic.vert" />
+    <None Include="Resources\Shaders\Instanced\instanced.vert" />
+    <None Include="Resources\Shaders\Skybox\skybox.frag" />
+    <None Include="Resources\Shaders\Skybox\skybox.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

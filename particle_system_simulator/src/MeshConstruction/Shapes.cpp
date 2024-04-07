@@ -1,7 +1,7 @@
 #include <cmath>
 #include "Shapes.h"
 
-Mesh* createQuad(const MeshProperties& props)
+Mesh* createQuad(const VertexAttributes& props)
 {
 	std::vector<Vertex> vertices{
 		Vertex{glm::vec3{+0.5f, +0.5f, 0.0f}, glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec2{1.0f, 1.0f}},
@@ -16,7 +16,7 @@ Mesh* createQuad(const MeshProperties& props)
 	return mesh;
 }
 
-Mesh* createCube(const MeshProperties& props)
+Mesh* createCube(const VertexAttributes& props)
 {
 	std::vector<Vertex> vertices{
 		//FRONT FACE
@@ -71,7 +71,7 @@ Mesh* createCube(const MeshProperties& props)
 
 glm::vec3 computeFaceNormal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 
-Mesh* createFlatSphere(const MeshProperties& props, unsigned int sectorCount, unsigned int stackCount)
+Mesh* createFlatSphere(const VertexAttributes& props, unsigned int sectorCount, unsigned int stackCount)
 {
     const float PI = 3.141592653589793f;
 
@@ -161,7 +161,7 @@ Mesh* createFlatSphere(const MeshProperties& props, unsigned int sectorCount, un
     return mesh;
 }
 
-Mesh* createSmoothSphere(const MeshProperties& props, unsigned int sectorCount, unsigned int stackCount)
+Mesh* createSmoothSphere(const VertexAttributes& props, unsigned int sectorCount, unsigned int stackCount)
 {
     const float PI = 3.141592653589793f;
 
@@ -220,7 +220,7 @@ Mesh* createSmoothSphere(const MeshProperties& props, unsigned int sectorCount, 
     return mesh;
 }
 
-Mesh* createSphere(const MeshProperties& props, int approximateVertexCount, bool smooth)
+Mesh* createSphere(const VertexAttributes& props, int approximateVertexCount, bool smooth)
 {
     float a, b, c;
 

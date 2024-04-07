@@ -7078,7 +7078,7 @@ class basic_any {
         switch(op) {
         case operation::copy:
             if constexpr(std::is_copy_constructible_v<Type>) {
-                static_cast<basic_any *>(const_cast<void *>(other))->initialize<Type>(*element);
+                static_cast<basic_any *>(const_cast<void *>(other))->initializeMesh<Type>(*element);
             }
             break;
         case operation::move:
@@ -7124,7 +7124,7 @@ class basic_any {
     }
 
     template<typename Type, typename... Args>
-    void initialize([[maybe_unused]] Args &&...args) {
+    void initializeMesh([[maybe_unused]] Args &&...args) {
         info = &type_id<std::remove_cv_t<std::remove_reference_t<Type>>>();
 
         if constexpr(!std::is_void_v<Type>) {
@@ -7178,7 +7178,7 @@ public:
           info{},
           vtable{},
           mode{any_policy::owner} {
-        initialize<Type>(std::forward<Args>(args)...);
+        initializeMesh<Type>(std::forward<Args>(args)...);
     }
 
     /**
@@ -7319,7 +7319,7 @@ public:
     template<typename Type, typename... Args>
     void emplace(Args &&...args) {
         reset();
-        initialize<Type>(std::forward<Args>(args)...);
+        initializeMesh<Type>(std::forward<Args>(args)...);
     }
 
     /**
