@@ -15,28 +15,28 @@ class Entity
 {
 private:
 	entt::registry& registry; // to store the entities
-	entt::entity entityObject; // entity itself
+	entt::entity handle; // entity itself
 public:
-	Entity(entt::registry& registry, entt::entity entityObject) : registry(registry), entityObject(entityObject) {}
+	Entity(entt::registry& registry, entt::entity handle) : registry(registry), handle(handle) {}
 
     template<typename T, typename... Args>
     T& addComponent(Args&&... args) {
-		return registry.emplace<T>(entityObject, std::forward<Args>(args)...);
+		return registry.emplace<T>(handle, std::forward<Args>(args)...);
 	}
 
     template<typename T>
     T& getComponent() {
-        return registry.get<T>(entityObject);
+        return registry.get<T>(handle);
     }
 
     template<typename T>
     bool hasComponent() {
-        return registry.all_of<T>(entityObject);
+        return registry.all_of<T>(handle);
     }
 
     template<typename T>
     void removeComponent() {
-        registry.remove<T>(entityObject);
+        registry.remove<T>(handle);
     }
 
     /*
@@ -75,9 +75,9 @@ public:
     */
 
     void destroy() {
-		registry.destroy(entityObject);
+		registry.destroy(handle);
 	}
 
-    entt::entity getHandle() const { return entityObject; }
+    entt::entity getHandle() const { return handle; }
 };
 
