@@ -353,7 +353,6 @@
     <ClInclude Include="src\GeneralUtility\MathUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Entity.h">
       <Filter>src\ECS</Filter>
     </ClInclude>
