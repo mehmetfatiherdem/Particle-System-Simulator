@@ -49,5 +49,5 @@ public:
 	void setVector(std::string_view variable, const glm::vec4& value) const;
 	void setMatrix4(std::string_view variable, const glm::mat4& value) const;
 
-	const VertexAttributes& getVertexAttributes() const { return vertexAttribs; }
+	VertexAttributes getVertexAttributes() const { return vertexAttribs; }
 };

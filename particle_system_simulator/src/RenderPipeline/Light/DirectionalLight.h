@@ -9,10 +9,29 @@ protected:
 public:
 	DirectionalLight() = delete;
 	DirectionalLight(const LightTracker& lightTracker, const Color3& color, const glm::vec3& direction);
+	DirectionalLight(const DirectionalLight&) = default;
+	DirectionalLight(DirectionalLight&&) = delete;
+	~DirectionalLight() = default;
 
-	glm::vec3 getDirection() const { return transform.getForwardVector(); }
+	DirectionalLight& operator=(const DirectionalLight&) = delete;
+	DirectionalLight& operator=(DirectionalLight&&) = delete;
+
+	glm::vec3 getDirection() const { return this->transform.getForwardVector(); }
 	void setDirection(const glm::vec3& direction);
 
-	void translate(const glm::vec3& displacement) override final { this->transform.translate(displacement); }
-	void setPosition(const glm::vec3& position) override final { this->transform.setPosition(position); }
+	void rotate(const glm::vec3& rotation);
+	void rotate(const glm::quat& rotation);
+	void rotateAround(const glm::vec3& axis, float angle);
+	void rotateAround(const glm::vec3& point, const glm::vec3& axis, float angle);
+	void rotateAround(const Transform& transform, const glm::vec3& axis, float angle);
+
+	void lookAt(const Transform& transform);
+	void lookAt(const glm::vec3& point);
+
+	void setRightVector(const glm::vec3& right);
+	void setUpVector(const glm::vec3& up);
+	void setForwardVector(const glm::vec3& forward);
+
+	void setRotation(const glm::quat& rotation);
+	void setEulerRotation(const glm::vec3& rotation);
 };

@@ -22,7 +22,7 @@ void addCubemapSurface(GLenum targetSide, std::string_view file)
 	}
 }
 
-Texture::Texture(std::string_view textureAddress, unsigned int textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
+Texture::Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
 	GLint textureWrappingMethod_T, GLint textureWrappingMethod_R, GLint textureMinFilter, GLint textureMagFilter, GLint internalFormat,
 	GLenum format, char addressDelimiter) : textureUnit(textureUnit), textureType(textureType), textureID(0)
 {
@@ -31,7 +31,7 @@ Texture::Texture(std::string_view textureAddress, unsigned int textureUnit, GLen
 	{
 		std::istringstream iss{std::string(textureAddress)};
 
-		unsigned int sides[6] = {
+		uint32_t sides[6] = {
 			GL_TEXTURE_CUBE_MAP_POSITIVE_X,
 			GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
 			GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
@@ -109,7 +109,7 @@ void Texture::useTexture() const
 	glBindTexture(textureType, textureID);
 }
 
-void Texture::setTextureUnit(unsigned int textureUnit)
+void Texture::setTextureUnit(uint32_t textureUnit)
 {
 	this->textureUnit = textureUnit;
 }

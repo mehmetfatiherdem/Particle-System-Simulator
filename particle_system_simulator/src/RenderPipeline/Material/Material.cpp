@@ -2,8 +2,8 @@
 #include "RenderPipeline/Texture/Texture.h"
 #include "Material.h"
 
-Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess) : diffuseMap(diffuseMap),
-    specularMap(specularMap), color(color), ambientStrength(ambientStrength), shininess(shininess) 
+Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess) :
+    diffuseMap(diffuseMap), specularMap(specularMap), color(color), ambientStrength(ambientStrength), shininess(shininess) 
 {
     if(diffuseMap)
     {
@@ -13,6 +13,12 @@ Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& colo
     {
         specularMap->setTextureUnit(1);
     }
+}
+
+Material& Material::defaultMaterial()
+{
+    static Material material{nullptr, nullptr, Color4{}, 1.0f, 1.0f};
+    return material;
 }
 
 void Material::useMaterial(const Shader& shader) const

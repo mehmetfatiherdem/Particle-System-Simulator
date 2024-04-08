@@ -2,13 +2,14 @@
 
 #include "RenderPipeline/Camera/Data/CameraType.h"
 #include "RenderPipeline/Transform/Transformable.h"
+#include "RenderPipeline/Camera/Data/CameraProps.h"
 
 class Camera : public Transformable
 {
 protected:
 	CameraType cameraType;
-	unsigned int width;
-	unsigned int height;
+	uint32_t width;
+	uint32_t height;
 	float aspectRatio;
 	float fov;
 	float near;
@@ -20,23 +21,32 @@ protected:
 
 public:
 	Camera() = delete;
-	Camera(const glm::vec3& position, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
+	Camera(const CameraProps& props) : Transformable(props.transform),
+		cameraType(props.cameraType),
+		width(props.width),
+		height(props.height),
+		aspectRatio((float)props.width / props.height),
+		fov(props.fov),
+		near(props.near),
+		far(props.far),
+		left(props.left),
+		right(props.right),
+		top(props.top),
+		bottom(props.bottom) { }
 
-	Camera(const glm::vec3& position, const glm::vec3& rotation, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
+	Camera(const Camera&) = default;
+	Camera(Camera&&) = delete;
+	~Camera() = default;
 
-	Camera(const glm::vec3& position, const glm::quat& rotation, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
-
-	Camera(const Transform& transform, unsigned int width, unsigned int height, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
+	Camera& operator=(const Camera&) = default;
+	Camera& operator=(Camera&&) = delete;
 
 	glm::mat4 getViewMatrix() const;
 	glm::mat4 getProjectionMatrix(float useFov = -1.0f) const;
 	glm::mat4 getViewProjectionMatrix(float useFov = -1.0f) const;
 
-	unsigned int getWidth() const { return width; }
-	unsigned int getHeight() const { return height; }
+	uint32_t getWidth() const { return width; }
+	uint32_t getHeight() const { return height; }
 	float getAspectRatio() const { return aspectRatio; }
 	float getFov() const { return fov; }
 	float getNear() const { return near; }
@@ -47,9 +57,9 @@ public:
 	float getBottom() const { return bottom; }
 	CameraType getCameraType() const { return cameraType; }
 
-	void setWidth(unsigned int width);
-	void setHeight(unsigned int height);
-	void setAspectRatio(unsigned int width, unsigned int height);
+	void setWidth(uint32_t width);
+	void setHeight(uint32_t height);
+	void setAspectRatio(uint32_t width, uint32_t height);
 	void setFov(float fov) { this->fov = fov; }
 	void setNear(float near) { this->near = near; }
 	void setFar(float far) { this->far = far; }

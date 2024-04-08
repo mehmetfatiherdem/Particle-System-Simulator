@@ -1,38 +1,41 @@
 #pragma once
 
+#include <optional>
 #include "RenderPipeline/Transform/Transformable.h"
+#include "RenderPipeline/Mesh/Mesh.h"
+#include "GeneralUtility/RefOrValue.h"
 
-class Mesh;
 class Material;
 class Shader;
 
 class MeshRenderer : public Transformable
 {
 private:
-	Mesh* mesh;
+	RefOrValue<Mesh> mesh;
+	Shader& shader;
 	Material* material;
-	Shader* shader;
 
-	static Shader* lastShader;
 	static Material* lastMaterial;
-	
+
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const MeshRenderer& object);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh) : Transformable(transform), mesh(mesh, false),
+		shader(Shader::genericShader()), material(&Material::defaultMaterial()) { }
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer(const MeshRenderer&) = default;
+	MeshRenderer(MeshRenderer&&) = default;
 	~MeshRenderer();
 
-	MeshRenderer& operator=(const MeshRenderer& object);
+	MeshRenderer& operator=(const MeshRenderer&) = default;
+	MeshRenderer& operator=(MeshRenderer&&) = default;
 
 	void render();
 
-	const Mesh* getMesh() const { return mesh; }
+	/*const Mesh* getMesh() const { return mesh; }
 	Material* getMaterial() const { return material; }
-	Shader* getShader() const { return shader; }
+	Shader* getShader() const { return shader; }*/
 
 	void setMaterial(Material* material) { this->material = material; }
 };

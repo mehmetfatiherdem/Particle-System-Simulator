@@ -1,6 +1,6 @@
 #pragma once
 
-enum class LightSourceType : unsigned int
+enum class LightSourceType : uint32_t
 {
 	DirectionalLight = 1u,
 	PointLight,

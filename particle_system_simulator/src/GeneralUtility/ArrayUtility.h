@@ -5,7 +5,7 @@
 namespace utility::array
 {
 	template<typename T>
-	T* find(const T* array, const T& element, unsigned int range)
+	T* find(const T* array, const T& element, uint32_t range)
 	{
 		auto end = array + range;
 		const T* elementFound = std::find(array, end, element);
@@ -14,7 +14,7 @@ namespace utility::array
 	}
 
 	template<typename T>
-	int findIndex(const T* array, const T& element, unsigned int range)
+	int findIndex(const T* array, const T& element, uint32_t range)
 	{
 		auto end = array + range;
 		const T* elementFound = std::find(array, end, element);

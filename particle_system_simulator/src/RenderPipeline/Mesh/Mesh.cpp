@@ -2,17 +2,108 @@
 #include "Data/BufferObjects.h"
 #include "Mesh.h"
 
-void Mesh::initializeMesh(const VertexAttributes& vertexAttribs)
+Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint32_t>&& indices) : VAO(0), buffers(), props(std::nullopt),
+	vertices(std::make_shared<std::vector<Vertex>>(std::move(vertices))), updatedSinceLastDraw(0),
+	indices(std::make_shared<std::vector<uint32_t>>(std::move(indices)))
 {
-	if(props.has_value())
-	{
-		cleanup();
-		instanceMatrices->clear();
-		instanceMatrices->shrink_to_fit();
-	}
-	
-	this->props = vertexAttribs;
 
+}
+
+Mesh::Mesh(const Mesh& mesh) : VAO(mesh.VAO), buffers(), props(mesh.props), vertices(mesh.vertices), indices(mesh.indices),
+	instanceMatrices(mesh.instanceMatrices), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
+{
+	if(!this->props.has_value())
+		return;
+
+	if(props->isInstanced)
+	{
+		std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+	}
+	else
+	{
+		initializeMesh();
+	}
+}
+
+Mesh::Mesh(Mesh&& mesh) noexcept : VAO(mesh.VAO), buffers(), props(mesh.props), vertices(std::move(mesh.vertices)),
+indices(std::move(mesh.indices)), instanceMatrices(std::move(mesh.instanceMatrices)), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
+{
+	if(!this->props.has_value())
+		return;
+
+	std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+	std::fill_n(mesh.buffers, 3, 0);
+	mesh.VAO = 0;
+	mesh.props = std::nullopt;
+}
+
+Mesh& Mesh::operator=(const Mesh& mesh)
+{
+	cleanup();
+
+	this->vertices = mesh.vertices;
+	this->indices = mesh.indices;
+	this->props = mesh.props;
+
+	if(this->props.has_value())
+	{
+		if(this->props->isInstanced)
+		{
+			this->VAO = mesh.VAO;
+			this->updatedSinceLastDraw = mesh.updatedSinceLastDraw;
+			this->instanceMatrices = mesh.instanceMatrices;
+			std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+		}
+		else
+		{
+			initializeMesh();
+		}
+	}
+
+	return *this;
+}
+
+Mesh& Mesh::operator=(Mesh&& mesh) noexcept
+{
+	cleanup();
+
+	this->vertices = std::move(mesh.vertices);
+	this->indices = std::move(mesh.indices);
+
+	if(mesh.props.has_value())
+	{
+		this->VAO = mesh.VAO;
+		this->props = mesh.props;
+		this->updatedSinceLastDraw = mesh.updatedSinceLastDraw;
+		this->instanceMatrices = std::move(mesh.instanceMatrices);
+		std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
+		std::fill_n(mesh.buffers, 3, 0);
+		mesh.VAO = 0;
+		mesh.props = std::nullopt;
+	}
+
+	return *this;
+}
+
+Mesh::~Mesh()
+{
+	cleanup();
+}
+
+void Mesh::cleanup()
+{
+	if(!props.has_value())
+		return;
+
+	if(props->isInstanced && vertices.use_count() > 1)
+		return;
+
+	glDeleteBuffers(props->isInstanced ? 3 : 2, buffers);
+	glDeleteVertexArrays(1, &VAO);
+}
+
+void Mesh::initializeMesh()
+{
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -20,7 +111,7 @@ void Mesh::initializeMesh(const VertexAttributes& vertexAttribs)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[IBO]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices->size() * sizeof((*indices)[0]), &(*indices)[0], GL_STATIC_DRAW);
 
-	uint attribLocation = 0;
+	uint32_t attribLocation = 0;
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[VBO]);
 	glBufferData(GL_ARRAY_BUFFER, vertices->size() * sizeof(Vertex), &(*vertices)[0], GL_STATIC_DRAW);
@@ -45,13 +136,15 @@ void Mesh::initializeMesh(const VertexAttributes& vertexAttribs)
 
 	if(props->isInstanced)
 	{
-		uint bufferSize = props->approximateCount ? props->approximateCount : 25;
+		uint32_t bufferSize = props->approximateCount ? props->approximateCount : 25;
+		instanceMatrices = std::make_shared<std::vector<glm::mat4>>();
 		instanceMatrices->reserve(bufferSize);
+		instanceMatrices->push_back(glm::mat4(1.0f));
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[MBO]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSize * sizeof(glm::mat4), (void*)0, GL_STREAM_DRAW);
 
-		for(uint i = 0; i < 4; ++i)
+		for(uint32_t i = 0; i < 4; ++i)
 		{
 			glEnableVertexAttribArray(attribLocation);
 			glVertexAttribPointer(attribLocation, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(i * sizeof(glm::vec4)));
@@ -64,102 +157,18 @@ void Mesh::initializeMesh(const VertexAttributes& vertexAttribs)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint>&& indices) : VAO(0), buffers(), props(std::nullopt),
-	vertices(std::make_shared<std::vector<Vertex>>(std::move(vertices))), updatedSinceLastDraw(0),
-	indices(std::make_shared<std::vector<uint>>(std::move(indices))), instanceMatrices(std::make_shared<std::vector<glm::mat4>>())
-{
-
-}
-
-Mesh::Mesh(const Mesh& mesh) : vertices(mesh.vertices), indices(mesh.indices), instanceMatrices(mesh.instanceMatrices),
-	updatedSinceLastDraw(mesh.updatedSinceLastDraw), buffers(), props(std::nullopt)
-{
-	if(!mesh.props.has_value())
-		return;
-
-	if(props->isInstanced)
-	{
-		this->VAO = mesh.VAO;
-		this->props = mesh.props;
-		std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
-	}
-	else
-	{
-		initializeMesh(mesh.props.value());
-	}
-}
-
-Mesh::Mesh(Mesh&& mesh) noexcept : VAO(mesh.VAO), props(mesh.props), updatedSinceLastDraw(mesh.updatedSinceLastDraw), buffers(),
-	vertices(std::move(mesh.vertices)), indices(std::move(mesh.indices)), instanceMatrices(std::move(mesh.instanceMatrices))
-{
-	if(!this->props.has_value())
-		return;
-
-	std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
-	std::fill_n(mesh.buffers, 3, 0);
-	mesh.props = std::nullopt;
-	mesh.VAO = 0;
-}
-
-Mesh& Mesh::operator=(const Mesh& mesh)
-{
-	this->cleanup();
-
-	this->vertices = mesh.vertices;
-	this->indices = mesh.indices;
-
-	if(mesh.props.has_value())
-	{
-		if(props->isInstanced)
-		{
-			this->VAO = mesh.VAO;
-			this->props = mesh.props;
-			this->updatedSinceLastDraw = mesh.updatedSinceLastDraw;
-			this->instanceMatrices = mesh.instanceMatrices;
-			std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
-		}
-		else
-		{
-			initializeMesh(mesh.props.value());
-		}
-	}
-
-	return *this;
-}
-
-Mesh& Mesh::operator=(Mesh&& mesh) noexcept
-{
-	this->cleanup();
-
-	this->vertices = std::move(mesh.vertices);
-	this->indices = std::move(mesh.indices);
-	this->instanceMatrices = std::move(mesh.instanceMatrices);
-	this->VAO = mesh.VAO;
-	this->props = mesh.props;
-	this->updatedSinceLastDraw = mesh.updatedSinceLastDraw;
-	std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
-	std::fill_n(mesh.buffers, 3, 0);
-	mesh.VAO = 0;
-
-	return *this;
-}
-
-void Mesh::cleanup()
-{
-	if(props.has_value())
-	{
-		glDeleteBuffers(props->isInstanced ? 3 : 2, buffers);
-		glDeleteVertexArrays(1, &VAO);
-	}
-}
-
-Mesh::~Mesh()
+void Mesh::initializeMesh(VertexAttributes vertexAttribs)
 {
 	cleanup();
+	this->props = vertexAttribs;
+	initializeMesh();
 }
 
 void Mesh::draw() const
 {
+	if(!props.has_value())
+		return;
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -167,6 +176,9 @@ void Mesh::draw() const
 
 void Mesh::setModelMatrix(const glm::mat4& model)
 {
+	if(!props.has_value())
+		return;
+
 	(*instanceMatrices)[updatedSinceLastDraw++] = model;
 
 	if(updatedSinceLastDraw == instanceMatrices->size())

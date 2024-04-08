@@ -59,10 +59,10 @@ class DirectionalLight;
 class PointLight;
 class SpotLight;
 
-unsigned int sizeOfLightsUBO();
+uint32_t sizeOfLightsUBO();
 
-unsigned int calculateNumberDataOffset(LightSourceType type);
-unsigned int calculateLightDataOffset(LightSourceType type, unsigned int index);
+uint32_t calculateNumberDataOffset(LightSourceType type);
+uint32_t calculateLightDataOffset(LightSourceType type, uint32_t index);
 
 DirectionalLightGLSL getGLSLRepresentation(const DirectionalLight& light);
 PointLightGLSL getGLSLRepresentation(const PointLight& light);

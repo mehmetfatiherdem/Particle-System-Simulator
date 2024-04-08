@@ -68,9 +68,9 @@ layout (std140, binding = 1) uniform Lights {
     SpotLight spotLights[MAX_SPOT_LIGHTS];
     PointLight pointLights[MAX_POINT_LIGHTS];
     DirectionalLight directionalLights[MAX_DIRECTIONAL_LIGHTS];
-    uint noOfSpotLights;
-    uint noOfPointLights;
-    uint noOfDirectionalLights;
+    uint32_t noOfSpotLights;
+    uint32_t noOfPointLights;
+    uint32_t noOfDirectionalLights;
 };
 
 layout (std140, binding = 2) uniform View {

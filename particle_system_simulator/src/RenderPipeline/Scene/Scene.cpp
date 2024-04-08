@@ -16,7 +16,7 @@ std::string getTextureAddresses()
 	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
 }
 
-Scene::Scene(unsigned int windowWidth, unsigned int windowHeight) : shaderManager(), lightTracker(this->shaderManager),
+Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
 	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skybox(getTextureAddresses()) { }
 
 Scene::~Scene()

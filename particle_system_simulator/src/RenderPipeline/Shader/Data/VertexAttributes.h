@@ -6,10 +6,10 @@ struct VertexAttributes
 	bool hasNormal;
 	bool hasUV;
 	bool isInstanced;
-	unsigned int approximateCount;
+	uint32_t approximateCount;
 
 	VertexAttributes() : hasPosition(true), hasNormal(true), hasUV(true), isInstanced(false), approximateCount(0) { }
-	VertexAttributes(bool hasPosition, bool hasNormal, bool hasUV, bool isInstanced, unsigned int approximateCount = 0) :
+	VertexAttributes(bool hasPosition, bool hasNormal, bool hasUV, bool isInstanced, uint32_t approximateCount = 0) :
 		hasPosition(hasPosition), hasNormal(hasNormal), hasUV(hasUV), isInstanced(isInstanced),
 		approximateCount(isInstanced ? approximateCount : 0) { }
 

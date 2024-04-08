@@ -1,7 +1,9 @@
 #include <cmath>
+#include <vector>
 #include "Shapes.h"
+#include "GeneralUtility/MathConstants.h"
 
-Mesh* createQuad(const VertexAttributes& props)
+Mesh createQuad()
 {
 	std::vector<Vertex> vertices{
 		Vertex{glm::vec3{+0.5f, +0.5f, 0.0f}, glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec2{1.0f, 1.0f}},
@@ -10,13 +12,12 @@ Mesh* createQuad(const VertexAttributes& props)
 		Vertex{glm::vec3{+0.5f, -0.5f, 0.0f}, glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec2{1.0f, 0.0f}},
 	};
 
-	std::vector<unsigned int> indices{0, 1, 2, 2, 3, 0};
+	std::vector<uint32_t> indices{0, 1, 2, 2, 3, 0};
 
-	Mesh* mesh = new Mesh{std::move(vertices), std::move(indices), props};
-	return mesh;
+	return Mesh{std::move(vertices), std::move(indices)};
 }
 
-Mesh* createCube(const VertexAttributes& props)
+Mesh createCube()
 {
 	std::vector<Vertex> vertices{
 		//FRONT FACE
@@ -56,7 +57,7 @@ Mesh* createCube(const VertexAttributes& props)
 		Vertex{glm::vec3{+0.5f, -0.5f, -0.5f}, glm::vec3{0.0f, -1.0f, 0.0f}, glm::vec2{1.0f, 0.0f}},
 	};
 
-	std::vector<unsigned int> indices{
+	std::vector<uint32_t> indices{
 		 0,  1,  2,  2,  3,  0,	//FRONT FACE
 		 4,  5,  6,  6,  7,  4,	//RIGHT FACE
 		 8,  9, 10, 10, 11,  8,	//BACK FACE
@@ -65,20 +66,17 @@ Mesh* createCube(const VertexAttributes& props)
 		20, 21, 22, 22, 23, 20,	//BOTTOM FACE
 	};
 
-	Mesh* mesh = new Mesh{std::move(vertices), std::move(indices), props};
-	return mesh;
+	return Mesh{std::move(vertices), std::move(indices)};
 }
 
 glm::vec3 computeFaceNormal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 
-Mesh* createFlatSphere(const VertexAttributes& props, unsigned int sectorCount, unsigned int stackCount)
+Mesh createFlatSphere(uint32_t sectorCount, uint32_t stackCount)
 {
-    const float PI = 3.141592653589793f;
-
     std::vector<Vertex> vertices;
     vertices.reserve(2 * sectorCount * ((2 * stackCount) - 1));
 
-    std::vector<unsigned int> indices;
+    std::vector<uint32_t> indices;
     indices.reserve(6 * sectorCount * (stackCount - 1));
 
     std::vector<float> tempVertices;
@@ -101,12 +99,12 @@ Mesh* createFlatSphere(const VertexAttributes& props, unsigned int sectorCount, 
         }
     }
 
-    unsigned int index = 0;
+    uint32_t index = 0;
 
     for(size_t i = 0; i < stackCount; ++i)
     {
-        unsigned int vi1 = i * (sectorCount + 1);
-        unsigned int vi2 = (i + 1) * (sectorCount + 1);
+        uint32_t vi1 = i * (sectorCount + 1);
+        uint32_t vi2 = (i + 1) * (sectorCount + 1);
 
         for(size_t j = 0; j < sectorCount; ++j, ++vi1, ++vi2)
         {
@@ -156,19 +154,16 @@ Mesh* createFlatSphere(const VertexAttributes& props, unsigned int sectorCount, 
             }
         }
     }
-
-    Mesh* mesh = new Mesh{std::move(vertices), std::move(indices), props};
-    return mesh;
+    
+    return Mesh{std::move(vertices), std::move(indices)};
 }
 
-Mesh* createSmoothSphere(const VertexAttributes& props, unsigned int sectorCount, unsigned int stackCount)
+Mesh createSmoothSphere(uint32_t sectorCount, uint32_t stackCount)
 {
-    const float PI = 3.141592653589793f;
-
     std::vector<Vertex> vertices;
     vertices.reserve((sectorCount + 1) * (stackCount + 1));
 
-    std::vector<unsigned int> indices;
+    std::vector<uint32_t> indices;
     indices.reserve(6 * sectorCount * (stackCount - 1));
 
     float lengthInv = 2.0f;
@@ -199,8 +194,8 @@ Mesh* createSmoothSphere(const VertexAttributes& props, unsigned int sectorCount
 
     for(int i = 0; i < stackCount; ++i)
     {
-        unsigned int k1 = i * (sectorCount + 1);
-        unsigned int k2 = k1 + sectorCount + 1;
+        uint32_t k1 = i * (sectorCount + 1);
+        uint32_t k2 = k1 + sectorCount + 1;
 
         for(int j = 0; j < sectorCount; ++j, ++k1, ++k2)
         {
@@ -216,11 +211,10 @@ Mesh* createSmoothSphere(const VertexAttributes& props, unsigned int sectorCount
         }
     }
 
-    Mesh* mesh = new Mesh{std::move(vertices), std::move(indices), props};
-    return mesh;
+    return Mesh{std::move(vertices), std::move(indices)};
 }
 
-Mesh* createSphere(const VertexAttributes& props, int approximateVertexCount, bool smooth)
+Mesh createSphere(int approximateVertexCount, bool smooth)
 {
     float a, b, c;
 
@@ -238,15 +232,13 @@ Mesh* createSphere(const VertexAttributes& props, int approximateVertexCount, bo
     }
 
     float positiveSolution = (-b + sqrtf((b * b) - (4 * a * c))) / (2 * a);
-    unsigned int rounded = static_cast<unsigned int>(roundf(positiveSolution));
+    uint32_t rounded = static_cast<uint32_t>(roundf(positiveSolution));
 
-    return (smooth ? createSmoothSphere(props, rounded, rounded) : createFlatSphere(props, rounded, rounded));
+    return (smooth ? createSmoothSphere(rounded, rounded) : createFlatSphere(rounded, rounded));
 }
 
 glm::vec3 computeFaceNormal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
 {
-    const float EPSILON = 0.000001f;
-
     glm::vec3 normal{0.0f, 0.0f, 0.0f};
     float nx, ny, nz;
 

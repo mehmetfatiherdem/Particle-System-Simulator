@@ -127,6 +127,9 @@
     <Filter Include="Resources\Shaders\Cursor">
       <UniqueIdentifier>{ad1e5c97-6ff4-4970-acb0-9bc36bef355f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render Pipeline\Shader\Data">
+      <UniqueIdentifier>{4458ebc0-14c6-4909-96cd-7afc198b8a5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -290,13 +293,7 @@
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h">
       <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\ShrinkMethod.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h">
       <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h">
@@ -304,9 +301,6 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h">
       <Filter>src\Render Pipeline\Light\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h">
       <Filter>src\Render Pipeline\Skybox</Filter>
@@ -367,6 +361,12 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Cursor\Cursor.h">
       <Filter>src\Render Pipeline\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\LoadMethod.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,8 @@
 #include <memory>
 #include <optional>
 #include <glm/mat4x4.hpp>
+#include <cstdint>
 #include "GeneralUtility/gl2fw3.h"
-#include "GeneralUtility/Aliases.h"
 #include "RenderPipeline/Shader/Data/VertexAttributes.h"
 #include "Data/Vertex.h"
 
@@ -21,27 +21,28 @@ private:
 
 	GLuint VAO;
 	GLuint buffers[3];
-	VertexAttributes props;
 	std::optional<VertexAttributes> props;
 
 	SharedVector<Vertex> vertices;
-	SharedVector<uint> indices;
+	SharedVector<uint32_t> indices;
 	SharedVector<glm::mat4> instanceMatrices;
 
-	uint updatedSinceLastDraw;
+	uint32_t updatedSinceLastDraw;
 
-	void initializeMesh(const VertexAttributes& vertexAttribs);
-
+	void initializeMesh();
+	void initializeMesh(VertexAttributes vertexAttribs);
 	void draw() const;
 	void setModelMatrix(const glm::mat4& model);
 	void addInstance();
 	void removeInstance();
-
 	void cleanup();
+
+	bool isInstanced() const { return props.has_value() && props->isInstanced; }
+	uint32_t getInstanceCount() const { return instanceMatrices->size(); }
 
 public:
 	Mesh() = delete;
-	Mesh(std::vector<Vertex>&& vertices, std::vector<uint>&& indices);
+	Mesh(std::vector<Vertex>&& vertices, std::vector<uint32_t>&& indices);
 	Mesh(const Mesh& mesh);
 	Mesh(Mesh&& mesh) noexcept;
 	~Mesh();
@@ -51,9 +52,6 @@ public:
 
 	GLsizei getVertexCount() const { return vertices->size(); }
 	GLsizei getIndexCount() const { return indices->size(); }
-	Vertex getVertexAt(uint i) const { return (*vertices)[i]; }
-	uint getIndexAt(uint i) const { return (*indices)[i]; }
-
-	bool isInstanced() const { return props.isInstanced; }
-	uint getInstanceCount() const { return instanceMatrices->size(); }
+	Vertex getVertexAt(uint32_t i) const { return (*vertices)[i]; }
+	uint32_t getIndexAt(uint32_t i) const { return (*indices)[i]; }
 };

@@ -1,55 +1,62 @@
 #include "PositionalLight.h"
 
-PositionalLight::PositionalLight(const LightTracker& lightTracker, const glm::vec3& position, const Color3& color, LightDistance distance) :
-	LightSource(lightTracker, position, color), constantAttenuation(1.0f), linearAttenuation(getAttenuation(distance).x), quadraticAttenuation(getAttenuation(distance).y) { }
-
-PositionalLight::PositionalLight(const LightTracker& lightTracker, const glm::vec3& position, const Color3& color, float constant, float linear, float quadratic) :
-	LightSource(lightTracker, position, color), constantAttenuation(constant), linearAttenuation(linear), quadraticAttenuation(quadratic) { }
-
 void PositionalLight::setAttenuation(LightDistance distance)
 {
-	constantAttenuation = 1.0f;
+	constant = 1.0f;
 	auto attenuation = getAttenuation(distance);
-	linearAttenuation = attenuation.x;
-	quadraticAttenuation = attenuation.y;
+	linear = attenuation.x;
+	quadratic = attenuation.y;
 	lightSourceUpdated();
 }
 
 void PositionalLight::setAttenuation(float constant, float linear, float quadratic)
 {
-	constantAttenuation = constant;
-	linearAttenuation = linear;
-	quadraticAttenuation = quadratic;
+	constant = constant;
+	linear = linear;
+	quadratic = quadratic;
 	lightSourceUpdated();
 }
 
 void PositionalLight::setAttenuation(const glm::vec3& attenuation)
 {
-	constantAttenuation = attenuation.x;
-	linearAttenuation = attenuation.y;
-	quadraticAttenuation = attenuation.z;
+	constant = attenuation.x;
+	linear = attenuation.y;
+	quadratic = attenuation.z;
 	lightSourceUpdated();
 }
 
-void PositionalLight::setConstantAttenuation(float constantAttenuation)
+void PositionalLight::setConstantAttenuation(float constant)
 {
-	this->constantAttenuation = constantAttenuation;
+	this->constant = constant;
 	lightSourceUpdated();
 }
 
-void PositionalLight::setLinearAttenuation(float linearAttenuation)
+void PositionalLight::setLinearAttenuation(float linear)
 {
-	this->linearAttenuation = linearAttenuation;
+	this->linear = linear;
 	lightSourceUpdated();
 }
 
-void PositionalLight::setQuadraticAttenuation(float quadraticAttenuation)
+void PositionalLight::setQuadraticAttenuation(float quadratic)
 {
-	this->quadraticAttenuation = quadraticAttenuation;
+	this->quadratic = quadratic;
+	lightSourceUpdated();
+}
+
+void PositionalLight::rotateAround(const glm::vec3& point, const glm::vec3& axis, float angle)
+{
+	this->transform.rotateAround(point, axis, angle);
+	lightSourceUpdated();
+}
+
+void PositionalLight::rotateAround(const Transform& transform, const glm::vec3& axis, float angle)
+{
+	this->transform.rotateAround(transform, axis, angle);
 	lightSourceUpdated();
 }
 
 void PositionalLight::setPosition(const glm::vec3& position)
 {
 	this->transform.setPosition(position);
+	lightSourceUpdated();
 }

@@ -1,14 +1,6 @@
 #include <glm/ext/quaternion_float.hpp>
 #include "Transform.h"
 
-Transform::Transform() : position(0.0f, 0.0f, 0.0f), rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f, 1.0f, 1.0f) { }
-
-Transform::Transform(const glm::vec3& position) : position(position), rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f, 1.0f, 1.0f) { }
-
-Transform::Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale) : position(position), rotation(rotation), _scale(scale) { }
-
-Transform::Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale) : position(position), rotation(glm::quat{rotation}), _scale(scale) { }
-
 glm::mat4 Transform::getModelMatrix() const
 {
 	glm::mat4 translate = glm::translate(glm::mat4(1.0), position);
@@ -59,9 +51,9 @@ void Transform::scale(const glm::vec3& scale)
 	this->_scale *= scale;
 }
 
-void Transform::lookAt(const glm::vec3& position)
+void Transform::lookAt(const glm::vec3& point)
 {
-	rotation = glm::quatLookAt(glm::normalize(position - this->position), WORLD_UP);
+	rotation = glm::quatLookAt(glm::normalize(point - this->position), WORLD_UP);
 }
 
 void Transform::lookAt(const Transform& transform)

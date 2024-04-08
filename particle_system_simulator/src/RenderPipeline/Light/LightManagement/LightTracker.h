@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderPipeline/Light/Data/LightConstants.h"
-#include "GeneralUtility/Aliases.h"
+
 
 class LightSource;
 class DirectionalLight;
@@ -14,17 +14,15 @@ class LightTracker
 private:
 	friend class Scene;
 
-	LightTracker(const GlobalShaderManager& shaderManager);
-
 	const GlobalShaderManager& shaderManager;
 	
 	const DirectionalLight* dirLights[MAX_DIRECTIONAL_LIGHTS];
 	const PointLight* pointLights[MAX_POINT_LIGHTS];
 	const SpotLight* spotLights[MAX_SPOT_LIGHTS];
 
-	uint noOfDirLights;
-	uint noOfPointLights;
-	uint noOfSpotLights;
+	uint32_t noOfDirLights;
+	uint32_t noOfPointLights;
+	uint32_t noOfSpotLights;
 
 	bool trackLight(const DirectionalLight* lightSource);
 	bool trackLight(const PointLight* lightSource);
@@ -38,10 +36,14 @@ private:
 	bool canAddPointLight() const { return noOfPointLights != MAX_POINT_LIGHTS; }
 	bool canAddSpotLight() const { return noOfSpotLights != MAX_SPOT_LIGHTS; }
 
+	LightTracker(const GlobalShaderManager& shaderManager) : shaderManager(shaderManager),
+		dirLights(), pointLights(), spotLights(),
+		noOfDirLights(0), noOfPointLights(0), noOfSpotLights(0) { }
 public:
 	LightTracker() = delete;
 	LightTracker(const LightTracker& lightTracker) = delete;
 	LightTracker(LightTracker&& lightTracker) = delete;
+	~LightTracker() = default;
 
 	LightTracker& operator=(const LightTracker& lightTracker) = delete;
 	LightTracker& operator=(LightTracker&& lightTracker) = delete;

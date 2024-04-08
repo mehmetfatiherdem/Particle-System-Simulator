@@ -3,6 +3,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "Data/TransformProps.h"
 
 class Transform
 {
@@ -13,10 +14,18 @@ private:
 public:
 	static constexpr glm::vec3 WORLD_UP{0.0f, 1.0f, 0.0f};
 
-	Transform();
-	Transform(const glm::vec3& position);
-	Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale = glm::vec3{1.0f, 1.0f, 1.0f});
-	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale = glm::vec3{1.0f, 1.0f, 1.0f});
+	Transform() = delete;
+	Transform(const TransformProps& props) :
+		position(props.position),
+		rotation(props.rotation),
+		_scale(props.scale) { }
+
+	Transform(const Transform&) = default;
+	Transform(Transform&&) = delete;
+	~Transform() = default;
+
+	Transform& operator=(const Transform&) = default;
+	Transform& operator=(Transform&&) = delete;
 
 	glm::mat4 getModelMatrix() const;
 
@@ -29,7 +38,7 @@ public:
 	void scale(const glm::vec3& scale);
 
 	void lookAt(const Transform& transform);
-	void lookAt(const glm::vec3& position);
+	void lookAt(const glm::vec3& point);
 
 	glm::vec3 getRightVector() const;
 	glm::vec3 getUpVector() const;

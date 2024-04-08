@@ -23,29 +23,45 @@ protected:
 		glm::vec2{0.0014f, 0.000007f},
 	};
 
-	constexpr glm::vec2 getAttenuation(LightDistance distance) { return attenuationTable[static_cast<unsigned int>(distance)]; }
+	static constexpr glm::vec2 getAttenuation(LightDistance distance) { return attenuationTable[static_cast<uint32_t>(distance)]; }
 
-	float constantAttenuation;
-	float linearAttenuation;
-	float quadraticAttenuation;
+	float constant;
+	float linear;
+	float quadratic;
 
 	PositionalLight() = delete;
-	PositionalLight(const LightTracker& lightTracker, const glm::vec3& position, const Color3& color, LightDistance distance = LightDistance::AD_100);
-	PositionalLight(const LightTracker& lightTracker, const glm::vec3& position, const Color3& color, float constant, float linear, float quadratic);
+	PositionalLight(const LightTracker& lightTracker, const Color3& color, const glm::vec3& position,
+		LightDistance distance = LightDistance::AD_100) : LightSource(lightTracker, TransformProps{position}, color),
+		constant(1.0f), linear(getAttenuation(distance).x), quadratic(getAttenuation(distance).y) { }
+
+	PositionalLight(const LightTracker& lightTracker, const Color3& color, const glm::vec3& position, float constant,
+		float linear, float quadratic) : LightSource(lightTracker, TransformProps{position}, color),
+		constant(constant), linear(linear), quadratic(quadratic) { }
+
+	PositionalLight(const PositionalLight&) = default;
+	PositionalLight(PositionalLight&&) = delete;
+	~PositionalLight() = default;
+
+	PositionalLight& operator=(const PositionalLight&) = delete;
+	PositionalLight& operator=(PositionalLight&&) = delete;
 
 public:
 
-	glm::vec3 getAttenuation() const { return glm::vec3{constantAttenuation, linearAttenuation, quadraticAttenuation}; }
-	float getConstantAttenuation() const { return constantAttenuation; }
-	float getLinearAttenuation() const { return linearAttenuation; }
-	float getQuadraticAttenuation() const { return quadraticAttenuation; }
+	glm::vec3 getAttenuation() const { return glm::vec3{constant, linear, quadratic}; }
+	float getConstantAttenuation() const { return constant; }
+	float getLinearAttenuation() const { return linear; }
+	float getQuadraticAttenuation() const { return quadratic; }
 	glm::vec3 getPosition() const { return transform.getPosition(); }
 
 	void setAttenuation(LightDistance distance);
 	void setAttenuation(float constant, float linear, float quadratic);
 	void setAttenuation(const glm::vec3& attenuation);
-	void setConstantAttenuation(float constantAttenuation);
-	void setLinearAttenuation(float linearAttenuation);
-	void setQuadraticAttenuation(float quadraticAttenuation);
+	void setConstantAttenuation(float constant);
+	void setLinearAttenuation(float linear);
+	void setQuadraticAttenuation(float quadratic);
+	void setPosition(const glm::vec3& position);
+
+	void rotateAround(const glm::vec3& point, const glm::vec3& axis, float angle);
+	void rotateAround(const Transform& transform, const glm::vec3& axis, float angle);
 	void setPosition(const glm::vec3& position);
 };

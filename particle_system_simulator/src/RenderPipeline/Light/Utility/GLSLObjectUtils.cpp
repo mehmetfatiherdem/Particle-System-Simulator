@@ -4,19 +4,19 @@
 #include "RenderPipeline/Light/Data/LightConstants.h"
 #include "GLSLObjectUtils.h"
 
-unsigned int sizeOfLightsUBO()
+uint32_t sizeOfLightsUBO()
 {
 	return (MAX_DIRECTIONAL_LIGHTS * sizeof(DirectionalLightGLSL)) +
 		(MAX_POINT_LIGHTS * sizeof(PointLightGLSL)) +
 		(MAX_SPOT_LIGHTS * sizeof(SpotLightGLSL)) + 12;
 }
 
-unsigned int calculateNumberDataOffset(LightSourceType type)
+uint32_t calculateNumberDataOffset(LightSourceType type)
 {
-	return sizeOfLightsUBO() - (static_cast<unsigned int>(type) << 2);
+	return sizeOfLightsUBO() - (static_cast<uint32_t>(type) << 2);
 }
 
-unsigned int calculateLightDataOffset(LightSourceType type, unsigned int index)
+uint32_t calculateLightDataOffset(LightSourceType type, uint32_t index)
 {
 	switch(type)
 	{
