@@ -9,14 +9,13 @@ class Mesh;
 class Cursor
 {
 private:
-	Mesh* cursor;
+	Mesh cursor;
 	Texture texture;
-	Shader shader;
+	Shader& shader;
 	float scale;
 
 public:
 	Cursor(std::string_view texture, float scale);
-	~Cursor();
 
 	void render();
 };

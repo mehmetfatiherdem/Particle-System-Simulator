@@ -55,6 +55,7 @@
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\MathUtility.h" />
+    <ClInclude Include="src\GeneralUtility\NullableRef.h" />
     <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
     <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
+    <ClInclude Include="src\RenderPipeline\Scene\Utility\MeshRendererSorter.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\LoadMethod.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />

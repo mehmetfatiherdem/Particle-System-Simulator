@@ -1,14 +1,8 @@
 #include "MeshConstruction/Shapes.h"
-#include "RenderPipeline/Mesh/Data/MeshProperties.h"
 #include "Cursor.h"
 
-Cursor::Cursor(std::string_view texture, float scale) : cursor(createQuad(VertexAttributes::cursor())), texture(texture, 0),
-	shader("Resources/Shaders/Cursor/cursor.vert", "Resources/Shaders/Cursor/cursor.frag"), scale(scale) { }
-
-Cursor::~Cursor()
-{
-	delete cursor;
-}
+Cursor::Cursor(std::string_view texture, float scale) : cursor(createQuad()), texture(texture, 0),
+	shader(Shader::cursorShader()), scale(scale) { }
 
 void Cursor::render()
 {
@@ -16,7 +10,7 @@ void Cursor::render()
 
 	shader.useShader();
 	texture.useTexture();
-	cursor->draw();
+	cursor.draw();
 
 	glDepthMask(GL_TRUE);
 }
