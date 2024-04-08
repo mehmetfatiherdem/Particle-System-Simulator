@@ -11,7 +11,7 @@ private:
 
 public:
 
-	RefOrValue() : ref(std::nullopt), val(std::nullopt) {}
+	RefOrValue() : ref(std::nullopt), val(std::nullopt) { }
 	RefOrValue(T& object, bool isRef) : ref(std::nullopt), val(std::nullopt)
 	{
 		if(isRef)

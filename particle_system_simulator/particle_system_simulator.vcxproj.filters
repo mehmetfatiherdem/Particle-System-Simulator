@@ -130,6 +130,9 @@
     <Filter Include="src\Render Pipeline\Shader\Data">
       <UniqueIdentifier>{4458ebc0-14c6-4909-96cd-7afc198b8a5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render Pipeline\Transform\Data">
+      <UniqueIdentifier>{97f18202-7ce9-41d9-a80f-428e3b30f2f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -221,9 +224,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GeneralUtility\Aliases.h">
-      <Filter>src\General Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
@@ -367,6 +367,15 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Shader\Data\LoadMethod.h">
       <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h">
+      <Filter>src\Render Pipeline\Transform\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Camera\Data\CameraProps.h">
+      <Filter>src\Render Pipeline\Camera\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\RefOrValue.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

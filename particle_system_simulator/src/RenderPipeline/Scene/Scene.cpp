@@ -9,6 +9,8 @@
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
 #include "GeneralUtility/stringify.h"
+#include "RenderPipeline/Application.h"
+#include "UserInterface/Window.h"
 #include "Scene.h"
 
 std::string getTextureAddresses()
@@ -16,17 +18,18 @@ std::string getTextureAddresses()
 	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
 }
 
-Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
-	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skybox(getTextureAddresses()) { }
+Scene::Scene() : shaderManager(), lightTracker(shaderManager), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS),
+	camera({glm::vec3{0.0f, 0.0f, 10.0f}, Application::getInstance().getWindow().getWidth(), Application::getInstance().getWindow().getHeight()}),
+	objects(), skybox(getTextureAddresses())
+{
+	Application::getInstance().getWindow().registerResizeEvent([&](uint32_t width, uint32_t height) {
+		camera.setAspectRatio(width, height);
+	});
+}
 
 Scene::~Scene()
 {
-	for (auto light : lightSources)
-	{
-		delete light;
-	}
-	
-	for (auto object : objects)
+	for(auto object : objects)
 	{
 		delete object;
 	}
@@ -53,7 +56,7 @@ void Scene::render()
 
 #pragma region Light Operations
 
-DirectionalLight* Scene::createDirectionalLight(const glm::vec3& direction, const Color3& color)
+DirectionalLight* Scene::createDirectionalLight(const Color3& color, const glm::vec3& direction)
 {
 	if(!lightTracker.canAddDirectionalLight())
 		return nullptr;
@@ -61,18 +64,7 @@ DirectionalLight* Scene::createDirectionalLight(const glm::vec3& direction, cons
 	DirectionalLight* light = new DirectionalLight(lightTracker, color, direction);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
-	
-	return light;
-}
 
-DirectionalLight* Scene::createDirectionalLight(const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular)
-{
-	if(!lightTracker.canAddDirectionalLight())
-		return nullptr;
-
-	DirectionalLight* light = new DirectionalLight(lightTracker, Color3{ambient, diffuse, specular}, direction);
-	lightSources.push_back(light);
-	lightTracker.trackLight(light);
 	return light;
 }
 
@@ -81,18 +73,7 @@ PointLight* Scene::createPointLight(const glm::vec3& position, const Color3& col
 	if(!lightTracker.canAddPointLight())
 		return nullptr;
 
-	PointLight* light = new PointLight(lightTracker, position, color, distance);
-	lightSources.push_back(light);
-	lightTracker.trackLight(light);
-	return light;
-}
-
-PointLight* Scene::createPointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, LightDistance distance)
-{
-	if(!lightTracker.canAddPointLight())
-		return nullptr;
-
-	PointLight* light = new PointLight(lightTracker, position, Color3{ambient, diffuse, specular}, distance);
+	PointLight* light = new PointLight(lightTracker, color, position, distance);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
 	return light;
@@ -103,19 +84,7 @@ PointLight* Scene::createPointLight(const glm::vec3& position, const Color3& col
 	if(!lightTracker.canAddPointLight())
 		return nullptr;
 
-	PointLight* light = new PointLight(lightTracker, position, color, constant, linear, quadratic);
-	lightSources.push_back(light);
-	lightTracker.trackLight(light);
-	return light;
-}
-
-PointLight* Scene::createPointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float constant,
-	float linear, float quadratic)
-{
-	if(!lightTracker.canAddPointLight())
-		return nullptr;
-
-	PointLight* light = new PointLight(lightTracker, position, Color3{ambient, diffuse, specular}, constant, linear, quadratic);
+	PointLight* light = new PointLight(lightTracker, color, position, constant, linear, quadratic);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
 	return light;
@@ -127,19 +96,7 @@ SpotLight* Scene::createSpotLight(const glm::vec3& position, const glm::vec3& di
 	if(!lightTracker.canAddSpotLight())
 		return nullptr;
 
-	SpotLight* light = new SpotLight(lightTracker, position, direction, color, innerCutOffAngle, outerCutOffAngle, distance);
-	lightSources.push_back(light);
-	lightTracker.trackLight(light);
-	return light;
-}
-
-SpotLight* Scene::createSpotLight(const glm::vec3& position, const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-	LightDistance distance, float innerCutOffAngle, float outerCutOffAngle)
-{
-	if(!lightTracker.canAddSpotLight())
-		return nullptr;
-
-	SpotLight* light = new SpotLight(lightTracker, position, direction, Color3{ambient, diffuse, specular}, innerCutOffAngle, outerCutOffAngle, distance);
+	SpotLight* light = new SpotLight(lightTracker, color, position, direction, innerCutOffAngle, outerCutOffAngle, distance);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
 	return light;
@@ -151,19 +108,7 @@ SpotLight* Scene::createSpotLight(const glm::vec3& position, const glm::vec3& di
 	if(!lightTracker.canAddSpotLight())
 		return nullptr;
 
-	SpotLight* light = new SpotLight(lightTracker, position, direction, color, innerCutOffAngle, outerCutOffAngle, constant, linear, quadratic);
-	lightSources.push_back(light);
-	lightTracker.trackLight(light);
-	return light;
-}
-
-SpotLight* Scene::createSpotLight(const glm::vec3& position, const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-	float constant, float linear, float quadratic, float innerCutOffAngle, float outerCutOffAngle)
-{
-	if(!lightTracker.canAddSpotLight())
-		return nullptr;
-
-	SpotLight* light = new SpotLight(lightTracker, position, direction, Color3{ambient, diffuse, specular}, innerCutOffAngle, outerCutOffAngle, constant, linear, quadratic);
+	SpotLight* light = new SpotLight(lightTracker, color, position, direction, innerCutOffAngle, outerCutOffAngle, constant, linear, quadratic);
 	lightSources.push_back(light);
 	lightTracker.trackLight(light);
 	return light;
@@ -251,29 +196,50 @@ void Scene::destroyObject(MeshRenderer* object)
 	}
 }
 
-MeshRenderer* Scene::createObject(Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	return createObject(new MeshRenderer{mesh, material, shader});
+	MeshRenderer* object = new MeshRenderer(transform, mesh);
+	objects.push_back(object);
+	return object;
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
 {
-	return createObject(new MeshRenderer{position, mesh, material, shader});
+	MeshRenderer* object = new MeshRenderer(transform, mesh, shader);
+	objects.push_back(object);
+	return object;
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
 {
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+	MeshRenderer* object = new MeshRenderer(transform, mesh, material);
+	objects.push_back(object);
+	return object;
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
 {
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+	MeshRenderer* object = new MeshRenderer(transform, mesh, shader, material);
+	objects.push_back(object);
+	return object;
 }
 
-MeshRenderer* Scene::createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, MeshRenderer* mr)
 {
-	return createObject(new MeshRenderer{transform, mesh, material, shader});
+	MeshRenderer* object = new MeshRenderer(*mr);
+	Transform& objTransform = object->getTransform();
+	objTransform.setPosition(transform.position);
+	objTransform.setRotation(transform.rotation);
+	objTransform.setScale(transform.scale);
+	objects.push_back(object);
+	return object;
+}
+
+MeshRenderer* Scene::craeteObject(MeshRenderer&& mr)
+{
+	MeshRenderer* object = new MeshRenderer(std::move(mr));
+	objects.push_back(object);
+	return object;
 }
 
 #pragma endregion

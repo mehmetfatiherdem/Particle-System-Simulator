@@ -50,12 +50,12 @@
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GeneralUtility\Aliases.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\MathUtility.h" />
+    <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
@@ -66,6 +66,7 @@
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
+    <ClInclude Include="src\RenderPipeline\Camera\Data\CameraProps.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />
     <ClInclude Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h" />
     <ClInclude Include="src\RenderPipeline\Texture\Texture.h" />
+    <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transform.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
     <ClInclude Include="src\ResourceManagement\ResourceManager.h" />

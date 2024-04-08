@@ -11,31 +11,30 @@ class Shader;
 class MeshRenderer : public Transformable
 {
 private:
-	RefOrValue<Mesh> mesh;
-	Shader& shader;
+	Shader* shader;
 	Material* material;
+	RefOrValue<Mesh> mesh;
 
 	static Material* lastMaterial;
 
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(const TransformProps& transform, Mesh& mesh) : Transformable(transform), mesh(mesh, false),
-		shader(Shader::genericShader()), material(&Material::defaultMaterial()) { }
+	MeshRenderer(const TransformProps& transform, Mesh& mesh);
 	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader);
 	MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material);
 	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
-	MeshRenderer(const MeshRenderer&) = default;
-	MeshRenderer(MeshRenderer&&) = default;
+	MeshRenderer(const MeshRenderer& mr);
+	MeshRenderer(MeshRenderer&& mr);
 	~MeshRenderer();
 
-	MeshRenderer& operator=(const MeshRenderer&) = default;
-	MeshRenderer& operator=(MeshRenderer&&) = default;
+	MeshRenderer& operator=(const MeshRenderer& mr);
+	MeshRenderer& operator=(MeshRenderer&& mr);
 
 	void render();
 
-	/*const Mesh* getMesh() const { return mesh; }
-	Material* getMaterial() const { return material; }
-	Shader* getShader() const { return shader; }*/
-
-	void setMaterial(Material* material) { this->material = material; }
+	Shader& getShader() { return *shader; }
+	Material& getMaterial() { return *material; }
+	
+	void setMaterial(Material& material) { this->material = &material; }
+	void setShader(Shader& shader);
 };

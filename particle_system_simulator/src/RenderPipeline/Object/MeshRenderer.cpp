@@ -6,10 +6,36 @@
 Material* MeshRenderer::lastMaterial = nullptr;
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh) : Transformable(transform), mesh(mesh, false),
-	shader(Shader::genericShader()), material(&Material::defaultMaterial())
+	shader(&Shader::genericShader()), material(&Material::defaultMaterial())
 {
-	mesh.initializeMesh(shader.getVertexAttributes());
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }
+
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader) : Transformable(transform), shader(&shader),
+	mesh(mesh, shader.getVertexAttributes().isInstanced), material(&Material::defaultMaterial())
+{
+	this->mesh->initialize(this->shader->getVertexAttributes());
+}
+
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material) : Transformable(transform),
+	shader(&Shader::genericShader()), mesh(mesh, this->shader->getVertexAttributes().isInstanced), material(&material)
+{
+	this->mesh->initialize(this->shader->getVertexAttributes());
+}
+
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material) : Transformable(transform),
+	shader(&shader), mesh(mesh, shader.getVertexAttributes().isInstanced), material(&material)
+{
+	this->mesh->initialize(this->shader->getVertexAttributes());
+}
+
+MeshRenderer::MeshRenderer(const MeshRenderer& mr) : Transformable(TransformProps{mr.transform}), shader(mr.shader), material(mr.material), mesh(mr.mesh)
+{
+	this->mesh->addInstance();
+}
+
+MeshRenderer::MeshRenderer(MeshRenderer&& mr) : Transformable(TransformProps{mr.transform}), shader(mr.shader), material(mr.material),
+	mesh(std::move(mr.mesh)) { }
 
 MeshRenderer::~MeshRenderer()
 {
@@ -19,20 +45,34 @@ MeshRenderer::~MeshRenderer()
 	}
 }
 
-MeshRenderer& MeshRenderer::operator=(const MeshRenderer& object)
+MeshRenderer& MeshRenderer::operator=(const MeshRenderer& mr)
 {
-	this->transform = object.transform;
-	this->mesh = object.mesh;
-	this->material = object.material;
-	this->shader = object.shader;
+	if(!mesh.isEmpty())
+	{
+		mesh->removeInstance();
+	}
 
+	shader = mr.shader;
+	material = mr.material;
+	mesh = mr.mesh;
 	mesh->addInstance();
-	return *this;
+}
+
+MeshRenderer& MeshRenderer::operator=(MeshRenderer&& mr)
+{
+	if(!mesh.isEmpty())
+	{
+		mesh->removeInstance();
+	}
+
+	shader = mr.shader;
+	material = mr.material;
+	mesh = std::move(mr.mesh);
 }
 
 void MeshRenderer::render()
 {
-	if(shader.useShader() || material != lastMaterial)
+	if(shader->useShader() || material != lastMaterial)
 	{
 		lastMaterial = this->material;
 		this->material->useMaterial(*shader);

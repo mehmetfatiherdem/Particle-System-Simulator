@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <functional>
+#include <optional>
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
 #include "RenderPipeline/Light/Data/LightDistance.h"
@@ -33,8 +34,7 @@ private:
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:
-	Scene() = delete;
-	Scene(uint32_t windowWidth, uint32_t windowHeight);
+	Scene();
 	~Scene();
 
 	void update();
@@ -42,22 +42,14 @@ public:
 	
 #pragma region Light Operations
 
-	DirectionalLight* createDirectionalLight(const glm::vec3& direction, const Color3& color);
-	DirectionalLight* createDirectionalLight(const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular);
+	DirectionalLight* createDirectionalLight(const Color3& color, const glm::vec3& direction);
 
 	PointLight* createPointLight(const glm::vec3& position, const Color3& color, LightDistance distance);
-	PointLight* createPointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, LightDistance distance);
 	PointLight* createPointLight(const glm::vec3& position, const Color3& color, float constant, float linear, float quadratic);
-	PointLight* createPointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float constant, float linear,
-		float quadratic);
 
 	SpotLight* createSpotLight(const glm::vec3& position, const glm::vec3& direction, const Color3& color, LightDistance distance, float innerCutOffAngle, float outerCutOffAngle);
-	SpotLight* createSpotLight(const glm::vec3& position, const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-		LightDistance distance, float innerCutOffAngle, float outerCutOffAngle);
 	SpotLight* createSpotLight(const glm::vec3& position, const glm::vec3& direction, const Color3& color, float constant, float linear, float quadratic, float innerCutOffAngle,
 		float outerCutOffAngle);
-	SpotLight* createSpotLight(const glm::vec3& position, const glm::vec3& direction, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-		float constant, float linear, float quadratic, float innerCutOffAngle, float outerCutOffAngle);
 
 	void destroyLight(LightSource* light);
 	void destroyLight(DirectionalLight* light);
@@ -75,11 +67,12 @@ public:
 
 #pragma region Object Operations
 
-	MeshRenderer* createObject(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, MeshRenderer* mr);
+	MeshRenderer* craeteObject(MeshRenderer&& mr);
 
 	void destroyObject(MeshRenderer* object);
 	uint32_t numberOfObjects() const { return objects.size(); }

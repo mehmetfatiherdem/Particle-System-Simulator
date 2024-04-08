@@ -4,7 +4,7 @@
 #include <memory>
 #include <optional>
 #include <glm/mat4x4.hpp>
-#include <cstdint>
+#include <stdint.h>
 #include "GeneralUtility/gl2fw3.h"
 #include "RenderPipeline/Shader/Data/VertexAttributes.h"
 #include "Data/Vertex.h"
@@ -29,8 +29,8 @@ private:
 
 	uint32_t updatedSinceLastDraw;
 
-	void initializeMesh();
-	void initializeMesh(VertexAttributes vertexAttribs);
+	void initialize();
+	void initialize(VertexAttributes vertexAttribs);
 	void draw() const;
 	void setModelMatrix(const glm::mat4& model);
 	void addInstance();

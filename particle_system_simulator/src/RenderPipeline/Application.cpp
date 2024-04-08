@@ -19,12 +19,11 @@
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Scene/Scene.h"
 #include "MeshConstruction/Shapes.h"
-#include "RenderPipeline/Mesh/Data/MeshProperties.h"
 #include "RenderPipeline/Application.h"
 #include "Input Management/Input.h"
 #include "Time Management/Time.h"
 
-Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
+Application::Application() : window(800, 600, "Particle Engine"), scene()
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -41,10 +40,8 @@ Application& Application::getInstance()
 
 void Application::run()
 {
-    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
-    Mesh* mesh = createCube(VertexAttributes::instanced());
-
-    auto x = scene.createObject(glm::vec3{0,0,0}, mesh, material);
+    Mesh mesh = createCube();
+    auto x = scene.createObject(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::instancedShader(), Material::defaultMaterial());
 
     Camera& cam = scene.getCamera();
     Transform& camt = cam.getTransform();

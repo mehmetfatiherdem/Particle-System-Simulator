@@ -4,15 +4,9 @@
 #include "Skybox.h"
 #include "MeshConstruction/Shapes.h"
 #include "RenderPipeline/Mesh/Mesh.h"
-#include "RenderPipeline/Mesh/Data/MeshProperties.h"
 
-Skybox::Skybox(std::string_view cubemapTexture) : shader("Resources/Shaders/Skybox/skybox.vert", "Resources/Shaders/Skybox/skybox.frag"),
-	skybox(createCube(VertexAttributes::skybox())), texture(cubemapTexture, 0, GL_TEXTURE_CUBE_MAP) { }
-
-Skybox::~Skybox()
-{
-	delete skybox;
-}
+Skybox::Skybox(std::string_view cubemapTexture) : shader(Shader::skyboxShader()),
+	skybox(createCube()), texture(cubemapTexture, 0, GL_TEXTURE_CUBE_MAP) { }
 
 void Skybox::render(const glm::mat4& view, const glm::mat4& projection)
 {
@@ -22,7 +16,7 @@ void Skybox::render(const glm::mat4& view, const glm::mat4& projection)
 	shader.useShader();
 	shader.setMatrix4("view_projection", projection * glm::mat4(glm::mat3(view)));
 	texture.useTexture();
-	skybox->draw();
+	skybox.draw();
 
 	glCullFace(GL_BACK);
 	glDepthMask(GL_TRUE);

@@ -1,16 +1,17 @@
 #include <glm/gtc/type_ptr.hpp>
+#include <cassert>
 #include "Data/BufferObjects.h"
 #include "Mesh.h"
 
 Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint32_t>&& indices) : VAO(0), buffers(), props(std::nullopt),
-	vertices(std::make_shared<std::vector<Vertex>>(std::move(vertices))), updatedSinceLastDraw(0),
-	indices(std::make_shared<std::vector<uint32_t>>(std::move(indices)))
+vertices(std::make_shared<std::vector<Vertex>>(std::move(vertices))), updatedSinceLastDraw(0),
+indices(std::make_shared<std::vector<uint32_t>>(std::move(indices)))
 {
 
 }
 
 Mesh::Mesh(const Mesh& mesh) : VAO(mesh.VAO), buffers(), props(mesh.props), vertices(mesh.vertices), indices(mesh.indices),
-	instanceMatrices(mesh.instanceMatrices), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
+instanceMatrices(mesh.instanceMatrices), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
 {
 	if(!this->props.has_value())
 		return;
@@ -21,7 +22,7 @@ Mesh::Mesh(const Mesh& mesh) : VAO(mesh.VAO), buffers(), props(mesh.props), vert
 	}
 	else
 	{
-		initializeMesh();
+		initialize();
 	}
 }
 
@@ -56,7 +57,7 @@ Mesh& Mesh::operator=(const Mesh& mesh)
 		}
 		else
 		{
-			initializeMesh();
+			initialize();
 		}
 	}
 
@@ -102,7 +103,7 @@ void Mesh::cleanup()
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::initializeMesh()
+void Mesh::initialize()
 {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -157,18 +158,16 @@ void Mesh::initializeMesh()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Mesh::initializeMesh(VertexAttributes vertexAttribs)
+void Mesh::initialize(VertexAttributes vertexAttribs)
 {
+	assert(!(this->props->isInstanced && !vertexAttribs.isInstanced));
 	cleanup();
 	this->props = vertexAttribs;
-	initializeMesh();
+	initialize();
 }
 
 void Mesh::draw() const
 {
-	if(!props.has_value())
-		return;
-
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -176,9 +175,6 @@ void Mesh::draw() const
 
 void Mesh::setModelMatrix(const glm::mat4& model)
 {
-	if(!props.has_value())
-		return;
-
 	(*instanceMatrices)[updatedSinceLastDraw++] = model;
 
 	if(updatedSinceLastDraw == instanceMatrices->size())
@@ -196,7 +192,7 @@ void Mesh::setModelMatrix(const glm::mat4& model)
 
 void Mesh::addInstance()
 {
-	if(!props.has_value() || !props->isInstanced)
+	if(!props->isInstanced)
 		return;
 
 	size_t oldCapacity = instanceMatrices->capacity();
@@ -212,7 +208,7 @@ void Mesh::addInstance()
 
 void Mesh::removeInstance()
 {
-	if(props.has_value() && props->isInstanced)
+	if(props->isInstanced)
 	{
 		instanceMatrices->pop_back();
 	}

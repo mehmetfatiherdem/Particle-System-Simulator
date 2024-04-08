@@ -17,7 +17,6 @@ protected:
 
 	LightSource(const LightSource&) = default;
 	LightSource(LightSource&&) = delete;
-	~LightSource() = default;
 
 	LightSource& operator=(const LightSource&) = delete;
 	LightSource& operator=(LightSource&&) = delete;
@@ -25,6 +24,8 @@ protected:
 	virtual void lightSourceUpdated() const = 0;
 
 public:
+	~LightSource() = default;
+
 	Color3 getColor() const { return color; }
 	glm::vec3 getAmbientColor() const { return color.ambient; }
 	glm::vec3 getDiffuseColor() const { return color.diffuse; }
