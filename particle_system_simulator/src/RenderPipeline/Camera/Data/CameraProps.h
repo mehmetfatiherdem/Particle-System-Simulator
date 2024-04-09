@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include "RenderPipeline/Transform/Data/TransformProps.h"
 #include "CameraType.h"
 

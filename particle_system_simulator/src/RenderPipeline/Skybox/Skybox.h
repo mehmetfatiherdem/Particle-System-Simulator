@@ -2,10 +2,10 @@
 
 #include <string_view>
 #include "GeneralUtility/gl2fw3.h"
-#include "RenderPipeline/Shader/Shader.h"
 #include "RenderPipeline/Texture/Texture.h"
+#include "RenderPipeline/Mesh/Mesh.h"
 
-class Mesh;
+class Shader;
 
 class Skybox
 {

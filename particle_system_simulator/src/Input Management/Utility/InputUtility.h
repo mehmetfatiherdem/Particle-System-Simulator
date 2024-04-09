@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <stdint.h>
 #include "Input Management/Data/KeyCode.h"
 #include "Input Management/Data/MouseButton.h"
 

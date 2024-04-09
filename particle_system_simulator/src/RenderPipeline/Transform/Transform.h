@@ -3,7 +3,9 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "Data/TransformProps.h"
+//#include "Data/TransformProps.h"
+
+class TransformProps;
 
 class Transform
 {
@@ -15,10 +17,7 @@ public:
 	static constexpr glm::vec3 WORLD_UP{0.0f, 1.0f, 0.0f};
 
 	Transform() = delete;
-	Transform(const TransformProps& props) :
-		position(props.position),
-		rotation(props.rotation),
-		_scale(props.scale) { }
+	Transform(const TransformProps& props);
 
 	Transform(const Transform&) = default;
 	Transform(Transform&&) = delete;

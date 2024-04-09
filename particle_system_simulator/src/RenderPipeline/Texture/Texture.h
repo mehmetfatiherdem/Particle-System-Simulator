@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <stdint.h>
 #include "GeneralUtility/gl2fw3.h"
 
 class Texture

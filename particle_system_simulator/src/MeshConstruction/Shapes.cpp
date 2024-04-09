@@ -1,7 +1,7 @@
 #include <cmath>
 #include <vector>
-#include "Shapes.h"
 #include "GeneralUtility/MathConstants.h"
+#include "Shapes.h"
 
 Mesh createQuad()
 {

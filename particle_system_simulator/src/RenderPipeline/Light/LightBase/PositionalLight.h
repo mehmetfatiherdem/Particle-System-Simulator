@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include "LightSource.h"
@@ -63,5 +64,4 @@ public:
 
 	void rotateAround(const glm::vec3& point, const glm::vec3& axis, float angle);
 	void rotateAround(const Transform& transform, const glm::vec3& axis, float angle);
-	void setPosition(const glm::vec3& position);
 };

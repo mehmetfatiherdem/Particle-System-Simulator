@@ -1,6 +1,5 @@
 #pragma once
 
-#include <optional>
 #include "RenderPipeline/Transform/Transformable.h"
 #include "RenderPipeline/Mesh/Mesh.h"
 #include "GeneralUtility/RefOrValue.h"

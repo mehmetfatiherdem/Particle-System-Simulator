@@ -1,5 +1,7 @@
-#include <glm/ext/quaternion_float.hpp>
 #include "Transform.h"
+#include "Data/TransformProps.h"
+
+Transform::Transform(const TransformProps& props) : position(props.position), rotation(props.rotation), _scale(props.scale) { }
 
 glm::mat4 Transform::getModelMatrix() const
 {

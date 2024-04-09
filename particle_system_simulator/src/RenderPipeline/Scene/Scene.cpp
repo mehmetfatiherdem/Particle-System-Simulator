@@ -4,8 +4,8 @@
 #include "RenderPipeline/Light/SpotLight.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
 #include "RenderPipeline/Object/MeshRenderer.h"
-#include "RenderPipeline/Object/MeshRendererSorter.h"
 #include "RenderPipeline/Mesh/Mesh.h"
+#include "Utility/MeshRendererSorter.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
 #include "GeneralUtility/stringify.h"
@@ -18,11 +18,10 @@ std::string getTextureAddresses()
 	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
 }
 
-Scene::Scene() : shaderManager(), lightTracker(shaderManager), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS),
-	camera({glm::vec3{0.0f, 0.0f, 10.0f}, Application::getInstance().getWindow().getWidth(), Application::getInstance().getWindow().getHeight()}),
-	objects(), skybox(getTextureAddresses())
+Scene::Scene(Window& window) : shaderManager(), lightTracker(shaderManager), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS),
+	camera({glm::vec3{0.0f, 0.0f, 10.0f}, window.getWidth(), window.getHeight()}), objects(), skybox(getTextureAddresses())
 {
-	Application::getInstance().getWindow().registerResizeEvent([&](uint32_t width, uint32_t height) {
+	window.registerResizeEvent([&](uint32_t width, uint32_t height) {
 		camera.setAspectRatio(width, height);
 	});
 }
@@ -45,13 +44,12 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
-
 	for(auto object : objects)
 	{
 		object->render();
 	}
 
-	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
+	//skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
 }
 
 #pragma region Light Operations
@@ -168,7 +166,7 @@ MeshRenderer* Scene::createObject(MeshRenderer* object)
 
 	for(size_t i = 0; i < objects.size(); ++i)
 	{
-		if(!compare(*objects[i], *object))
+		if(!compare(objects[i], object))
 		{
 			objects.insert(objects.begin() + i, object);
 			inserted = true;
@@ -198,48 +196,37 @@ void Scene::destroyObject(MeshRenderer* object)
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	MeshRenderer* object = new MeshRenderer(transform, mesh);
-	objects.push_back(object);
-	return object;
+	return createObject(new MeshRenderer(transform, mesh));
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
 {
-	MeshRenderer* object = new MeshRenderer(transform, mesh, shader);
-	objects.push_back(object);
-	return object;
+	return createObject(new MeshRenderer(transform, mesh, shader));
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
 {
-	MeshRenderer* object = new MeshRenderer(transform, mesh, material);
-	objects.push_back(object);
-	return object;
+	return createObject(new MeshRenderer(transform, mesh, material));
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
 {
-	MeshRenderer* object = new MeshRenderer(transform, mesh, shader, material);
-	objects.push_back(object);
-	return object;
+	return createObject(new MeshRenderer(transform, mesh, shader, material));
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, MeshRenderer* mr)
 {
-	MeshRenderer* object = new MeshRenderer(*mr);
+	MeshRenderer* object = createObject(new MeshRenderer(*mr));
 	Transform& objTransform = object->getTransform();
 	objTransform.setPosition(transform.position);
 	objTransform.setRotation(transform.rotation);
 	objTransform.setScale(transform.scale);
-	objects.push_back(object);
 	return object;
 }
 
 MeshRenderer* Scene::craeteObject(MeshRenderer&& mr)
 {
-	MeshRenderer* object = new MeshRenderer(std::move(mr));
-	objects.push_back(object);
-	return object;
+	return createObject(new MeshRenderer(std::move(mr)));
 }
 
 #pragma endregion

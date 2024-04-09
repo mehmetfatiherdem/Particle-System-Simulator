@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RenderPipeline/Mesh/Mesh.h"
 #include <stdint.h>
+#include "RenderPipeline/Mesh/Mesh.h"
 
 Mesh createQuad();
 Mesh createCube();

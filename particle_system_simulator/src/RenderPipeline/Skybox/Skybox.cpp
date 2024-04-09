@@ -1,9 +1,7 @@
-#include <iostream>
-#include <vector>
 #include "GeneralUtility/stb_wrapper/stb_wrapper.h"
-#include "Skybox.h"
 #include "MeshConstruction/Shapes.h"
-#include "RenderPipeline/Mesh/Mesh.h"
+#include "RenderPipeline/Shader/Shader.h"
+#include "Skybox.h"
 
 Skybox::Skybox(std::string_view cubemapTexture) : shader(Shader::skyboxShader()),
 	skybox(createCube()), texture(cubemapTexture, 0, GL_TEXTURE_CUBE_MAP) { }

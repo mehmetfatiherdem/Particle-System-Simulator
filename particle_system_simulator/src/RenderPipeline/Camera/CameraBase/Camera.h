@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+#include <glm/mat4x4.hpp>
 #include "RenderPipeline/Camera/Data/CameraType.h"
 #include "RenderPipeline/Transform/Transformable.h"
 #include "RenderPipeline/Camera/Data/CameraProps.h"

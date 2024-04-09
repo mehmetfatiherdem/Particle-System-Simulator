@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <glm/gtc/type_ptr.hpp>
+#include "GeneralUtility/strtok.h"
 #include "Shader.h"
 
 GLuint Shader::currentProgram = 0;
@@ -12,14 +13,21 @@ Shader::Shader(std::string_view vertex, std::string_view fragment, const VertexA
 Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& vertexAttribs,
 	LoadMethod method) : vertexAttribs(vertexAttribs)
 {
+	auto tokens = tokenize(vertex, '/');
+	std::string vertexFile = tokens[tokens.size() - 1];
+	tokens = tokenize(fragment, '/');
+	std::string fragmentFile = tokens[tokens.size() - 1];
+	tokens = tokenize(geometry, '/');
+	std::string geometryFile = tokens.size() == 0 ? "" : tokens[tokens.size() - 1];
+
 	if(method == LoadMethod::FromFile)
 	{
-		compileShaders(readShaderFile(vertex).c_str(), readShaderFile(fragment).c_str(),
+		compileShaders(vertexFile, readShaderFile(vertex).c_str(), fragmentFile, readShaderFile(fragment).c_str(), geometryFile,
 			geometry.empty() ? nullptr : readShaderFile(geometry).c_str());
 	}
 	else
 	{
-		compileShaders(vertex.data(), fragment.data(), geometry.data());
+		compileShaders(vertexFile, vertex.data(), fragmentFile, fragment.data(), geometryFile, geometry.empty() ? nullptr : geometry.data());
 	}
 }
 
@@ -59,7 +67,8 @@ bool Shader::useShader() const
 	return true;
 }
 
-void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode)
+void Shader::compileShaders(std::string_view vertexFile, const char* vertexCode, std::string_view fragmentFile,
+	const char* fragmentCode, std::string_view geometryFile, const char* geometryCode)
 {
 	programID = glCreateProgram();
 
@@ -69,12 +78,12 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 		return;
 	}
 
-	addShader(vertexCode, GL_VERTEX_SHADER);
-	addShader(fragmentCode, GL_FRAGMENT_SHADER);
+	addShader(vertexFile, vertexCode, GL_VERTEX_SHADER);
+	addShader(fragmentFile, fragmentCode, GL_FRAGMENT_SHADER);
 
 	if(geometryCode != nullptr)
 	{
-		addShader(geometryCode, GL_GEOMETRY_SHADER);
+		addShader(geometryFile, geometryCode, GL_GEOMETRY_SHADER);
 	}
 
 	GLint result = 0;
@@ -86,7 +95,7 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	if(!result)
 	{
 		glGetProgramInfoLog(programID, 2048 * sizeof(GLchar), NULL, eLog);
-		std::cerr << "Error linking program: " << eLog << std::endl;
+		std::cerr << "Error linking programs: " << vertexFile << ", " << fragmentFile << (geometryCode == nullptr ? "" : geometryFile) << ":\n" << eLog << std::endl;
 		cleanup();
 		return;
 	}
@@ -103,7 +112,7 @@ void Shader::compileShaders(const char* vertexCode, const char* fragmentCode, co
 	}
 }
 
-void Shader::addShader(const char* shaderCode, GLenum shaderType)
+void Shader::addShader(std::string_view shaderFile, const char* shaderCode, GLenum shaderType)
 {
 	GLuint theShader = glCreateShader(shaderType);
 
@@ -123,7 +132,7 @@ void Shader::addShader(const char* shaderCode, GLenum shaderType)
 	if(!result)
 	{
 		glGetShaderInfoLog(theShader, 2048, NULL, eLog);
-		std::cerr << "Error compiling the " << shaderType << " shader : " << eLog << '\n';
+		std::cerr << "Error compiling the " << shaderFile << " shader : " << eLog << '\n';
 		glDeleteShader(theShader);
 		cleanup();
 		return;

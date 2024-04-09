@@ -59,6 +59,7 @@
     <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
+    <ClInclude Include="src\GeneralUtility\strtok.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
     <ClInclude Include="src\Input Management\Data\KeyCode.h" />
     <ClInclude Include="src\Input Management\Data\MouseButton.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Utility\MeshRendererSorter.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\LoadMethod.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />

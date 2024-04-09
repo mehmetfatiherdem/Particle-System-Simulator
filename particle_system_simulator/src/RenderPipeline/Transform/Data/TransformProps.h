@@ -13,30 +13,30 @@ struct TransformProps
 		rotation(glm::quat{1.0f, 0.0f, 0.0f, 0.0f}),
 		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }
 
-	/*TransformProps(const glm::vec3& position) :
+	TransformProps(const glm::vec3& position) :
 		position(position),
 		rotation(glm::quat{1.0f, 0.0f, 0.0f, 0.0f}),
-		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }*/
+		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }
 
 	TransformProps(const glm::quat& rotation) :
 		position(glm::vec3{0.0f, 0.0f, 0.0f}),
 		rotation(rotation),
 		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }
 
-	/*TransformProps(const glm::vec3& position, const glm::vec3& rotation) :
+	TransformProps(const glm::vec3& position, const glm::vec3& rotation) :
 		position(position),
 		rotation(rotation),
-		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }*/
+		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }
 
 	TransformProps(const glm::vec3& position, const glm::quat& rotation) :
 		position(position),
 		rotation(rotation),
 		scale(glm::vec3{1.0f, 1.0f, 1.0f}) { }
 
-	/*TransformProps(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale) :
+	TransformProps(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale) :
 		position(position),
 		rotation(rotation),
-		scale(scale) { }*/
+		scale(scale) { }
 
 	TransformProps(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale) :
 		position(position),

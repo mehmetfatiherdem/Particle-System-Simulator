@@ -3,6 +3,7 @@
 #include <vector>
 #include <functional>
 #include <optional>
+#include <stdint.h>
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
 #include "RenderPipeline/Light/Data/LightDistance.h"
@@ -17,6 +18,7 @@ class MeshRenderer;
 class Mesh;
 class Shader;
 class Material;
+class Window;
 
 class Scene
 {
@@ -34,7 +36,7 @@ private:
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:
-	Scene();
+	Scene(Window& window);
 	~Scene();
 
 	void update();

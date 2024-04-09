@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Transform.h"
+#include "Data/TransformProps.h"
 
 class Transformable
 {

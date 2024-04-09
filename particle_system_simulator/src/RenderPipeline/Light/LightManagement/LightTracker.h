@@ -1,7 +1,7 @@
 #pragma once
 
+#include <stdint.h>
 #include "RenderPipeline/Light/Data/LightConstants.h"
-
 
 class LightSource;
 class DirectionalLight;

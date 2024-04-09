@@ -386,6 +386,12 @@
     <ClInclude Include="src\RenderPipeline\Scene\Utility\MeshRendererSorter.h">
       <Filter>src\Render Pipeline\Scene\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\strtok.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">

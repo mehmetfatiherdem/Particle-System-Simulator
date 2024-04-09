@@ -1,7 +1,6 @@
-#include "RenderPipeline/Mesh/Mesh.h"
 #include "RenderPipeline/Material/Material.h"
-#include "MeshRenderer.h"
 #include "RenderPipeline/Shader/Shader.h"
+#include "MeshRenderer.h"
 
 Material* MeshRenderer::lastMaterial = nullptr;
 
@@ -56,6 +55,7 @@ MeshRenderer& MeshRenderer::operator=(const MeshRenderer& mr)
 	material = mr.material;
 	mesh = mr.mesh;
 	mesh->addInstance();
+	return *this;
 }
 
 MeshRenderer& MeshRenderer::operator=(MeshRenderer&& mr)
@@ -68,6 +68,7 @@ MeshRenderer& MeshRenderer::operator=(MeshRenderer&& mr)
 	shader = mr.shader;
 	material = mr.material;
 	mesh = std::move(mr.mesh);
+	return *this;
 }
 
 void MeshRenderer::render()

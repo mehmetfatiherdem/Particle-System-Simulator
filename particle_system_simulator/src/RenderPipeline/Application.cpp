@@ -23,7 +23,7 @@
 #include "Input Management/Input.h"
 #include "Time Management/Time.h"
 
-Application::Application() : window(800, 600, "Particle Engine"), scene()
+Application::Application() : window(800, 600, "Particle Engine"), scene(window)
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -41,12 +41,13 @@ Application& Application::getInstance()
 void Application::run()
 {
     Mesh mesh = createCube();
-    auto x = scene.createObject(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::instancedShader(), Material::defaultMaterial());
+    MeshRenderer* x = scene.createObject(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::instancedShader(), Material::defaultMaterial());
 
     Camera& cam = scene.getCamera();
     Transform& camt = cam.getTransform();
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+    scene.createPointLight(glm::vec3{0.0f, 0.1f, 5.0f}, Color3{glm::vec3{0.7f, 0.8f, 0.9f}}, LightDistance::AD_100);
 
     uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
     void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
@@ -59,7 +60,6 @@ void Application::run()
 
     while(!window.shouldClose())
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(clearMask);
 
         window.pollEvents();
@@ -69,6 +69,7 @@ void Application::run()
             currentMode = !currentMode;
             glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
             glToggle[currentMode](GL_CULL_FACE);
+            std::cout << "hello\n";
         }
 
         scene.update();

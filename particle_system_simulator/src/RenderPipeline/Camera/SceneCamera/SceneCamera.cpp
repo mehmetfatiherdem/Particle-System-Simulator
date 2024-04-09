@@ -16,11 +16,11 @@ void SceneCamera::update()
 
 	if(fov <= 0)
 	{
-		fov = std::numeric_limits<float>::epsilon();
+		fov = EPSILON;
 	}
 	else if(fov >= PI)
 	{
-		fov = PI - std::numeric_limits<float>::epsilon();
+		fov = PI - EPSILON;
 	}
 
 	if(!Input::getMouseButton(MouseButton::MOUSE_RIGHT))

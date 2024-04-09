@@ -4,6 +4,7 @@
 #include <map>
 #include <glm/vec2.hpp>
 #include <functional>
+#include <stdint.h>
 #include "Input Management/Data/KeyCode.h"
 #include "Input Management/Data/MouseButton.h"
 #include "Input Management/Data/Action.h"

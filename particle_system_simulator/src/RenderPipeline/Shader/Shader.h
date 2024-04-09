@@ -18,8 +18,9 @@ private:
 	GLuint programID;
 	VertexAttributes vertexAttribs;
 
-	void compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode = nullptr);
-	void addShader(const char* shaderCode, GLenum shaderType);
+	void compileShaders(std::string_view vertexFile, const char* vertexCode, std::string_view fragmentFile,
+		const char* fragmentCode, std::string_view geometryFile, const char* geometryCode = nullptr);
+	void addShader(std::string_view shaderFile, const char* shaderCode, GLenum shaderType);
 	std::string readShaderFile(std::string_view file);
 	void cleanup();
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include "RenderPipeline/Scene/Scene.h"
 #include "UserInterface/Window.h"
 

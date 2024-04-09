@@ -1,6 +1,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "RenderPipeline/Light/Utility/GLSLObjectUtils.h"
-#include "UBOConstants.h"
+#include "RenderPipeline/Shader/Data/UBOConstants.h"
 #include "GlobalShaderManager.h"
 
 GlobalShaderManager::GlobalShaderManager() : UBO_Global_Matrices(0), UBO_Lights(0), UBO_View(0)

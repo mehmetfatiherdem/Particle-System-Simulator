@@ -160,7 +160,7 @@ void Mesh::initialize()
 
 void Mesh::initialize(VertexAttributes vertexAttribs)
 {
-	assert(!(this->props->isInstanced && !vertexAttribs.isInstanced));
+	assert(!(this->props.has_value() && this->props->isInstanced && !vertexAttribs.isInstanced));
 	cleanup();
 	this->props = vertexAttribs;
 	initialize();
