@@ -12,7 +12,7 @@
 
 #define SKYBOX(x) STRINGIFY(Resources/Textures/Skybox/x.jpg)
 
-Scene::Scene(unsigned int windowWidth, unsigned int windowHeight) : shaderManager(), lightTracker(this->shaderManager),
+Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
 	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), skybox(SKYBOX(right), SKYBOX(left), SKYBOX(top), SKYBOX(bottom),
 	SKYBOX(front), SKYBOX(back)), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() { }
 

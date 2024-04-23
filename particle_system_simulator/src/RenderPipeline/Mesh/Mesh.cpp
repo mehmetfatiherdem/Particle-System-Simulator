@@ -5,7 +5,7 @@
 #include "Data/MeshProperties.h"
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint>&& indices, const MeshProperties& props) : vertices(std::move(vertices)),
+Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint32_t>&& indices, const MeshProperties& props) : vertices(std::move(vertices)),
 	indices(std::move(indices)), VAO(0), buffers(), instanceCount(props.instanced ? 0 : 1), modelMatrices(nullptr),
 	chunkSize(props.chunkSize), currentCapacity(props.estimatedNrOfInstances), updatedSinceLastDraw(0)
 {
@@ -36,7 +36,7 @@ Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<uint>&& indices, const Me
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[MBO]);
 		glBufferData(GL_ARRAY_BUFFER, currentCapacity * sizeof(glm::mat4), (void*)0, GL_STREAM_DRAW);
 
-		for(unsigned int i = 0; i < 4; ++i)
+		for(uint32_t i = 0; i < 4; ++i)
 		{
 			glEnableVertexAttribArray(MODEL_MATRIX_LOCATION + i);
 			glVertexAttribPointer(MODEL_MATRIX_LOCATION + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(i * sizeof(glm::vec4)));

@@ -66,7 +66,7 @@ Skybox::Skybox(std::string_view right, std::string_view left, std::string_view t
 		glm::vec3{+0.5f, -0.5f, -0.5f},
 	};
 
-	std::vector<unsigned int> indices{
+	std::vector<uint32_t> indices{
 		 0,  1,  2,  2,  3,  0,
 		 4,  5,  6,  6,  7,  4,
 		 8,  9, 10, 10, 11,  8,
@@ -87,7 +87,7 @@ Skybox::Skybox(std::string_view right, std::string_view left, std::string_view t
 	IBO = temp[1];
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);

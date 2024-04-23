@@ -2,6 +2,7 @@
 
 #include <string_view>
 #include <map>
+#include <stdint.h>
 #include <glm/vec2.hpp>
 #include "Input Management/Data/KeyCode.h"
 #include "Input Management/Data/MouseButton.h"
@@ -14,8 +15,8 @@ class Window
 private:
 	GLFWwindow* window;
 
-	unsigned int width;
-	unsigned int height;
+	uint32_t width;
+	uint32_t height;
 	bool cursorEnabled;
 	bool escapeCloses;
 	bool vsync;
@@ -35,7 +36,7 @@ private:
 
 public:
 	Window() = delete;
-	Window(unsigned int width, unsigned int height, std::string_view title, bool vsync = false, bool cursorEnabled = true,
+	Window(uint32_t width, uint32_t height, std::string_view title, bool vsync = false, bool cursorEnabled = true,
 		bool escapeCloses = true);
 	~Window();
 
@@ -53,8 +54,8 @@ public:
 	float getScroll() const { return scroll; }
 	bool getVsync() const { return vsync; }
 
-	unsigned int getWidth() const { return width; }
-	unsigned int getHeight() const { return height; }
+	uint32_t getWidth() const { return width; }
+	uint32_t getHeight() const { return height; }
 	float getAspectRatio() const { return (float)width / height; }
 
 	Action getKey(KeyCode keyCode) const { return keys.at(keyCode); }

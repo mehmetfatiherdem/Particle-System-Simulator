@@ -48,7 +48,7 @@ void Application::run()
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 
-    unsigned int polygonModes[2] = {GL_FILL, GL_LINE};
+    uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
     void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
     bool currentMode = 0;
 

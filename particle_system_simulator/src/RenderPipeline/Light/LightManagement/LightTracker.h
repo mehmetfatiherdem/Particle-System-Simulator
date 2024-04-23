@@ -1,7 +1,7 @@
 #pragma once
 
+#include <stdint.h>
 #include "RenderPipeline/Light/Data/LightConstants.h"
-#include "GeneralUtility/Aliases.h"
 
 class LightSource;
 class DirectionalLight;
@@ -22,9 +22,9 @@ private:
 	const PointLight* pointLights[MAX_POINT_LIGHTS];
 	const SpotLight* spotLights[MAX_SPOT_LIGHTS];
 
-	uint noOfDirLights;
-	uint noOfPointLights;
-	uint noOfSpotLights;
+	uint32_t noOfDirLights;
+	uint32_t noOfPointLights;
+	uint32_t noOfSpotLights;
 
 	bool trackLight(const DirectionalLight* lightSource);
 	bool trackLight(const PointLight* lightSource);

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <functional>
+#include <stdint.h>
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
 #include "RenderPipeline/Light/Data/LightDistance.h"
@@ -34,7 +35,7 @@ private:
 
 public:
 	Scene() = delete;
-	Scene(unsigned int windowWidth, unsigned int windowHeight);
+	Scene(uint32_t windowWidth, uint32_t windowHeight);
 	~Scene();
 
 	void update();
@@ -64,12 +65,12 @@ public:
 	void destroyLight(PointLight* light);
 	void destroyLight(SpotLight* light);
 
-	LightSource* getLightAtIndex(unsigned int index) const { return lightSources[index]; }
+	LightSource* getLightAtIndex(uint32_t index) const { return lightSources[index]; }
 
-	unsigned int numberOfLights() const { return lightSources.size(); }
-	unsigned int numberOfDirectionalLights() const { return lightTracker.noOfDirLights; }
-	unsigned int numberOfPointLights() const { return lightTracker.noOfPointLights; }
-	unsigned int numberOfSpotLights() const { return lightTracker.noOfSpotLights; }
+	uint32_t numberOfLights() const { return lightSources.size(); }
+	uint32_t numberOfDirectionalLights() const { return lightTracker.noOfDirLights; }
+	uint32_t numberOfPointLights() const { return lightTracker.noOfPointLights; }
+	uint32_t numberOfSpotLights() const { return lightTracker.noOfSpotLights; }
 
 #pragma endregion
 
@@ -82,7 +83,7 @@ public:
 	MeshRenderer* createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
 
 	void destroyObject(MeshRenderer* object);
-	unsigned int numberOfObjects() const { return objects.size(); }
+	uint32_t numberOfObjects() const { return objects.size(); }
 
 #pragma endregion
 

@@ -49,7 +49,6 @@
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GeneralUtility\Aliases.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />

@@ -3,7 +3,7 @@
 #include "GeneralUtility/stb_wrapper/stb_wrapper.h"
 #include "Texture.h"
 
-Texture::Texture(std::string_view textureAddress, unsigned int textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
+Texture::Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
 	GLint textureWrappingMethod_T, GLint textureMinFilter, GLint textureMagFilter,GLint internalFormat,GLenum format)
 	: textureUnit(textureUnit), textureType(textureType), textureID(0)
 {
@@ -67,7 +67,7 @@ void Texture::useTexture() const
 	glBindTexture(textureType, textureID);
 }
 
-void Texture::setTextureUnit(unsigned int textureUnit)
+void Texture::setTextureUnit(uint32_t textureUnit)
 {
 	//assert(textureUnit < 16 && ("Failed to set the texture unit to " + textureUnit + ", maximum allowed texture unit is 15!"));
 	this->textureUnit = textureUnit;

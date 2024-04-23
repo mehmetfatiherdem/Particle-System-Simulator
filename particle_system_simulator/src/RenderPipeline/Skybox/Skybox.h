@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <stdint.h>
 #include "GeneralUtility/gl2fw3.h"
 #include "RenderPipeline/Shader/Shader.h"
 
@@ -13,7 +14,7 @@ private:
 	GLuint VAO;
 	GLuint VBO;
 	GLuint IBO;
-	unsigned int indicesSize;
+	uint32_t indicesSize;
 	Shader shader;
 
 public:
