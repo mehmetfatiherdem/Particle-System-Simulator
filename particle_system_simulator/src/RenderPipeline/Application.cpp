@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
+#include "RenderPipeline/Initialization/Initialization.h"
 #include "GeneralUtility/gl2fw3.h"
 #include "UserInterface/Window.h"
 #include "RenderPipeline/Light/PointLight.h"
@@ -41,22 +42,15 @@ Application& Application::getInstance()
 void Application::run()
 {
     Mesh mesh = createCube();
-    MeshRenderer* x = scene.createObject(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::instancedShader(), Material::defaultMaterial());
+    MeshRenderer* x = scene.createObject(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::genericShader(), Material::defaultMaterial());
 
-    Camera& cam = scene.getCamera();
-    Transform& camt = cam.getTransform();
-
-    scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
-    scene.createPointLight(glm::vec3{0.0f, 0.1f, 5.0f}, Color3{glm::vec3{0.7f, 0.8f, 0.9f}}, LightDistance::AD_100);
+    scene.createDirectionalLight(glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.9f, 0.6f, 0.6f });
 
     uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
     void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
     bool currentMode = 0;
 
     Time::start();
-
-    float sec = 0;
-    glm::vec2 deltaMouse{0,0};
 
     while(!window.shouldClose())
     {
@@ -69,7 +63,6 @@ void Application::run()
             currentMode = !currentMode;
             glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
             glToggle[currentMode](GL_CULL_FACE);
-            std::cout << "hello\n";
         }
 
         scene.update();
