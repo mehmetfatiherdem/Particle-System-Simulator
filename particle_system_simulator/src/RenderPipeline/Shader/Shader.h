@@ -41,6 +41,7 @@ public:
 
 	static Shader& genericShader();
 	static Shader& instancedShader();
+	static Shader& skyboxShader();
 
 	VertexAttributes getVertexAttributes() const { return attributes; }
 

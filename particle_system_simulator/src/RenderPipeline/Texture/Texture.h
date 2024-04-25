@@ -14,9 +14,10 @@ private:
 
 public:
 	Texture() = delete;
-	Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum textureType = GL_TEXTURE_2D, GLint textureWrappingMethod_S = GL_REPEAT,
-		GLint textureWrappingMethod_T = GL_REPEAT, GLint textureMinFilter = GL_LINEAR, GLint textureMagFilter = GL_LINEAR,
-		GLint internalFormat = GL_RGBA, GLenum format = GL_RGBA);
+	Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum textureType = GL_TEXTURE_2D,
+		GLint textureWrappingMethod_S = GL_REPEAT, GLint textureWrappingMethod_T = GL_REPEAT,
+		GLint textureWrappingMethod_R = GL_CLAMP_TO_EDGE, GLint textureMinFilter = GL_LINEAR,
+		GLint textureMagFilter = GL_LINEAR, GLint internalFormat = GL_RGBA, GLenum format = GL_RGBA, char addressDelimiter = ',');
 	Texture(Texture&& texture) noexcept;
 	~Texture();
 

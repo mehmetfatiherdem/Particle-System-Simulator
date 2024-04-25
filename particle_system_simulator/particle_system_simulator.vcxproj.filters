@@ -112,6 +112,15 @@
     <Filter Include="src\Render Pipeline\Shader\Data">
       <UniqueIdentifier>{d3e132e0-dbbc-4050-9f13-8e4c19a5a2d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Shaders\Generic">
+      <UniqueIdentifier>{a75dcc3b-24c5-481a-8917-87e1c521751f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Instanced">
+      <UniqueIdentifier>{dbcc72a7-2dc3-4223-8025-5dbca04d0a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Skybox">
+      <UniqueIdentifier>{ac015112-7f16-4315-8ab2-ab1e12ade9c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -346,26 +355,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\generic.geom">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\instanced.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
@@ -384,5 +373,25 @@
     <Image Include="Resources\Textures\Skybox\front.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\Generic\generic.frag">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.geom">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.vert">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Instanced\instanced.vert">
+      <Filter>Resources\Shaders\Instanced</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.frag">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.vert">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
   </ItemGroup>
 </Project>

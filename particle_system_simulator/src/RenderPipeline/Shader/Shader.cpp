@@ -67,14 +67,20 @@ void Shader::destroyShader()
 
 Shader& Shader::genericShader()
 {
-	static Shader genericShader("Resources/Shaders/generic.vert", "Resources/Shaders/generic.frag", VertexAttributes::generic());
-	return genericShader;
+	static Shader shader{"Resources/Shaders/Generic/generic.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::generic()};
+	return shader;
 }
 
 Shader& Shader::instancedShader()
 {
-	static Shader instancedShader("Resources/Shaders/instanced.vert", "Resources/Shaders/generic.frag", VertexAttributes::instanced());
-	return instancedShader;
+	static Shader shader{"Resources/Shaders/Instanced/instanced.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::instanced()};
+	return shader;
+}
+
+Shader& Shader::skyboxShader()
+{
+	static Shader shader{"Resources/Shaders/Skybox/skybox.vert", "Resources/Shaders/Skybox/skybox.frag", VertexAttributes::skybox()};
+	return shader;
 }
 
 bool Shader::useShader() const
