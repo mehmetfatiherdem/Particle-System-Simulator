@@ -210,6 +210,12 @@
     <ClCompile Include="src\Time Management\Time.cpp">
       <Filter>src\Time Management</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="IComponent.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
@@ -350,6 +356,13 @@
     <ClInclude Include="src\GeneralUtility\MathUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+  </ItemGroup>
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
       <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
