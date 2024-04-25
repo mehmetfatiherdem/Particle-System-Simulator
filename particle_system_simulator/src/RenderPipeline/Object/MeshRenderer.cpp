@@ -28,6 +28,12 @@ MeshRenderer::MeshRenderer(Mesh& mesh, Shader& shader, Material& material)
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
+	: Transformable(transform), mesh(mesh, false), material(&material), shader(&shader)
+{
+	this->mesh->initialize(this->shader->getVertexAttributes());
+}
+
 MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
 	: material(meshRenderer.material), shader(meshRenderer.shader)
 {

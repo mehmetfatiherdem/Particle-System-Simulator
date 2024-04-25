@@ -42,7 +42,7 @@ Application& Application::getInstance()
 void Application::run()
 {
     Mesh mesh = createCube();
-    auto obj = scene.createObject(mesh, Shader::instancedShader(), Material::defaultMaterial());
+    auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}, glm::vec3{1.0, 0.75, 0.63}}, mesh, Shader::instancedShader(), Material::defaultMaterial());
     obj = scene.createObject(obj);
     obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});
 

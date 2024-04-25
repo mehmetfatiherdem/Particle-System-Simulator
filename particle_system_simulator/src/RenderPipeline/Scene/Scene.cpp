@@ -256,6 +256,11 @@ MeshRenderer* Scene::createObject(Mesh& mesh, Shader& shader, Material& material
 	return createObj(new MeshRenderer(mesh, shader, material));
 }
 
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
+{
+	return createObj(new MeshRenderer(transform, mesh, shader, material));
+}
+
 MeshRenderer* Scene::createObject(MeshRenderer* object)
 {
 	return createObj(new MeshRenderer(*object));

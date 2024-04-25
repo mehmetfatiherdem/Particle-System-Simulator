@@ -121,6 +121,9 @@
     <Filter Include="Resources\Shaders\Skybox">
       <UniqueIdentifier>{ac015112-7f16-4315-8ab2-ab1e12ade9c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render Pipeline\Transform\Data">
+      <UniqueIdentifier>{35821558-4a95-45bb-bcf6-77976099fee0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="src\GeneralUtility\RefOrValue.h">
       <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h">
+      <Filter>src\Render Pipeline\Transform\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

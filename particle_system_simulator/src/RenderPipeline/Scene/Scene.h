@@ -9,6 +9,7 @@
 #include "RenderPipeline/Color/Color3.h"
 #include "RenderPipeline/Camera/SceneCamera/SceneCamera.h"
 #include "RenderPipeline/Skybox/Skybox.h"
+#include "RenderPipeline/Transform/Data/TransformProps.h"
 
 class DirectionalLight;
 class PointLight;
@@ -77,6 +78,7 @@ public:
 #pragma region Object Operations
 
 	MeshRenderer* createObject(Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
 	MeshRenderer* createObject(MeshRenderer* object);
 
 	void destroyObject(MeshRenderer* object);

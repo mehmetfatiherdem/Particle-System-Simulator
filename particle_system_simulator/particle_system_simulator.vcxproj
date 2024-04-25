@@ -92,6 +92,7 @@
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h" />
     <ClInclude Include="src\RenderPipeline\Texture\Texture.h" />
+    <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transform.h" />
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
     <ClInclude Include="src\ResourceManagement\ResourceManager.h" />

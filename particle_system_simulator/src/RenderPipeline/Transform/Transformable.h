@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Transform.h"
+#include "Data/TransformProps.h"
 
 class Transformable
 {
@@ -11,6 +12,7 @@ protected:
 	Transformable(const glm::vec3& position) : transform(position) { }
 	Transformable(const glm::vec3& position, const glm::vec3& rotation) : transform(position, rotation) { }
 	Transformable(const glm::vec3& position, const glm::quat& rotation) : transform(position, rotation) { }
+	Transformable(const TransformProps& props) : transform(props.position, props.rotation, props.scale) {}
 	Transformable(const Transform& transform) : transform(transform) { }
 
 public:
