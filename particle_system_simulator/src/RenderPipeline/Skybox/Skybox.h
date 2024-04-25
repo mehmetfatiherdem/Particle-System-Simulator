@@ -2,23 +2,20 @@
 
 #include <string_view>
 #include "GeneralUtility/gl2fw3.h"
-#include "RenderPipeline/Shader/Shader.h"
+#include "RenderPipeline/Texture/Texture.h"
+#include "RenderPipeline/Mesh/Mesh.h"
 
-class Camera;
+class Shader;
 
 class Skybox
 {
 private:
-	GLuint textureID;
-	GLuint VAO;
-	GLuint VBO;
-	GLuint IBO;
-	unsigned int indicesSize;
-	Shader shader;
+	Mesh skybox;
+	Texture texture;
+	Shader& shader;
 
 public:
-	Skybox(std::string_view right, std::string_view left, std::string_view back, std::string_view front, std::string_view top, std::string_view bottom);
-	~Skybox();
+	Skybox(std::string_view cubemapTexture);
 
 	void render(const glm::mat4& view, const glm::mat4& projection);
 };

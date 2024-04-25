@@ -1,38 +1,39 @@
 #pragma once
 
+#include "GeneralUtility/RefOrValue.h"
 #include "RenderPipeline/Transform/Transformable.h"
+#include "RenderPipeline/Mesh/Mesh.h"
 
-class Mesh;
 class Material;
 class Shader;
 
 class MeshRenderer : public Transformable
 {
 private:
-	Mesh* mesh;
 	Material* material;
 	Shader* shader;
+	RefOrValue<Mesh> mesh;
 
-	static Shader* lastShader;
 	static Material* lastMaterial;
 	
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const MeshRenderer& object);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer(const MeshRenderer& meshRenderer);
+	MeshRenderer(MeshRenderer&& meshRenderer) noexcept;
 	~MeshRenderer();
 
-	MeshRenderer& operator=(const MeshRenderer& object);
+	MeshRenderer& operator=(const MeshRenderer& meshRenderer);
+	MeshRenderer& operator=(MeshRenderer&& meshRenderer) noexcept;
 
 	void render();
 
-	const Mesh* getMesh() const { return mesh; }
 	Material* getMaterial() const { return material; }
 	Shader* getShader() const { return shader; }
 
-	void setMaterial(Material* material) { this->material = material; }
+	void setMaterial(Material& material) { this->material = &material; }
+	void setShader(Shader& shader);
 };

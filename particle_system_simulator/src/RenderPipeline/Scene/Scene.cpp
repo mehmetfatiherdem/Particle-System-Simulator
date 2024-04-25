@@ -10,11 +10,14 @@
 #include "GeneralUtility/stringify.h"
 #include "Scene.h"
 
-#define SKYBOX(x) STRINGIFY(Resources/Textures/Skybox/x.jpg)
+std::string getTextureAddresses()
+{
+	return "Resources/Textures/Skybox/right.jpg,Resources/Textures/Skybox/left.jpg,Resources/Textures/Skybox/top.jpg,Resources/Textures/Skybox/bottom.jpg,Resources/Textures/Skybox/front.jpg,Resources/Textures/Skybox/back.jpg";
+}
 
-Scene::Scene(unsigned int windowWidth, unsigned int windowHeight) : shaderManager(), lightTracker(this->shaderManager),
-	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), skybox(SKYBOX(right), SKYBOX(left), SKYBOX(top), SKYBOX(bottom),
-	SKYBOX(front), SKYBOX(back)), lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() { }
+Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
+	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), skybox(getTextureAddresses()),
+	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() {}
 
 Scene::~Scene()
 {
@@ -214,7 +217,7 @@ void Scene::destroyLight(SpotLight* light)
 
 #pragma region Object Operations
 
-MeshRenderer* Scene::createObject(MeshRenderer* object)
+MeshRenderer* Scene::createObj(MeshRenderer* object)
 {
 	bool inserted = false;
 
@@ -248,29 +251,29 @@ void Scene::destroyObject(MeshRenderer* object)
 	}
 }
 
-MeshRenderer* Scene::createObject(Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	return createObject(new MeshRenderer{mesh, material, shader});
+	return createObj(new MeshRenderer(transform, mesh));
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
 {
-	return createObject(new MeshRenderer{position, mesh, material, shader});
+	return createObj(new MeshRenderer(transform, mesh, shader));
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
 {
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+	return createObj(new MeshRenderer(transform, mesh, material));
 }
 
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
 {
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
+	return createObj(new MeshRenderer(transform, mesh, shader, material));
 }
 
-MeshRenderer* Scene::createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(MeshRenderer* object)
 {
-	return createObject(new MeshRenderer{transform, mesh, material, shader});
+	return createObj(new MeshRenderer(*object));
 }
 
 #pragma endregion

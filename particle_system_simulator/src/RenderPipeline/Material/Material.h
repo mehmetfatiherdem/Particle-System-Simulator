@@ -18,6 +18,8 @@ public:
 	Material() = delete;
 	Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess);
 
+	static Material& defaultMaterial();
+
 	void useMaterial(const Shader& shader) const;
 
 	Color4 getColor() const { return color; }

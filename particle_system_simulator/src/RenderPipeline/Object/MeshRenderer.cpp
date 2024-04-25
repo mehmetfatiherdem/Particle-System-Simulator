@@ -1,81 +1,92 @@
-#include "RenderPipeline/Mesh/Mesh.h"
+#include "RenderPipeline/Shader/Shader.h"
 #include "RenderPipeline/Material/Material.h"
 #include "MeshRenderer.h"
-#include "RenderPipeline/Shader/Shader.h"
 
-Shader* MeshRenderer::lastShader = nullptr;
 Material* MeshRenderer::lastMaterial = nullptr;
 
-MeshRenderer::MeshRenderer(Mesh* mesh, Material* material, Shader* shader) : Transformable(), mesh(mesh), material(material),
-shader(shader != nullptr ? shader : (mesh->isInstanced() ? &Shader::getInstancedShader() : &Shader::getGenericShader()))
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
+	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()), material(&Material::defaultMaterial())
 {
-	mesh->addInstance();
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader) : Transformable(position), mesh(mesh),
-material(material), shader(shader != nullptr ? shader : (mesh->isInstanced() ? &Shader::getInstancedShader() : &Shader::getGenericShader()))
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
+	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
+	material(&Material::defaultMaterial())
 {
-	mesh->addInstance();
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader) :
-	Transformable(position, rotation), mesh(mesh), material(material),
-	shader(shader != nullptr ? shader : (mesh->isInstanced() ? &Shader::getInstancedShader() : &Shader::getGenericShader()))
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material)
+	: Transformable(transform), mesh(mesh, false), material(&material), shader(&Shader::genericShader())
 {
-	mesh->addInstance();
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader) :
-	Transformable(position, rotation), mesh(mesh), material(material),
-	shader(shader != nullptr ? shader : (mesh->isInstanced() ? &Shader::getInstancedShader() : &Shader::getGenericShader()))
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
+	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(&material), shader(&shader)
 {
-	mesh->addInstance();
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader) : Transformable(transform), mesh(mesh),
-material(material), shader(shader != nullptr ? shader : (mesh->isInstanced() ? &Shader::getInstancedShader() : &Shader::getGenericShader()))
+MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
+	: material(meshRenderer.material), shader(meshRenderer.shader)
 {
-	mesh->addInstance();
+	MeshRenderer& constCasted = const_cast<MeshRenderer&>(meshRenderer);
+	this->mesh = RefOrValue(*constCasted.mesh.get(), constCasted.mesh->isInstanced());
+	this->mesh->addInstance();
 }
 
-MeshRenderer::MeshRenderer(const MeshRenderer& object) : Transformable(object.transform),
-mesh(object.mesh), material(object.material), shader(object.shader)
-{
-	mesh->addInstance();
-}
+MeshRenderer::MeshRenderer(MeshRenderer&& meshRenderer) noexcept
+	: mesh(std::move(meshRenderer.mesh)), material(meshRenderer.material), shader(meshRenderer.shader)
+{}
 
 MeshRenderer::~MeshRenderer()
 {
-	if(mesh->isInstanced())
+	if (mesh->isInstanced())
 	{
 		mesh->removeInstance();
 	}
-	else
-	{
-		delete mesh;
-	}
 }
 
-MeshRenderer& MeshRenderer::operator=(const MeshRenderer& object)
+MeshRenderer& MeshRenderer::operator=(const MeshRenderer& meshRenderer)
 {
-	this->transform = object.transform;
-	this->mesh = object.mesh;
-	this->material = object.material;
-	this->shader = object.shader;
+	if (!this->mesh.isEmpty())
+	{
+		this->mesh->removeInstance();
+	}
 
-	mesh->addInstance();
+	this->mesh = meshRenderer.mesh;
+	this->material = meshRenderer.material;
+	this->shader = meshRenderer.shader;
+	this->mesh->addInstance();
+
+	return *this;
+}
+
+MeshRenderer& MeshRenderer::operator=(MeshRenderer&& meshRenderer) noexcept
+{
+	if (!this->mesh.isEmpty())
+	{
+		this->mesh->removeInstance();
+	}
+
+	this->mesh = std::move(meshRenderer.mesh);
+	this->material = meshRenderer.material;
+	this->shader = meshRenderer.shader;
+
 	return *this;
 }
 
 void MeshRenderer::render()
 {
-	if(shader->useShader() || material != lastMaterial)
+	if (shader->useShader() || material != lastMaterial)
 	{
 		lastMaterial = this->material;
 		this->material->useMaterial(*shader);
 	}
 
-	if(mesh->isInstanced())
+	if (mesh->isInstanced())
 	{
 		mesh->setModelMatrix(getModelMatrix());
 	}
@@ -84,4 +95,10 @@ void MeshRenderer::render()
 		shader->setMatrix4("model", getModelMatrix());
 		mesh->draw();
 	}
+}
+
+void MeshRenderer::setShader(Shader& shader)
+{
+	this->shader = &shader;
+	this->mesh->initialize(this->shader->getVertexAttributes());
 }

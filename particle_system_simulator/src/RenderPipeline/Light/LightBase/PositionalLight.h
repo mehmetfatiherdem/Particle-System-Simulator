@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include "LightSource.h"
@@ -23,7 +24,7 @@ protected:
 		glm::vec2{0.0014f, 0.000007f},
 	};
 
-	constexpr glm::vec2 getAttenuation(LightDistance distance) { return attenuationTable[static_cast<unsigned int>(distance)]; }
+	constexpr glm::vec2 getAttenuation(LightDistance distance) { return attenuationTable[static_cast<uint32_t>(distance)]; }
 
 	float constantAttenuation;
 	float linearAttenuation;

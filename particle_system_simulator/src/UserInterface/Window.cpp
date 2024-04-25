@@ -5,7 +5,7 @@
 #include "GeneralUtility/MathUtility.h"
 #include "Window.h"
 
-Window::Window(unsigned int width, unsigned int height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :
+Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :
 	width(width), height(height), vsync(vsync), cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f),
 	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr)
 {
