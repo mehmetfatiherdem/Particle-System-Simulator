@@ -25,6 +25,19 @@ public:
 		}
 	}
 
+	T* get()
+	{
+		if (ref.has_value())
+		{
+			return &ref.value().get();
+		} else if (val.has_value())
+		{
+			return &val.value();
+		}
+
+		return nullptr;
+	}
+
 	bool isEmpty()
 	{
 		return (!ref.has_value() && !val.has_value());
@@ -64,20 +77,11 @@ public:
 
 	T* operator*()
 	{
-		if (ref.has_value())
-		{
-			return &ref.value().get();
-		}
-		else if (val.has_value())
-		{
-			return &val.value();
-		}
-
-		return nullptr;
+		return get();
 	}
 
 	T* operator ->()
 	{
-		return **this;
+		return get();
 	}
 };

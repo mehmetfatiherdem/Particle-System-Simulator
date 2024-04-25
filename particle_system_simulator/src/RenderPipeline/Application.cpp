@@ -42,7 +42,9 @@ Application& Application::getInstance()
 void Application::run()
 {
     Mesh mesh = createCube();
-    scene.createObject(mesh, Shader::instancedShader(), Material::defaultMaterial());
+    auto obj = scene.createObject(mesh, Shader::instancedShader(), Material::defaultMaterial());
+    obj = scene.createObject(obj);
+    obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 

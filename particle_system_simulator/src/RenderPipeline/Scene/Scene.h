@@ -30,7 +30,7 @@ private:
 	SceneCamera camera;
 	Skybox skybox;
 
-	MeshRenderer* createObject(MeshRenderer* object);
+	MeshRenderer* createObj(MeshRenderer* object);
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:
@@ -77,6 +77,7 @@ public:
 #pragma region Object Operations
 
 	MeshRenderer* createObject(Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(MeshRenderer* object);
 
 	void destroyObject(MeshRenderer* object);
 	uint32_t numberOfObjects() const { return objects.size(); }

@@ -214,7 +214,7 @@ void Scene::destroyLight(SpotLight* light)
 
 #pragma region Object Operations
 
-MeshRenderer* Scene::createObject(MeshRenderer* object)
+MeshRenderer* Scene::createObj(MeshRenderer* object)
 {
 	bool inserted = false;
 
@@ -250,7 +250,12 @@ void Scene::destroyObject(MeshRenderer* object)
 
 MeshRenderer* Scene::createObject(Mesh& mesh, Shader& shader, Material& material)
 {
-	return createObject(new MeshRenderer(mesh, shader, material));
+	return createObj(new MeshRenderer(mesh, shader, material));
+}
+
+MeshRenderer* Scene::createObject(MeshRenderer* object)
+{
+	return createObj(new MeshRenderer(*object));
 }
 
 #pragma endregion

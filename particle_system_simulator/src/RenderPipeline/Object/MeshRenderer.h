@@ -22,15 +22,12 @@ public:
 	MeshRenderer(Mesh& mesh, Shader& shader);
 	MeshRenderer(Mesh& mesh, Material& material);
 	MeshRenderer(Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer(const MeshRenderer& meshRenderer);
+	MeshRenderer(MeshRenderer&& meshRenderer) noexcept;
 	~MeshRenderer();
 
-	//TODO : Implement the copy and move constructors as well
-
-
-	/*MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);*/
+	MeshRenderer& operator=(const MeshRenderer& meshRenderer);
+	MeshRenderer& operator=(MeshRenderer&& meshRenderer) noexcept;
 
 	void render();
 
@@ -38,5 +35,5 @@ public:
 	Shader* getShader() const { return shader; }
 
 	void setMaterial(Material& material) { this->material = &material; }
-	//TODO : void setShader(Shader& shader);
+	void setShader(Shader& shader);
 };
