@@ -251,9 +251,19 @@ void Scene::destroyObject(MeshRenderer* object)
 	}
 }
 
-MeshRenderer* Scene::createObject(Mesh& mesh, Shader& shader, Material& material)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	return createObj(new MeshRenderer(mesh, shader, material));
+	return createObj(new MeshRenderer(transform, mesh));
+}
+
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
+{
+	return createObj(new MeshRenderer(transform, mesh, shader));
+}
+
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
+{
+	return createObj(new MeshRenderer(transform, mesh, material));
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)

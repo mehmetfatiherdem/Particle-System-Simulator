@@ -5,22 +5,7 @@
 #include "GeneralUtility/MathConstants.h"
 #include "SceneCamera.h"
 
-SceneCamera::SceneCamera(const glm::vec3& position, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far,
-	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed, float zoomSensitivity) :
-	Camera(position, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed), slowMovementSpeed(slowMovementSpeed),
-	fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
-
-SceneCamera::SceneCamera(const glm::vec3& position, const glm::vec3& rotation, uint32_t width, uint32_t height, CameraType cameraType, float fov,
-	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed,
-	float zoomSensitivity) : Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
-	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
-
-SceneCamera::SceneCamera(const glm::vec3& position, const glm::quat& rotation, uint32_t width, uint32_t height, CameraType cameraType, float fov,
-	float near, float far, float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed,
-	float zoomSensitivity) : Camera(position, rotation, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed),
-	slowMovementSpeed(slowMovementSpeed), fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }
-
-SceneCamera::SceneCamera(const Transform& transform, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far,
+SceneCamera::SceneCamera(const TransformProps& transform, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far,
 	float left, float right, float top, float bottom, float rotationSpeed, float slowMovementSpeed, float fastMovementSpeed, float zoomSensitivity) :
 	Camera(transform, width, height, cameraType, fov, near, far, left, right, top, bottom), rotationSpeed(rotationSpeed), slowMovementSpeed(slowMovementSpeed),
 	fastMovementSpeed(fastMovementSpeed), zoomSensitivity(zoomSensitivity) { }

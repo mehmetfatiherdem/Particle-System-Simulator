@@ -77,7 +77,9 @@ public:
 
 #pragma region Object Operations
 
-	MeshRenderer* createObject(Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Material& material);
 	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
 	MeshRenderer* createObject(MeshRenderer* object);
 

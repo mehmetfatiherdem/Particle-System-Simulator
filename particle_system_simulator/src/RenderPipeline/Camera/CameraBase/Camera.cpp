@@ -1,21 +1,9 @@
 #include "RenderPipeline/Application.h"
 #include "Camera.h"
 
-Camera::Camera(const glm::vec3& position, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far, float left,
-	float right, float top, float bottom) : Transformable(position), width(width), height(height), aspectRatio((float)width / height), cameraType(cameraType),
+Camera::Camera(const TransformProps& transform, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far, float left,
+	float right, float top, float bottom) : Transformable(transform), width(width), height(height), aspectRatio((float)width / height), cameraType(cameraType),
 	fov(fov), near(near), far(far), left(left), right(right), top(top), bottom(bottom) { }
-
-Camera::Camera(const glm::vec3& position, const glm::vec3& rotation, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near,
-	float far, float left, float right, float top, float bottom) : Transformable(position, rotation), width(width), height(height),
-	aspectRatio((float)width / height), cameraType(cameraType), fov(fov), near(near), far(far), left(left), right(right), top(top), bottom(bottom) { }
-
-Camera::Camera(const glm::vec3& position, const glm::quat& rotation, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near,
-	float far, float left, float right, float top, float bottom) : Transformable(position, rotation), width(width), height(height),
-	aspectRatio((float)width / height), cameraType(cameraType), fov(fov), near(near), far(far), left(left), right(right), top(top), bottom(bottom) { }
-
-Camera::Camera(const Transform& transform, uint32_t width, uint32_t height, CameraType cameraType, float fov, float near, float far, float left,
-	float right, float top, float bottom) : Transformable(transform), width(width), height(height), aspectRatio((float)width / height),
-	cameraType(cameraType), fov(fov), near(near), far(far), left(left), right(right), top(top), bottom(bottom) { }
 
 glm::mat4 Camera::getViewMatrix() const
 {

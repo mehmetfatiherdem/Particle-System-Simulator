@@ -21,16 +21,9 @@ protected:
 
 public:
 	Camera() = delete;
-	Camera(const glm::vec3& position, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
-
-	Camera(const glm::vec3& position, const glm::vec3& rotation, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
-
-	Camera(const glm::vec3& position, const glm::quat& rotation, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
-
-	Camera(const Transform& transform, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective, float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f, float top = 4.5f, float bottom = -4.5f);
+	Camera(const TransformProps& transform, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f,
+		float top = 4.5f, float bottom = -4.5f);
 
 	glm::mat4 getViewMatrix() const;
 	glm::mat4 getProjectionMatrix(float useFov = -1.0f) const;

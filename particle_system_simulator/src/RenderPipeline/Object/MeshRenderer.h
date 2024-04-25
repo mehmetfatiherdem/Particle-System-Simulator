@@ -18,10 +18,9 @@ private:
 	
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(Mesh& mesh);
-	MeshRenderer(Mesh& mesh, Shader& shader);
-	MeshRenderer(Mesh& mesh, Material& material);
-	MeshRenderer(Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material);
 	MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
 	MeshRenderer(const MeshRenderer& meshRenderer);
 	MeshRenderer(MeshRenderer&& meshRenderer) noexcept;

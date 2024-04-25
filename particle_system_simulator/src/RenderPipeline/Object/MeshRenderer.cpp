@@ -4,32 +4,27 @@
 
 Material* MeshRenderer::lastMaterial = nullptr;
 
-MeshRenderer::MeshRenderer(Mesh& mesh)
-	: mesh(mesh, false), material(&Material::defaultMaterial()), shader(&Shader::genericShader())
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
+	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()), material(&Material::defaultMaterial())
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(Mesh& mesh, Shader& shader)
-	: mesh(mesh, false), material(&Material::defaultMaterial()), shader(&shader)
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
+	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
+	material(&Material::defaultMaterial())
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(Mesh& mesh, Material& material)
-	: mesh(mesh, false), material(&material), shader(&Shader::genericShader())
-{
-	this->mesh->initialize(this->shader->getVertexAttributes());
-}
-
-MeshRenderer::MeshRenderer(Mesh& mesh, Shader& shader, Material& material)
-	: mesh(mesh, false), material(&material), shader(&shader)
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material)
+	: Transformable(transform), mesh(mesh, false), material(&material), shader(&Shader::genericShader())
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
-	: Transformable(transform), mesh(mesh, false), material(&material), shader(&shader)
+	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(&material), shader(&shader)
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
