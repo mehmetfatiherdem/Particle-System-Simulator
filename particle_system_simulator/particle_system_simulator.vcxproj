@@ -57,6 +57,7 @@
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\MathUtility.h" />
+    <ClInclude Include="src\GeneralUtility\Random.h" />
     <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
@@ -85,7 +86,6 @@
     <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h" />
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
     <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />

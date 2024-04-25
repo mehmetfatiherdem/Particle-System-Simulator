@@ -296,9 +296,6 @@
     <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h">
       <Filter>src\Render Pipeline\Light\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h">
       <Filter>src\Render Pipeline\Skybox</Filter>
     </ClInclude>
@@ -370,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="src\EntityComponentSystem\IComponent.h">
       <Filter>src\Entity Component System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\Random.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

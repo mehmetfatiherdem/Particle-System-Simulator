@@ -13,6 +13,7 @@ private:
 	Material* material;
 	Shader* shader;
 	RefOrValue<Mesh> mesh;
+	bool enabled;
 
 	static Material* lastMaterial;
 	

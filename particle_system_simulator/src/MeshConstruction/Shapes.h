@@ -3,8 +3,6 @@
 #include <stdint.h>
 #include "RenderPipeline/Mesh/Mesh.h"
 
-struct MeshProperties;
-
 Mesh createQuad();
 Mesh createCube();
 Mesh createFlatSphere(uint32_t sectorCount, uint32_t stackCount);

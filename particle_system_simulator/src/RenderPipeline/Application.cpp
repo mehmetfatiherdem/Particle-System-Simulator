@@ -19,7 +19,6 @@
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Scene/Scene.h"
 #include "MeshConstruction/Shapes.h"
-#include "RenderPipeline/Mesh/Data/MeshProperties.h"
 #include "RenderPipeline/Application.h"
 #include "Input Management/Input.h"
 #include "Time Management/Time.h"

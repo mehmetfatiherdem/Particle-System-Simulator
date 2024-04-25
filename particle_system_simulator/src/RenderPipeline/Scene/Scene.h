@@ -31,7 +31,6 @@ private:
 	SceneCamera camera;
 	Skybox skybox;
 
-	MeshRenderer* createObj(MeshRenderer* object);
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:

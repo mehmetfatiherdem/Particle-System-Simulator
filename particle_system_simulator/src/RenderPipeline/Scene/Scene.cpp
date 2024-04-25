@@ -3,7 +3,6 @@
 #include "RenderPipeline/Light/SpotLight.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
 #include "RenderPipeline/Object/MeshRenderer.h"
-#include "RenderPipeline/Object/MeshRendererSorter.h"
 #include "RenderPipeline/Mesh/Mesh.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
@@ -41,7 +40,6 @@ void Scene::render()
 {
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
-
 
 	for(auto object : objects)
 	{
@@ -217,28 +215,6 @@ void Scene::destroyLight(SpotLight* light)
 
 #pragma region Object Operations
 
-MeshRenderer* Scene::createObj(MeshRenderer* object)
-{
-	bool inserted = false;
-
-	for(size_t i = 0; i < objects.size(); ++i)
-	{
-		if(!compare(*objects[i], *object))
-		{
-			objects.insert(objects.begin() + i, object);
-			inserted = true;
-			break;
-		}
-	}
-
-	if(!inserted)
-	{
-		objects.push_back(object);
-	}
-
-	return object;
-}
-
 void Scene::destroyObject(MeshRenderer* object)
 {
 	auto end = objects.end();
@@ -253,27 +229,37 @@ void Scene::destroyObject(MeshRenderer* object)
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	return createObj(new MeshRenderer(transform, mesh));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
 {
-	return createObj(new MeshRenderer(transform, mesh, shader));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, shader);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
 {
-	return createObj(new MeshRenderer(transform, mesh, material));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, material);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
 {
-	return createObj(new MeshRenderer(transform, mesh, shader, material));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, shader, material);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(MeshRenderer* object)
 {
-	return createObj(new MeshRenderer(*object));
+	MeshRenderer* obj = new MeshRenderer(*object);
+	objects.push_back(obj);
+	return obj;
 }
 
 #pragma endregion
