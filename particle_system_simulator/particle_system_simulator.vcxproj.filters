@@ -124,6 +124,9 @@
     <Filter Include="src\Render Pipeline\Transform\Data">
       <UniqueIdentifier>{35821558-4a95-45bb-bcf6-77976099fee0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entity Component System">
+      <UniqueIdentifier>{43955905-f2fd-463e-bbda-7acfb16b6d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -210,11 +213,8 @@
     <ClCompile Include="src\Time Management\Time.cpp">
       <Filter>src\Time Management</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>src\ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="IComponent.cpp">
-      <Filter>src\ECS</Filter>
+    <ClCompile Include="src\EntityComponentSystem\Entity.cpp">
+      <Filter>src\Entity Component System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -356,13 +356,6 @@
     <ClInclude Include="src\GeneralUtility\MathUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>src\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>src\ECS</Filter>
-    </ClInclude>
-  </ItemGroup>
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
       <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
@@ -371,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h">
       <Filter>src\Render Pipeline\Transform\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntityComponentSystem\Entity.h">
+      <Filter>src\Entity Component System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EntityComponentSystem\IComponent.h">
+      <Filter>src\Entity Component System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

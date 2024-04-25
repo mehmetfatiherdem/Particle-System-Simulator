@@ -19,8 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="IComponent.cpp" />
+    <ClCompile Include="src\EntityComponentSystem\Entity.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
@@ -51,9 +50,8 @@
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="IComponent.h" />
-    <ClInclude Include="src\GeneralUtility\Aliases.h" />
+    <ClInclude Include="src\EntityComponentSystem\Entity.h" />
+    <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
