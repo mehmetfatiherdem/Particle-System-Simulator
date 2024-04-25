@@ -248,29 +248,9 @@ void Scene::destroyObject(MeshRenderer* object)
 	}
 }
 
-MeshRenderer* Scene::createObject(Mesh* mesh, Material* material, Shader* shader)
+MeshRenderer* Scene::createObject(Mesh& mesh, Shader& shader, Material& material)
 {
-	return createObject(new MeshRenderer{mesh, material, shader});
-}
-
-MeshRenderer* Scene::createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader)
-{
-	return createObject(new MeshRenderer{position, mesh, material, shader});
-}
-
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader)
-{
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
-}
-
-MeshRenderer* Scene::createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader)
-{
-	return createObject(new MeshRenderer{position, rotation, mesh, material, shader});
-}
-
-MeshRenderer* Scene::createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader)
-{
-	return createObject(new MeshRenderer{transform, mesh, material, shader});
+	return createObject(new MeshRenderer(mesh, shader, material));
 }
 
 #pragma endregion

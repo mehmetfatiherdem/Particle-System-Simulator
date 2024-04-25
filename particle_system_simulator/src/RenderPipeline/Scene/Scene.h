@@ -76,11 +76,7 @@ public:
 
 #pragma region Object Operations
 
-	MeshRenderer* createObject(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer* createObject(Mesh& mesh, Shader& shader, Material& material);
 
 	void destroyObject(MeshRenderer* object);
 	uint32_t numberOfObjects() const { return objects.size(); }

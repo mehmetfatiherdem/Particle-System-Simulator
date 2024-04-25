@@ -6,15 +6,32 @@
 
 GLuint Shader::currentProgram = 0;
 
-Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, LoadMethod method)
+Shader::Shader(std::string_view vertex, std::string_view fragment, const VertexAttributes& attributes, LoadMethod method)
+	: attributes(attributes), programID(0)
+{
+	if (method == LoadMethod::FromFile)
+	{
+		std::string vertexShader = readShaderFile(vertex);
+		std::string fragmentShader = readShaderFile(fragment);
+
+		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), nullptr);
+	}
+	else
+	{
+		compileShaders(vertex.data(), fragment.data(), nullptr);
+	}
+}
+
+Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& attributes, LoadMethod method)
+	: attributes(attributes), programID(0)
 {
 	if(method == LoadMethod::FromFile)
 	{
 		std::string vertexShader = readShaderFile(vertex);
 		std::string fragmentShader = readShaderFile(fragment);
-		std::string geometryShader = geometry.empty() ? "" : readShaderFile(geometry);
+		std::string geometryShader = readShaderFile(geometry);
 
-		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), (geometryShader.empty() ? nullptr : geometryShader.c_str()));
+		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), geometryShader.c_str());
 	}
 	else
 	{
@@ -46,6 +63,18 @@ void Shader::destroyShader()
 
 	glDeleteProgram(programID);
 	programID = 0;
+}
+
+Shader& Shader::genericShader()
+{
+	static Shader genericShader("Resources/Shaders/generic.vert", "Resources/Shaders/generic.frag", VertexAttributes::generic());
+	return genericShader;
+}
+
+Shader& Shader::instancedShader()
+{
+	static Shader instancedShader("Resources/Shaders/instanced.vert", "Resources/Shaders/generic.frag", VertexAttributes::instanced());
+	return instancedShader;
 }
 
 bool Shader::useShader() const

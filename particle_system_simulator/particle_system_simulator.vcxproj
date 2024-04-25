@@ -83,12 +83,11 @@
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h" />
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\ShrinkMethod.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
     <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h" />

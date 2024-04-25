@@ -1,38 +1,42 @@
 #pragma once
 
+#include "GeneralUtility/RefOrValue.h"
 #include "RenderPipeline/Transform/Transformable.h"
+#include "RenderPipeline/Mesh/Mesh.h"
 
-class Mesh;
 class Material;
 class Shader;
 
 class MeshRenderer : public Transformable
 {
 private:
-	Mesh* mesh;
 	Material* material;
 	Shader* shader;
+	RefOrValue<Mesh> mesh;
 
-	static Shader* lastShader;
 	static Material* lastMaterial;
 	
 public:
 	MeshRenderer() = delete;
-	MeshRenderer(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer(const MeshRenderer& object);
+	MeshRenderer(Mesh& mesh);
+	MeshRenderer(Mesh& mesh, Shader& shader);
+	MeshRenderer(Mesh& mesh, Material& material);
+	MeshRenderer(Mesh& mesh, Shader& shader, Material& material);
 	~MeshRenderer();
 
-	MeshRenderer& operator=(const MeshRenderer& object);
+	//TODO : Implement the copy and move constructors as well
+
+
+	/*MeshRenderer(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);*/
 
 	void render();
 
-	const Mesh* getMesh() const { return mesh; }
 	Material* getMaterial() const { return material; }
 	Shader* getShader() const { return shader; }
 
-	void setMaterial(Material* material) { this->material = material; }
+	void setMaterial(Material& material) { this->material = &material; }
+	//TODO : void setShader(Shader& shader);
 };

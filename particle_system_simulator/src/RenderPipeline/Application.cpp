@@ -41,10 +41,8 @@ Application& Application::getInstance()
 
 void Application::run()
 {
-    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
-    Mesh* mesh = createCube(MeshProperties{true});
-
-    scene.createObject(glm::vec3{0,0,0}, mesh, material);
+    Mesh mesh = createCube();
+    scene.createObject(mesh, Shader::instancedShader(), Material::defaultMaterial());
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 

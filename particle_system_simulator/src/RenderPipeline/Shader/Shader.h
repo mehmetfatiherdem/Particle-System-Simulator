@@ -6,6 +6,7 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
+#include "Data/VertexAttributes.h"
 #include "GeneralUtility/gl2fw3.h"
 
 class Shader
@@ -14,6 +15,7 @@ private:
 	static GLuint currentProgram;
 
 	GLuint programID;
+	VertexAttributes attributes;
 
 	void compileShaders(const char* vertexCode, const char* fragmentCode, const char* geometryCode);
 	void addShader(const char* shaderCode, GLenum shaderType);
@@ -28,7 +30,8 @@ public:
 	};
 
 	Shader() = delete;
-	Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry = "", LoadMethod method = LoadMethod::FromFile);
+	Shader(std::string_view vertex, std::string_view fragment, const VertexAttributes& attributes, LoadMethod method = LoadMethod::FromFile);
+	Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& attributes, LoadMethod method = LoadMethod::FromFile);
 	Shader(Shader&& shader) noexcept;
 	~Shader();
 
@@ -36,17 +39,10 @@ public:
 
 	bool useShader() const;
 
-	static Shader& getGenericShader()
-	{
-		static Shader genericShader{"Resources/Shaders/generic.vert", "Resources/Shaders/generic.frag"};
-		return genericShader;
-	}
+	static Shader& genericShader();
+	static Shader& instancedShader();
 
-	static Shader& getInstancedShader()
-	{
-		static Shader instancedShader{"Resources/Shaders/instanced.vert", "Resources/Shaders/generic.frag"};
-		return instancedShader;
-	}
+	VertexAttributes getVertexAttributes() const { return attributes; }
 
 	void setBool(std::string_view variable, bool value) const;
 	void setInt(std::string_view variable, GLint value) const;

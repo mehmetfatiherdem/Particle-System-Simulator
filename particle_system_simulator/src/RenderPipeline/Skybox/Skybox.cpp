@@ -19,7 +19,7 @@ void addSurface(GLenum targetSide, std::string_view file)
 	}
 }
 
-Skybox::Skybox(std::string_view right, std::string_view left, std::string_view top, std::string_view bottom, std::string_view front, std::string_view back) : shader("Resources/Shaders/skybox.vert", "Resources/Shaders/skybox.frag")
+Skybox::Skybox(std::string_view right, std::string_view left, std::string_view top, std::string_view bottom, std::string_view front, std::string_view back) : shader("Resources/Shaders/skybox.vert", "Resources/Shaders/skybox.frag", VertexAttributes::skybox())
 {
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
