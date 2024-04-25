@@ -2,12 +2,14 @@
 
 #include <vector>
 #include <functional>
+#include <stdint.h>
 #include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
 #include "RenderPipeline/Light/LightManagement/LightTracker.h"
 #include "RenderPipeline/Light/Data/LightDistance.h"
 #include "RenderPipeline/Color/Color3.h"
 #include "RenderPipeline/Camera/SceneCamera/SceneCamera.h"
 #include "RenderPipeline/Skybox/Skybox.h"
+#include "RenderPipeline/Transform/Data/TransformProps.h"
 
 class DirectionalLight;
 class PointLight;
@@ -29,12 +31,12 @@ private:
 	SceneCamera camera;
 	Skybox skybox;
 
-	MeshRenderer* createObject(MeshRenderer* object);
+	MeshRenderer* createObj(MeshRenderer* object);
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:
 	Scene() = delete;
-	Scene(unsigned int windowWidth, unsigned int windowHeight);
+	Scene(uint32_t windowWidth, uint32_t windowHeight);
 	~Scene();
 
 	void update();
@@ -64,25 +66,25 @@ public:
 	void destroyLight(PointLight* light);
 	void destroyLight(SpotLight* light);
 
-	LightSource* getLightAtIndex(unsigned int index) const { return lightSources[index]; }
+	LightSource* getLightAtIndex(uint32_t index) const { return lightSources[index]; }
 
-	unsigned int numberOfLights() const { return lightSources.size(); }
-	unsigned int numberOfDirectionalLights() const { return lightTracker.noOfDirLights; }
-	unsigned int numberOfPointLights() const { return lightTracker.noOfPointLights; }
-	unsigned int numberOfSpotLights() const { return lightTracker.noOfSpotLights; }
+	uint32_t numberOfLights() const { return lightSources.size(); }
+	uint32_t numberOfDirectionalLights() const { return lightTracker.noOfDirLights; }
+	uint32_t numberOfPointLights() const { return lightTracker.noOfPointLights; }
+	uint32_t numberOfSpotLights() const { return lightTracker.noOfSpotLights; }
 
 #pragma endregion
 
 #pragma region Object Operations
 
-	MeshRenderer* createObject(Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::vec3& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const glm::vec3& position, const glm::quat& rotation, Mesh* mesh, Material* material, Shader* shader = nullptr);
-	MeshRenderer* createObject(const Transform& transform, Mesh* mesh, Material* material, Shader* shader = nullptr);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(MeshRenderer* object);
 
 	void destroyObject(MeshRenderer* object);
-	unsigned int numberOfObjects() const { return objects.size(); }
+	uint32_t numberOfObjects() const { return objects.size(); }
 
 #pragma endregion
 

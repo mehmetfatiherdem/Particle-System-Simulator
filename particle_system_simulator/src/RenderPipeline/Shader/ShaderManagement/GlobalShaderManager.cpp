@@ -23,7 +23,7 @@ GlobalShaderManager::GlobalShaderManager() : UBO_Global_Matrices(0), UBO_Lights(
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void GlobalShaderManager::editLightsUBO(uint lightOffset, uint lightDataSize, const void* lightData, uint numOffset, const void* numData) const
+void GlobalShaderManager::editLightsUBO(uint32_t lightOffset, uint32_t lightDataSize, const void* lightData, uint32_t numOffset, const void* numData) const
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO_Lights);
 
@@ -65,55 +65,55 @@ void GlobalShaderManager::updateViewProjectionMatrices(const glm::mat4& view, co
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void GlobalShaderManager::addDirectionalLight(const DirectionalLight& light, uint newLength) const
+void GlobalShaderManager::addDirectionalLight(const DirectionalLight& light, uint32_t newLength) const
 {
 	DirectionalLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::DirectionalLight, newLength - 1);
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::DirectionalLight);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::DirectionalLight, newLength - 1);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::DirectionalLight);
 	editLightsUBO(lightDataOffset, sizeof(DirectionalLightGLSL), &glslLight, numberDataOffset, &newLength);
 }
 
-void GlobalShaderManager::addPointLight(const PointLight& light, uint newLength) const
+void GlobalShaderManager::addPointLight(const PointLight& light, uint32_t newLength) const
 {
 	PointLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::PointLight, newLength - 1);
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::PointLight);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::PointLight, newLength - 1);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::PointLight);
 	editLightsUBO(lightDataOffset, sizeof(PointLightGLSL), &glslLight, numberDataOffset, &newLength);
 }
 
-void GlobalShaderManager::addSpotLight(const SpotLight& light, uint newLength) const
+void GlobalShaderManager::addSpotLight(const SpotLight& light, uint32_t newLength) const
 {
 	SpotLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::SpotLight, newLength - 1);
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::SpotLight);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::SpotLight, newLength - 1);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::SpotLight);
 	editLightsUBO(lightDataOffset, sizeof(SpotLightGLSL), &glslLight, numberDataOffset, &newLength);
 }
 
-void GlobalShaderManager::updateDirectionalLight(const DirectionalLight& light, uint index) const
+void GlobalShaderManager::updateDirectionalLight(const DirectionalLight& light, uint32_t index) const
 {
 	DirectionalLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::DirectionalLight, index);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::DirectionalLight, index);
 	editLightsUBO(lightDataOffset, sizeof(DirectionalLightGLSL), &glslLight, 0, nullptr);
 }
 
-void GlobalShaderManager::updatePointLight(const PointLight& light, uint index) const
+void GlobalShaderManager::updatePointLight(const PointLight& light, uint32_t index) const
 {
 	PointLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::PointLight, index);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::PointLight, index);
 	editLightsUBO(lightDataOffset, sizeof(PointLightGLSL), &glslLight, 0, nullptr);
 }
 
-void GlobalShaderManager::updateSpotLight(const SpotLight& light, uint index) const
+void GlobalShaderManager::updateSpotLight(const SpotLight& light, uint32_t index) const
 {
 	SpotLightGLSL glslLight = getGLSLRepresentation(light);
-	uint lightDataOffset = calculateLightDataOffset(LightSourceType::SpotLight, index);
+	uint32_t lightDataOffset = calculateLightDataOffset(LightSourceType::SpotLight, index);
 	editLightsUBO(lightDataOffset, sizeof(SpotLightGLSL), &glslLight, 0, nullptr);
 }
 
-void GlobalShaderManager::removeDirectionalLight(const DirectionalLight* replacementLight, uint indexToRemove, uint newLength) const
+void GlobalShaderManager::removeDirectionalLight(const DirectionalLight* replacementLight, uint32_t indexToRemove, uint32_t newLength) const
 {
 	DirectionalLightGLSL glslLight;
-	uint lightDataOffset = 0;
+	uint32_t lightDataOffset = 0;
 
 	if(replacementLight != nullptr)
 	{
@@ -121,14 +121,14 @@ void GlobalShaderManager::removeDirectionalLight(const DirectionalLight* replace
 		lightDataOffset = calculateLightDataOffset(LightSourceType::DirectionalLight, indexToRemove);
 	}
 
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::DirectionalLight);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::DirectionalLight);
 	editLightsUBO(lightDataOffset, sizeof(DirectionalLightGLSL), &glslLight, numberDataOffset, &newLength);
 }
 
-void GlobalShaderManager::removePointLight(const PointLight* replacementLight, uint indexToRemove, uint newLength) const
+void GlobalShaderManager::removePointLight(const PointLight* replacementLight, uint32_t indexToRemove, uint32_t newLength) const
 {
 	PointLightGLSL glslLight;
-	uint lightDataOffset = 0;
+	uint32_t lightDataOffset = 0;
 
 	if(replacementLight != nullptr)
 	{
@@ -136,14 +136,14 @@ void GlobalShaderManager::removePointLight(const PointLight* replacementLight, u
 		lightDataOffset = calculateLightDataOffset(LightSourceType::PointLight, indexToRemove);
 	}
 
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::PointLight);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::PointLight);
 	editLightsUBO(lightDataOffset, sizeof(PointLightGLSL), &glslLight, numberDataOffset, &newLength);
 }
 
-void GlobalShaderManager::removeSpotLight(const SpotLight* replacementLight, uint indexToRemove, uint newLength) const
+void GlobalShaderManager::removeSpotLight(const SpotLight* replacementLight, uint32_t indexToRemove, uint32_t newLength) const
 {
 	SpotLightGLSL glslLight;
-	uint lightDataOffset = 0;
+	uint32_t lightDataOffset = 0;
 
 	if(replacementLight != nullptr)
 	{
@@ -151,6 +151,6 @@ void GlobalShaderManager::removeSpotLight(const SpotLight* replacementLight, uin
 		lightDataOffset = calculateLightDataOffset(LightSourceType::SpotLight, indexToRemove);
 	}
 
-	uint numberDataOffset = calculateNumberDataOffset(LightSourceType::SpotLight);
+	uint32_t numberDataOffset = calculateNumberDataOffset(LightSourceType::SpotLight);
 	editLightsUBO(lightDataOffset, sizeof(SpotLightGLSL), &glslLight, numberDataOffset, &newLength);
 }

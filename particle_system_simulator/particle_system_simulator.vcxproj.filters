@@ -109,8 +109,20 @@
     <Filter Include="src\Time Management">
       <UniqueIdentifier>{291bd35d-a34b-464f-b627-c1645c5311c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ECS">
-      <UniqueIdentifier>{517f6745-58f0-45be-85e3-194cf9e93ff0}</UniqueIdentifier>
+    <Filter Include="src\Render Pipeline\Shader\Data">
+      <UniqueIdentifier>{d3e132e0-dbbc-4050-9f13-8e4c19a5a2d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Generic">
+      <UniqueIdentifier>{a75dcc3b-24c5-481a-8917-87e1c521751f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Instanced">
+      <UniqueIdentifier>{dbcc72a7-2dc3-4223-8025-5dbca04d0a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders\Skybox">
+      <UniqueIdentifier>{ac015112-7f16-4315-8ab2-ab1e12ade9c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Transform\Data">
+      <UniqueIdentifier>{35821558-4a95-45bb-bcf6-77976099fee0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +218,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GeneralUtility\Aliases.h">
-      <Filter>src\General Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
@@ -278,13 +287,7 @@
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h">
       <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\ShrinkMethod.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\VertexAttributes.h">
       <Filter>src\Render Pipeline\Mesh\Data</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h">
@@ -360,25 +363,15 @@
       <Filter>src\ECS</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Shaders\generic.geom">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\generic.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\instanced.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.frag">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="Resources\Shaders\skybox.vert">
-      <Filter>Resources\Shaders</Filter>
-    </None>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\RefOrValue.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Transform\Data\TransformProps.h">
+      <Filter>src\Render Pipeline\Transform\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">
@@ -401,6 +394,23 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="particle_system_simulator.rc" />
+    <None Include="Resources\Shaders\Generic\generic.frag">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.geom">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Generic\generic.vert">
+      <Filter>Resources\Shaders\Generic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Instanced\instanced.vert">
+      <Filter>Resources\Shaders\Instanced</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.frag">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox\skybox.vert">
+      <Filter>Resources\Shaders\Skybox</Filter>
+    </None>
   </ItemGroup>
 </Project>

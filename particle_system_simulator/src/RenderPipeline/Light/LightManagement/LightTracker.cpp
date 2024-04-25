@@ -34,25 +34,25 @@ bool LightTracker::trackLight(const SpotLight* lightSource)
 
 void LightTracker::updateLight(const DirectionalLight* lightSource) const
 {
-	uint index = utility::array::findIndex(dirLights, lightSource, noOfDirLights);
+	uint32_t index = utility::array::findIndex(dirLights, lightSource, noOfDirLights);
 	shaderManager.updateDirectionalLight(*lightSource, index);
 }
 
 void LightTracker::updateLight(const PointLight* lightSource) const
 {
-	uint index = utility::array::findIndex(pointLights, lightSource, noOfPointLights);
+	uint32_t index = utility::array::findIndex(pointLights, lightSource, noOfPointLights);
 	shaderManager.updatePointLight(*lightSource, index);
 }
 
 void LightTracker::updateLight(const SpotLight* lightSource) const
 {
-	uint index = utility::array::findIndex(spotLights, lightSource, noOfSpotLights);
+	uint32_t index = utility::array::findIndex(spotLights, lightSource, noOfSpotLights);
 	shaderManager.updateSpotLight(*lightSource, index);
 }
 
 void LightTracker::untrackLight(const DirectionalLight* lightSource)
 {
-	uint index = utility::array::findIndex(dirLights, lightSource, noOfDirLights--);
+	uint32_t index = utility::array::findIndex(dirLights, lightSource, noOfDirLights--);
 
 	const DirectionalLight* replacementLight = nullptr;
 
@@ -67,7 +67,7 @@ void LightTracker::untrackLight(const DirectionalLight* lightSource)
 
 void LightTracker::untrackLight(const PointLight* lightSource)
 {
-	uint index = utility::array::findIndex(pointLights, lightSource, noOfPointLights--);
+	uint32_t index = utility::array::findIndex(pointLights, lightSource, noOfPointLights--);
 
 	const PointLight* replacementLight = nullptr;
 
@@ -82,7 +82,7 @@ void LightTracker::untrackLight(const PointLight* lightSource)
 
 void LightTracker::untrackLight(const SpotLight* lightSource)
 {
-	uint index = utility::array::findIndex(spotLights, lightSource, noOfSpotLights--);
+	uint32_t index = utility::array::findIndex(spotLights, lightSource, noOfSpotLights--);
 
 	const SpotLight* replacementLight = nullptr;
 

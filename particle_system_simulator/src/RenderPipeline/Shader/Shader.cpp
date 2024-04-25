@@ -6,15 +6,32 @@
 
 GLuint Shader::currentProgram = 0;
 
-Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, LoadMethod method)
+Shader::Shader(std::string_view vertex, std::string_view fragment, const VertexAttributes& attributes, LoadMethod method)
+	: attributes(attributes), programID(0)
+{
+	if (method == LoadMethod::FromFile)
+	{
+		std::string vertexShader = readShaderFile(vertex);
+		std::string fragmentShader = readShaderFile(fragment);
+
+		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), nullptr);
+	}
+	else
+	{
+		compileShaders(vertex.data(), fragment.data(), nullptr);
+	}
+}
+
+Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& attributes, LoadMethod method)
+	: attributes(attributes), programID(0)
 {
 	if(method == LoadMethod::FromFile)
 	{
 		std::string vertexShader = readShaderFile(vertex);
 		std::string fragmentShader = readShaderFile(fragment);
-		std::string geometryShader = geometry.empty() ? "" : readShaderFile(geometry);
+		std::string geometryShader = readShaderFile(geometry);
 
-		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), (geometryShader.empty() ? nullptr : geometryShader.c_str()));
+		compileShaders(vertexShader.c_str(), fragmentShader.c_str(), geometryShader.c_str());
 	}
 	else
 	{
@@ -46,6 +63,24 @@ void Shader::destroyShader()
 
 	glDeleteProgram(programID);
 	programID = 0;
+}
+
+Shader& Shader::genericShader()
+{
+	static Shader shader{"Resources/Shaders/Generic/generic.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::generic()};
+	return shader;
+}
+
+Shader& Shader::instancedShader()
+{
+	static Shader shader{"Resources/Shaders/Instanced/instanced.vert", "Resources/Shaders/Generic/generic.frag", VertexAttributes::instanced()};
+	return shader;
+}
+
+Shader& Shader::skyboxShader()
+{
+	static Shader shader{"Resources/Shaders/Skybox/skybox.vert", "Resources/Shaders/Skybox/skybox.frag", VertexAttributes::skybox()};
+	return shader;
 }
 
 bool Shader::useShader() const

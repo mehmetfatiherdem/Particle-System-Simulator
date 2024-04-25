@@ -41,24 +41,18 @@ Application& Application::getInstance()
 
 void Application::run()
 {
-    Material* material = new Material{nullptr, nullptr, Color4{glm::vec4{0.6f, 0.65f, 0.7f, 1.0f}}, 1.0f, 1.0f};
-    Mesh* mesh = createCube(MeshProperties{false});
-
-    auto x = scene.createObject(glm::vec3{0,0,0}, mesh, material);
-
-    Camera& cam = scene.getCamera();
-    Transform& camt = cam.getTransform();
+    Mesh mesh = createCube();
+    auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}, glm::vec3{1.0, 0.75, 0.63}}, mesh, Shader::genericShader(), Material::defaultMaterial());
+    obj = scene.createObject(obj);
+    obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 
-    unsigned int polygonModes[2] = {GL_FILL, GL_LINE};
+    uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
     void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
     bool currentMode = 0;
 
     Time::start();
-
-    float sec = 0;
-    glm::vec2 deltaMouse{0,0};
 
     while(!window.shouldClose())
     {
