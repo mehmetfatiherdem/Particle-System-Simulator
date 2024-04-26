@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\EntityComponentSystem\Entity.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
+    <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
@@ -67,6 +67,12 @@
     <ClInclude Include="src\Input Management\Input.h" />
     <ClInclude Include="src\Input Management\Utility\InputUtility.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
+    <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h" />
+    <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h" />
+    <ClInclude Include="src\Particle System\Emitter\Emitter.h" />
+    <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h" />
+    <ClInclude Include="src\Particle System\Particle.h" />
+    <ClInclude Include="src\Particle System\ParticleSystem.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />

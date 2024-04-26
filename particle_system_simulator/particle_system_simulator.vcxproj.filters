@@ -127,6 +127,18 @@
     <Filter Include="src\Entity Component System">
       <UniqueIdentifier>{43955905-f2fd-463e-bbda-7acfb16b6d04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Particle System">
+      <UniqueIdentifier>{77f0b56a-7190-4b98-9824-f54f0efa2133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Data">
+      <UniqueIdentifier>{8dca8c97-c0ae-4049-a83f-1669960d1568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Components">
+      <UniqueIdentifier>{8035ef6a-9daf-4208-bf68-427c2e2bcfa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Emitter">
+      <UniqueIdentifier>{9acb7489-ed0a-442b-8167-a31b4549140e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -213,8 +225,8 @@
     <ClCompile Include="src\Time Management\Time.cpp">
       <Filter>src\Time Management</Filter>
     </ClCompile>
-    <ClCompile Include="src\EntityComponentSystem\Entity.cpp">
-      <Filter>src\Entity Component System</Filter>
+    <ClCompile Include="src\Particle System\ParticleSystem.cpp">
+      <Filter>src\Particle System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +382,24 @@
     </ClInclude>
     <ClInclude Include="src\GeneralUtility\Random.h">
       <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Particle.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\ParticleSystem.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\Emitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

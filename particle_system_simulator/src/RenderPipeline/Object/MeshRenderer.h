@@ -32,9 +32,15 @@ public:
 
 	void render();
 
+	void enable() { enabled = true; }
+	void disable() { enabled = false; }
+	void toggle() { enabled = !enabled; }
+
+	bool isEnabled() const { return enabled; }
 	Material* getMaterial() const { return material; }
 	Shader* getShader() const { return shader; }
 
 	void setMaterial(Material& material) { this->material = &material; }
 	void setShader(Shader& shader);
+	void setEnabled(bool enabled) { this->enabled = enabled; }
 };
