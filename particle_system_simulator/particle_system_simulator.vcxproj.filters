@@ -228,6 +228,15 @@
     <ClCompile Include="src\Particle System\ParticleSystem.cpp">
       <Filter>src\Particle System</Filter>
     </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\Emitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeneralUtility\Random.cpp">
+      <Filter>src\General Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
@@ -362,7 +371,7 @@
     <ClInclude Include="src\Time Management\Time.h">
       <Filter>src\Time Management</Filter>
     </ClInclude>
-    <ClInclude Include="src\GeneralUtility\MathUtility.h">
+    <ClInclude Include="src\GeneralUtility\SignUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
@@ -400,6 +409,12 @@
     </ClInclude>
     <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h">
       <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\Trigonometry.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\BasicMath.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

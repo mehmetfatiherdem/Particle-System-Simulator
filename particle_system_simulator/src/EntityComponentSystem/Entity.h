@@ -5,11 +5,11 @@
 class Entity
 {
 private:
-	entt::registry& registry;
-	entt::entity handle;
+	/*static entt::registry registry;
+	entt::entity handle;*/
 
 public:
-	Entity(entt::registry& registry, entt::entity handle) : registry(registry), handle(handle) {}
+	/*Entity()  { }
 	~Entity()
 	{
 		registry.destroy(handle);
@@ -38,7 +38,7 @@ public:
     template<typename... Component>
     auto getEntitiesWithComponents() {
 		return registry.view<Component...>();
-	}
+	}*/
 
     /*
      now there are three different options to loop through the entities from our view

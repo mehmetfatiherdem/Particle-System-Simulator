@@ -10,25 +10,8 @@ private:
 	static std::uniform_int_distribution<std::mt19937::result_type> distribution;
 
 public:
-	static void init()
-	{
-		engine.seed(std::random_device()());
-	};
-
-	static float getFloat()
-	{
-		return (float)distribution(engine) / (float)std::numeric_limits<uint32_t>::max();
-	}
-
-	static float getFloat(float min, float max)
-	{
-		float random = getFloat();
-		return min + (max - min) * random;
-	}
-
-	static int getInt(int min, int max)
-	{
-		float random = getFloat();
-		return min + (int)((max - min) * random);
-	}
+	static void init();
+	static float getFloat();
+	static float getFloat(float min, float max);
+	static int getInt(int min, int max);
 };

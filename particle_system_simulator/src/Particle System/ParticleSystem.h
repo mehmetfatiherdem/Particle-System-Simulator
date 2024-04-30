@@ -1,31 +1,32 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "EntityComponentSystem/Entity.h"
 #include "Data/ParticleSystemProps.h"
-#include "Particle.h"
+#include "Particle System/Particle.h"
+#include "Emitter/Emitter.h"
+#include "MeshConstruction/Shapes.h"
+#include "RenderPipeline/Scene/Scene.h"
+#include "RenderPipeline/Material/Material.h"
+#include "RenderPipeline/Texture/Texture.h"
 
 class ParticleSystem : public Entity
 {
 private:
 	std::vector<Particle> particlePool;
-	std::vector<Particle> activeParticles;
 
-	glm::vec3 position;
+	Mesh sphere;
+	Material* material;
 
 	ParticleSystemProps props;
+	std::unique_ptr<Emitter> emitter;
+	Scene& scene;
 	
 public:
-	ParticleSystem(const ParticleSystemProps& props);
-	~ParticleSystem();
+	ParticleSystem() = delete;
+	ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitter> emitter);
+	~ParticleSystem() = default;
 
-	void update()
-	{
-
-	}
+	void update();
 };
-
-void test()
-{
-	ParticleSystem system(ParticleSystemProps{});
-}

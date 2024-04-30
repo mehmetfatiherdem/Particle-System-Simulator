@@ -2,7 +2,6 @@
 #include <cmath>
 #include "Input Management/Utility/InputUtility.h"
 #include "RenderPipeline/Application.h"
-#include "GeneralUtility/MathUtility.h"
 #include "Window.h"
 
 Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :

@@ -22,6 +22,8 @@
 #include "RenderPipeline/Application.h"
 #include "Input Management/Input.h"
 #include "Time Management/Time.h"
+#include "Particle System/ParticleSystem.h"
+#include "GeneralUtility/Random.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
 {
@@ -40,6 +42,7 @@ Application& Application::getInstance()
 
 void Application::run()
 {
+    Random::init();
     Mesh mesh = createCube();
     auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}, glm::vec3{1.0, 0.75, 0.63}}, mesh, Shader::genericShader(), Material::defaultMaterial());
     obj = scene.createObject(obj);

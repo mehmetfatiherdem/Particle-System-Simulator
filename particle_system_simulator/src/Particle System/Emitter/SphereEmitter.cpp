@@ -1,3 +1,4 @@
+
 #include "SphereEmitter.h"
 
 void SphereEmitter::emit(const ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex, uint32_t particleCount)
@@ -18,7 +19,7 @@ void SphereEmitter::emit(const ParticleSystemProps& props, std::vector<Particle>
 		randomXy = std::sqrtf(randomXy / (dx * dx + dy * dy));
 		y = randomXy * dy;
 		x = randomXy * dx;
-		noise = std::max(x, y, z) / 5.0f;
+		noise = utility::math::max(x, y, z) / 5.0f;
 
 		glm::vec3 offset = glm::vec3{x, y, z};
 		glm::vec3 velocity = offset;

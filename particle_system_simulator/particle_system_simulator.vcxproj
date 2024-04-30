@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\Emitter.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
     <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
@@ -54,13 +57,15 @@
     <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
+    <ClInclude Include="src\GeneralUtility\BasicMath.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
-    <ClInclude Include="src\GeneralUtility\MathUtility.h" />
+    <ClInclude Include="src\GeneralUtility\SignUtility.h" />
     <ClInclude Include="src\GeneralUtility\Random.h" />
     <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
+    <ClInclude Include="src\GeneralUtility\Trigonometry.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
     <ClInclude Include="src\Input Management\Data\KeyCode.h" />
     <ClInclude Include="src\Input Management\Data\MouseButton.h" />
