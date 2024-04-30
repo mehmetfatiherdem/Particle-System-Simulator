@@ -13,7 +13,7 @@ private:
 protected:
 	Emitter(float emissionRate = 10.0f) : emissionRate(emissionRate), surplus(0) {}
 
-	virtual void emit(const ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex, uint32_t particleCount) = 0;
+	virtual void emit(const ParticleSystemProps& props, glm::vec3& position, glm::vec3& velocity) = 0;
 public:
 
 	void tryEmit(ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex);

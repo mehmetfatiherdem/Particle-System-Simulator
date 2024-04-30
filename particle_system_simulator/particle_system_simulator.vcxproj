@@ -25,6 +25,7 @@
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp" />
     <ClCompile Include="src\Particle System\Emitter\Emitter.cpp" />
     <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
     <ClCompile Include="src\Particle System\ParticleSystem.cpp" />

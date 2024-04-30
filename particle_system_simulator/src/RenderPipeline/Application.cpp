@@ -25,6 +25,7 @@
 #include "Particle System/ParticleSystem.h"
 #include "GeneralUtility/Random.h"
 #include "Particle System/Emitter/SphereEmitter.h"
+#include "Particle System/Emitter/ConeEmitter.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
 {
@@ -52,13 +53,13 @@ void Application::run()
 
     ParticleSystemProps psProps
     {
-        .startLifetime = 2.0f,
-        .startSpeed = 0.5f,
+        .startLifetime = 4.5f,
+        .startSpeed = 2.5f,
         .startSize = 0.3f,
         .maxParticles = 250,
     };
 
-    ParticleSystem ps(psProps, std::make_unique<SphereEmitter>(SphereEmitter{100.0f}));
+    ParticleSystem ps(psProps, std::make_unique<ConeEmitter>(ConeEmitter{10.0f, 0.25f}));
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 
@@ -90,4 +91,6 @@ void Application::run()
         window.endFrame();
         Time::endFrame();
     }
+
+	glfwTerminate();
 }

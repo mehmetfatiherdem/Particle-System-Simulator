@@ -17,7 +17,20 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 		props.currentParticles += particleCount;
 	}
 
-	if (particleCount == 0) return;
+	glm::vec3 position, velocity;
 
-	emit(props, particlePool, poolIndex, particleCount);
+	for (size_t i = 0; i < particleCount; ++i, poolIndex = (poolIndex - 1) % particlePool.size())
+	{
+		emit(props, position, velocity);
+
+		Particle& particle = particlePool[poolIndex];
+
+		particle.renderer->getTransform().setPosition(position);
+		particle.renderer->getTransform().setEulerRotation(props.startRotation);
+		particle.renderer->getTransform().setScale(glm::vec3{props.startSize, props.startSize, props.startSize});
+		particle.velocity = velocity;
+		particle.color = props.startColor;
+		particle.remainingLifetime = props.startLifetime;
+		particle.enable();
+	}
 }

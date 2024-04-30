@@ -237,6 +237,9 @@
     <ClCompile Include="src\GeneralUtility\Random.cpp">
       <Filter>src\General Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
