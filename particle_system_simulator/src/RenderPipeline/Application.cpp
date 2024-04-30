@@ -24,6 +24,7 @@
 #include "Time Management/Time.h"
 #include "Particle System/ParticleSystem.h"
 #include "GeneralUtility/Random.h"
+#include "Particle System/Emitter/SphereEmitter.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
 {
@@ -43,10 +44,21 @@ Application& Application::getInstance()
 void Application::run()
 {
     Random::init();
-    Mesh mesh = createCube();
+
+    /*Mesh mesh = createSphere(500);
     auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}, glm::vec3{1.0, 0.75, 0.63}}, mesh, Shader::genericShader(), Material::defaultMaterial());
     obj = scene.createObject(obj);
-    obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});
+    obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});*/
+
+    ParticleSystemProps psProps
+    {
+        .startLifetime = 2.0f,
+        .startSpeed = 0.5f,
+        .startSize = 0.3f,
+        .maxParticles = 250,
+    };
+
+    ParticleSystem ps(psProps, std::make_unique<SphereEmitter>(SphereEmitter{100.0f}));
 
     scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
 
@@ -71,6 +83,7 @@ void Application::run()
         }
 
         scene.update();
+		ps.update();
         scene.render();
 
         window.swapBuffers();

@@ -1,4 +1,8 @@
-
+#include <glm/vec2.hpp>
+#include "GeneralUtility/Random.h"
+#include "GeneralUtility/BasicMath.h"
+#include "GeneralUtility/Trigonometry.h"
+#include "Time Management/Time.h"
 #include "SphereEmitter.h"
 
 void SphereEmitter::emit(const ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex, uint32_t particleCount)

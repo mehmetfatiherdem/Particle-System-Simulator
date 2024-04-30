@@ -6,8 +6,8 @@
 #include <functional>
 
 ParticleSystem::ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitter> emitter)
-	: props(props), emitter(std::move(emitter)), sphere(createSphere(500)), scene(Application::getInstance().getScene()),
-	material(nullptr)
+	: props(props), emitter(std::move(emitter)), sphere(createSphere(24)), scene(Application::getInstance().getScene()),
+	material(nullptr), poolIndex(props.maxParticles - 1)
 {
 	particlePool.resize(props.maxParticles);
 
@@ -20,6 +20,8 @@ ParticleSystem::ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitte
 
 void ParticleSystem::update()
 {
+	emitter->tryEmit(props, particlePool, poolIndex);
+
 	for (uint32_t i = 0; i < particlePool.size(); ++i)
 	{
 		Particle& particle = particlePool[i];

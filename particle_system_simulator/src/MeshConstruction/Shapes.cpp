@@ -221,7 +221,7 @@ Mesh createSphere(uint32_t approximateVertexCount, bool smooth)
 	{
 		a = 1.0f;
 		b = 2.0f;
-		c = 1 - approximateVertexCount;
+		c = 1 - static_cast<int>(approximateVertexCount);
 	}
 	else
 	{

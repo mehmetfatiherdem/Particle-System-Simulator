@@ -1,12 +1,7 @@
 #pragma once
 
 #include "Emitter.h"
-
-#include <glm/vec2.hpp>
-#include "GeneralUtility/Random.h"
-#include "GeneralUtility/BasicMath.h"
-#include "GeneralUtility/Trigonometry.h"
-#include "Time Management/Time.h"
+#include "GeneralUtility/MathConstants.h"
 
 class ParticleSystemProps;
 

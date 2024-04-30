@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <stdint.h>
 #include "EntityComponentSystem/Entity.h"
 #include "Data/ParticleSystemProps.h"
 #include "Particle System/Particle.h"
@@ -15,6 +16,7 @@ class ParticleSystem : public Entity
 {
 private:
 	std::vector<Particle> particlePool;
+	uint32_t poolIndex;
 
 	Mesh sphere;
 	Material* material;

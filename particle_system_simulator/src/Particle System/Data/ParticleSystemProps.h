@@ -13,7 +13,7 @@ struct ParticleSystemProps
 	glm::vec3 startRotation = glm::vec3{0.0f, 0.0f, 0.0f};
 	Color4 startColor = Color4{glm::vec3{1.0f, 1.0f, 1.0f}};
 	float gravityModifier = 1.0f;
-	uint32_t maxParticles = 1000;
+	uint32_t maxParticles = 10;
 	uint32_t currentParticles = 0;
 	glm::vec3 position = glm::vec3{0.0f, 0.0f, 0.0f};
 };
