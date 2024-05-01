@@ -17,10 +17,10 @@ public:
 	SizeBySpeed() = delete;
 
 	SizeBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<float>& bezier) :
-		method(ComponentMethod::Curve), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(bezier), maxBezier(bezier) { }
+		Component(1), method(ComponentMethod::Curve), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(bezier), maxBezier(bezier) { }
 	
 	SizeBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<float>& minBezier, const CubicBezierCurve<float>& maxBezier) :
-		method(ComponentMethod::RandomBetweenTwoCurves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
+		Component(1), method(ComponentMethod::RandomBetweenTwoCurves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~SizeBySpeed() override = default;
 

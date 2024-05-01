@@ -17,16 +17,16 @@ public:
 	LimitVelocityOverLifetime() = delete;
 
 	LimitVelocityOverLifetime(const glm::vec3& constantVelocity, float dampen) :
-		method(ComponentMethod::Constant), minVelocity(constantVelocity), maxVelocity(constantVelocity), dampen(dampen)
+		Component(2), method(ComponentMethod::Constant), minVelocity(constantVelocity), maxVelocity(constantVelocity), dampen(dampen)
 	{}
 	LimitVelocityOverLifetime(const glm::vec3& minVelocity, const glm::vec3& maxVelocity, float dampen) :
-		method(ComponentMethod::RandomBetweenTwoConstants), minVelocity(minVelocity), maxVelocity(maxVelocity), dampen(dampen)
+		Component(2), method(ComponentMethod::RandomBetweenTwoConstants), minVelocity(minVelocity), maxVelocity(maxVelocity), dampen(dampen)
 	{}
 	LimitVelocityOverLifetime(const CubicBezierCurve<glm::vec3>& bezier, float dampen) :
-		method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier), dampen(dampen)
+		Component(2), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier), dampen(dampen)
 	{}
 	LimitVelocityOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier, float dampen) :
-		method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier), dampen(dampen)
+		Component(2), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier), dampen(dampen)
 	{}
 
 	virtual ~LimitVelocityOverLifetime() override = default;

@@ -11,15 +11,14 @@
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Texture/Texture.h"
 
-//Friction over lifetime
 //Color over lifetime
 //Color by speed
+
+
+//Friction over lifetime
 //Rotation over lifetime
 
 //Components will have priorities, for example, limit velocity must execute after velocity over lifetime
-
-//min particle size
-//max particle size
 
 class ParticleSystem
 {

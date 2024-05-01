@@ -3,11 +3,12 @@
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
-#include "ColorOverLifetime.h"
+#include "ColorBySpeed.h"
 
-void ColorOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
+void ColorBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 {
-	float t = 1.0f - particle.remainingLifetime / props.startLifetime;
+	float speed = glm::length(particle.velocity);
+	float t = glm::clamp(speed, minSpeed, maxSpeed) / (maxSpeed - minSpeed);
 	Color4 color{glm::vec3{0.0f, 0.0f, 0.0f}};
 
 	if (t > keypoints[0] && t < keypoints[1])

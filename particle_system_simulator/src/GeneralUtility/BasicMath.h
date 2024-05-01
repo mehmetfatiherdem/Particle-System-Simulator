@@ -20,4 +20,10 @@ namespace utility::math
 			std::swap(min, max);
 		}
 	}
+
+	template<class T>
+	T lerp(T a, T b, float t)
+	{
+		return a + (b - a) * t;
+	}
 }

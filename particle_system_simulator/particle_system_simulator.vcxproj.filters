@@ -240,6 +240,30 @@
     <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp">
       <Filter>src\Particle System\Emitter</Filter>
     </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\Component.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\SizeOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\VelocityOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\SizeBySpeed.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
@@ -418,6 +442,36 @@
     </ClInclude>
     <ClInclude Include="src\GeneralUtility\BasicMath.h">
       <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ColorOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\Component.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\ComponentMethod.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ForceOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\SizeBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\RotationBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\LimitVelocityOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

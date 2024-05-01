@@ -18,13 +18,13 @@ public:
 	ForceOverLifetime() = delete;
 
 	ForceOverLifetime(const glm::vec3& constantForce) : 
-		method(ComponentMethod::Constant), minForce(constantForce), maxForce(constantForce) { }
+		Component(1), method(ComponentMethod::Constant), minForce(constantForce), maxForce(constantForce) { }
 	ForceOverLifetime(const glm::vec3& minForce, const glm::vec3& maxForce) :
-		method(ComponentMethod::RandomBetweenTwoConstants), minForce(minForce), maxForce(maxForce) { }
+		Component(1), method(ComponentMethod::RandomBetweenTwoConstants), minForce(minForce), maxForce(maxForce) { }
 	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& bezier) :
-		method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
+		Component(1), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
 	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
-		method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
+		Component(1), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~ForceOverLifetime() override = default;
 

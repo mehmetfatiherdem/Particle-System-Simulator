@@ -18,16 +18,16 @@ public:
 	VelocityOverLifetime() = delete;
 
 	VelocityOverLifetime(const glm::vec3& constantVelocity) :
-		method(ComponentMethod::Constant), minVelocity(constantVelocity), maxVelocity(constantVelocity)
+		Component(0), method(ComponentMethod::Constant), minVelocity(constantVelocity), maxVelocity(constantVelocity)
 	{}
 	VelocityOverLifetime(const glm::vec3& minVelocity, const glm::vec3& maxVelocity) :
-		method(ComponentMethod::RandomBetweenTwoConstants), minVelocity(minVelocity), maxVelocity(maxVelocity)
+		Component(0), method(ComponentMethod::RandomBetweenTwoConstants), minVelocity(minVelocity), maxVelocity(maxVelocity)
 	{}
 	VelocityOverLifetime(const CubicBezierCurve<glm::vec3>& bezier) :
-		method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier)
+		Component(0), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier)
 	{}
 	VelocityOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
-		method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier)
+		Component(0), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier)
 	{}
 
 	virtual ~VelocityOverLifetime() override = default;
