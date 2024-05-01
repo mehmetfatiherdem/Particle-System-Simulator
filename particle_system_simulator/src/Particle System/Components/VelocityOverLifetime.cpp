@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GeneralUtility/Random.h"
+#include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
@@ -27,6 +28,11 @@ void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& pa
 	case ComponentMethod::RandomBetweenTwoCurves:
 		glm::vec3 min = minBezier.evaluate(t);
 		glm::vec3 max = maxBezier.evaluate(t);
+
+		utility::math::swapToPreserveMinMax(min.x, max.x);
+		utility::math::swapToPreserveMinMax(min.y, max.y);
+		utility::math::swapToPreserveMinMax(min.z, max.z);
+
 		force.x = Random::getFloat(min.x, max.x);
 		force.y = Random::getFloat(min.y, max.y);
 		force.z = Random::getFloat(min.z, max.z);

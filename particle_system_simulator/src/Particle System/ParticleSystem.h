@@ -11,14 +11,12 @@
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Texture/Texture.h"
 
-//Limit velocity over lifetime
 //Friction over lifetime
 //Color over lifetime
 //Color by speed
-//Size by speed
 //Rotation over lifetime
-//Rotation by speed
 
+//Components will have priorities, for example, limit velocity must execute after velocity over lifetime
 
 //min particle size
 //max particle size

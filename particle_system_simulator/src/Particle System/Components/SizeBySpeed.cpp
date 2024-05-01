@@ -2,18 +2,18 @@
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
-#include "SizeOverLifetime.h"
+#include "Time Management/Time.h"
+#include "SizeBySpeed.h"
 
-void SizeOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
+void SizeBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 {
-	float t = 1.0f - particle.remainingLifetime / props.startLifetime;
+	float speed = glm::length(particle.velocity);
+	float t = glm::clamp(speed, minSpeed, maxSpeed) / (maxSpeed - minSpeed);
+
 	float size = 0.0f;
 
 	switch (method)
 	{
-	case ComponentMethod::RandomBetweenTwoConstants:
-		size = Random::getFloat(minSize, maxSize);
-		break;
 	case ComponentMethod::Curve:
 		size = minBezier.evaluate(t);
 		break;
