@@ -4,6 +4,7 @@
 #include "RenderPipeline/Color/Color4.h"
 #include "RenderPipeline/Object/MeshRenderer.h"
 
+//I somehow couldn't make this a struct (it wouldn't let me strangely) and had to make it a class and then make the members public instead
 class Particle
 {
 public:

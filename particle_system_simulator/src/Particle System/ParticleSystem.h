@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include <stdint.h>
-#include "EntityComponentSystem/Entity.h"
 #include "Data/ParticleSystemProps.h"
 #include "Particle System/Particle.h"
 #include "Emitter/Emitter.h"
@@ -12,7 +11,19 @@
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Texture/Texture.h"
 
-class ParticleSystem : public Entity
+//Limit velocity over lifetime
+//Friction over lifetime
+//Color over lifetime
+//Color by speed
+//Size by speed
+//Rotation over lifetime
+//Rotation by speed
+
+
+//min particle size
+//max particle size
+
+class ParticleSystem
 {
 private:
 	std::vector<Particle> particlePool;
@@ -23,6 +34,7 @@ private:
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
+
 	Scene& scene;
 	
 public:
