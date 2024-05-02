@@ -73,30 +73,47 @@ void Application::run()
     obj = scene.createObject(obj);
     obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});*/
 
-    ParticleSystemProps psProps
+    ParticleSystemProps psPropsforFire
     {
-        .startLifetime = 1.25f,
-        .startSpeed = 1.25f,
-        .startSize = 0.5f,
+        .startLifetime = 1.0f,
+        .startSpeed = 3.0f,
+        .startSize = 0.75f,
 		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
-        .maxParticles = 250,
+        .maxParticles = 700,
     };
+    ParticleSystemProps psPropsforSmoke
+    {
+        .startLifetime = 1.8f,
+        .startSpeed = 1.8f,
+        .startSize = 0.1f,
+        .startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
+        .maxParticles = 350,
+        .position = glm::vec3{0.0f, 0.9f, 0.0f},
+    };
+    ParticleSystem ps2(psPropsforSmoke, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{ 20.0f, 0.25f, 0.4f }));
+    ParticleSystem ps(psPropsforFire, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
 
-    ParticleSystem ps(psProps, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
-
-	CubicBezierCurve<float> solCurve{1.0f, 0.50f, 0.20f, 0.0f};
+	CubicBezierCurve<float> solCurve{ 1.0f, 0.90f, 0.7f, 0.0f};
     SizeOverLifetime* sol = new SizeOverLifetime(solCurve);
+    CubicBezierCurve<float> solCurve2{ 0.5f, 0.40f, 0.3f, 0.0f };
+    SizeOverLifetime* sol2 = new SizeOverLifetime(solCurve2);
 	ps.addComponent(sol);
+    ps2.addComponent(sol2);
 
     /*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
         0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
 
 	ps.addComponent(cbs);*/
 
-    ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
-        0.9f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 1.0f}});
+    ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{ glm::vec4{1.0f, 0.75f, 0.0f, 1.0f} },
+        1.0f, Color4{ glm::vec4{1.0f, 0.0f, 0.0f, 1.0f} });
+
+    ColorOverLifetime* col2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}},
+        1.0f, Color4{glm::vec4{0.60f, 0.60f, 0.60f, 1.0f}});
+
 
 	ps.addComponent(col);
+    ps2.addComponent(col2);
 
     //scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
@@ -122,6 +139,7 @@ void Application::run()
         }
 
 		ps.update();
+        ps2.update();
         scene.update();
         scene.render();
 
