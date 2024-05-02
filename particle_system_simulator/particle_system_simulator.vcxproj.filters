@@ -139,6 +139,9 @@
     <Filter Include="src\Particle System\Emitter">
       <UniqueIdentifier>{9acb7489-ed0a-442b-8167-a31b4549140e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Textures\Fire">
+      <UniqueIdentifier>{4a36883f-bcfd-4d72-afb4-83a094b8e601}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -507,6 +510,9 @@
     </Image>
     <Image Include="Resources\Textures\Skybox\front.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Fire\fire.png">
+      <Filter>Resources\Textures\Fire</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

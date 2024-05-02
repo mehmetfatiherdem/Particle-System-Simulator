@@ -1,19 +1,22 @@
+#include <functional>
+#include <algorithm>
+#include <iostream>
 #include "ParticleSystem.h"
 #include "Time Management/Time.h"
 #include "RenderPipeline/Application.h"
 #include "RenderPipeline/Shader/Shader.h"
-#include <algorithm>
-#include <functional>
 
-ParticleSystem::ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitter> emitter)
-	: props(props), emitter(std::move(emitter)), sphere(createSphere(100)), scene(Application::getInstance().getScene()),
-	material(nullptr), poolIndex(props.maxParticles - 1)
+ParticleSystem::ParticleSystem(ParticleSystemProps props, Texture&& texture, std::unique_ptr<Emitter> emitter)
+	: props(props), emitter(std::move(emitter)), sphere(createQuad()), scene(Application::getInstance().getScene()),
+	material(nullptr), poolIndex(props.maxParticles - 1), texture(std::move(texture))
 {
 	particlePool.resize(props.maxParticles);
 
+	Material material(&texture, nullptr, props.startColor, 0.0f);
+
 	std::for_each(particlePool.begin(), particlePool.end(), [&](Particle& particle) 
 		{
-			particle.renderer = scene.createObject(TransformProps{}, sphere, Shader::instancedShader());
+			particle.renderer = scene.createObject(TransformProps{}, sphere, Shader::instancedShader(), material);
 			particle.disable();
 		});
 }
@@ -38,9 +41,13 @@ void ParticleSystem::update()
 			if (particle.remainingLifetime <= 0)
 			{
 				particle.disable();
-				--props.currentParticles;
+				props.currentParticles--;
 				continue;
 			}
+
+			std::cout << particle.renderer->getMaterial().getColor().ambient.r <<
+				"," << particle.renderer->getMaterial().getColor().ambient.g <<
+				"," << particle.renderer->getMaterial().getColor().ambient.b << "\n";
 
 			for (Component* component : components)
 			{

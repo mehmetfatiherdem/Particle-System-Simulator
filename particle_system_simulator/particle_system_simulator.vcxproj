@@ -138,6 +138,7 @@
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Textures\Fire\fire.png" />
     <Image Include="Resources\Textures\Skybox\back.jpg" />
     <Image Include="Resources\Textures\Skybox\bottom.jpg" />
     <Image Include="Resources\Textures\Skybox\front.jpg" />

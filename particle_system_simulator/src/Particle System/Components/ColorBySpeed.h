@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "RenderPipeline/Color/Color4.h"
 
-class ColorBySpeed : Component
+class ColorBySpeed : public Component
 {
 private:
 	float keypoints[2];
@@ -15,7 +15,7 @@ public:
 	ColorBySpeed() = delete;
 
 	ColorBySpeed(float keypoint1, const Color4& color1, float keypoint2, const Color4& color2, float minSpeed, float maxSpeed) :
-		Component(1), keypoints{keypoint1, keypoint2}, colors{color1, color2}, minSpeed(minSpeed), maxSpeed(maxSpeed) { }
+		Component(6), keypoints{keypoint1, keypoint2}, colors{color1, color2}, minSpeed(minSpeed), maxSpeed(maxSpeed) { }
 
 	virtual ~ColorBySpeed() override = default;
 

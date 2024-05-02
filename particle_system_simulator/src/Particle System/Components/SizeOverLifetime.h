@@ -16,11 +16,13 @@ private:
 public:
 	SizeOverLifetime() = delete;
 	SizeOverLifetime(float minConstant, float maxConstant) :
-		Component(0), method(ComponentMethod::RandomBetweenTwoConstants), minSize(minConstant), maxSize(maxConstant) {}
+		Component(1), method(ComponentMethod::RandomBetweenTwoConstants), minSize(minConstant), maxSize(maxConstant) {}
+
 	SizeOverLifetime(const CubicBezierCurve<float>& bezier) :
-		Component(0), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
+		Component(1), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
+
 	SizeOverLifetime(const CubicBezierCurve<float>& minBezier, const CubicBezierCurve<float>& maxBezier) :
-		Component(0), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
+		Component(1), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~SizeOverLifetime() override = default;
 

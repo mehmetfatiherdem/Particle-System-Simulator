@@ -29,6 +29,7 @@ private:
 
 	Mesh sphere;
 	Material* material;
+	Texture texture;
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
@@ -38,7 +39,7 @@ private:
 	
 public:
 	ParticleSystem() = delete;
-	ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitter> emitter);
+	ParticleSystem(ParticleSystemProps props, Texture&& texture, std::unique_ptr<Emitter> emitter);
 	~ParticleSystem() = default;
 
 	void addComponent(Component* component);

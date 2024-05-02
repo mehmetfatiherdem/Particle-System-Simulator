@@ -53,12 +53,12 @@ void Material::useMaterial(const Shader& shader, bool shaderUpdated) const
 	//TODO: maybe move the texture check to the Texture class
 	if (diffuseMap && (shaderUpdated || diffuseMap != lastDiffuseMap))
 	{
-		diffuseMap->useTexture();
 		shader.setInt("diffuseMap", 0);
+		diffuseMap->useTexture();
 	}
 	if (specularMap && (shaderUpdated || specularMap != lastSpecularMap))
 	{
-		specularMap->useTexture();
 		shader.setInt("specularMap", 1);
+		specularMap->useTexture();
 	}
 }

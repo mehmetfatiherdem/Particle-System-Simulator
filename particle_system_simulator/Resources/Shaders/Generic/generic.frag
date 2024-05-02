@@ -80,9 +80,9 @@ layout (std140, binding = 3) uniform Mat {
     Material material;
 };
 
-vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
-vec4 calculatePointLight(PointLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
-vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
+vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
+vec4 calculatePointLight(PointLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
+vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
 vec4 getMaterialAmbient();
 vec4 getMaterialDiffuse();
 vec4 getMaterialSpecular();
@@ -92,28 +92,29 @@ void main() {
     vec4 materialDiffuse = getMaterialDiffuse();
     vec4 materialSpecular = getMaterialSpecular();
     vec3 viewDir = normalize(viewPosition - fs_in.worldPosition);
+    vec3 normal = normalize(fs_in.worldNormal);
 
-    vec4 color = vec4(0.0, 0.0, 0.0, 0.0);
+    vec4 color = vec4(0.0);
 
     for(int i = 0; i < noOfDirectionalLights; i++)
-        color += calculateDirectionalLight(directionalLights[i], viewDir, materialAmbient, materialDiffuse, materialSpecular);
+        color += calculateDirectionalLight(directionalLights[i], viewDir, normal, materialAmbient, materialDiffuse, materialSpecular);
     
     for(int i = 0; i < noOfPointLights; i++)
-        color += calculatePointLight(pointLights[i], viewDir, materialAmbient, materialDiffuse, materialSpecular);
+        color += calculatePointLight(pointLights[i], viewDir, normal, materialAmbient, materialDiffuse, materialSpecular);
     
     for(int i = 0; i < noOfSpotLights; i++)
-        color += calculateSpotLight(spotLights[i], viewDir, materialAmbient, materialDiffuse, materialSpecular);
-    
+        color += calculateSpotLight(spotLights[i], viewDir, normal, materialAmbient, materialDiffuse, materialSpecular);
+
     fragmentColor = color;
 }
 
-vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
+vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
     vec3 lightDir = normalize(-light.direction);
 
-    float diffuseFactor = max(dot(fs_in.worldNormal, lightDir), 0.0);
+    float diffuseFactor = max(dot(normal, lightDir), 0.0);
 
-    vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
-    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float specularFactor = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
 
     vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * matDiffuse;
@@ -122,19 +123,19 @@ vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec4 matAmb
     return (ambient + diffuse + specular);
 }
 
-vec4 calculatePointLight(PointLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
+vec4 calculatePointLight(PointLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
     vec3 lightDir = light.position - fs_in.worldPosition;
     float distance = length(lightDir);
     lightDir = normalize(lightDir);
 
-    float attenuation = 1.0 / (light.attenuation.constant +
-                                (light.attenuation.linear * distance) +
-                                (light.attenuation.quadratic * distance * distance));
+    float attenuation = 1.0 / ((light.attenuation.constant) +
+                               (light.attenuation.linear * distance) +
+                               (light.attenuation.quadratic * distance * distance));
 
-    float diffuseFactor = max(dot(fs_in.worldNormal, lightDir), 0.0);
+    float diffuseFactor = max(dot(normal, lightDir), 0.0);
 
-    vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
-    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float specularFactor = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
 
     vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * matDiffuse;
@@ -143,7 +144,7 @@ vec4 calculatePointLight(PointLight light, vec3 viewDir, vec4 matAmbient, vec4 m
     return (ambient + diffuse + specular) * attenuation;
 }
 
-vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
+vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec3 normal, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular) {
     vec3 lightDir = light.position - fs_in.worldPosition;
     float distance = length(lightDir);
     lightDir = normalize(lightDir);
@@ -155,10 +156,10 @@ vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec4 matAmbient, vec4 mat
     float theta = dot(lightDir, normalize(-light.direction)); 
     float intensity = clamp((theta - light.outerCutOff) / light.epsilon, 0.0, 1.0);
 
-    float diffuseFactor = max(dot(fs_in.worldNormal, lightDir), 0.0);
-
-    vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
-    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float diffuseFactor = max(dot(normal, lightDir), 0.0);
+    
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float specularFactor = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
 
     vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * intensity * matDiffuse;

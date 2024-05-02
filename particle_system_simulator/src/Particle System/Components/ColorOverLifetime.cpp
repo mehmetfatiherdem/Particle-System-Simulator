@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
