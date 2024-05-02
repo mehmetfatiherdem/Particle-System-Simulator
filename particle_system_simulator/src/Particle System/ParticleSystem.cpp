@@ -6,13 +6,12 @@
 #include "RenderPipeline/Application.h"
 #include "RenderPipeline/Shader/Shader.h"
 
-ParticleSystem::ParticleSystem(ParticleSystemProps props, Texture&& texture, std::unique_ptr<Emitter> emitter)
+ParticleSystem::ParticleSystem(const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter)
 	: props(props), emitter(std::move(emitter)), sphere(createQuad()), scene(Application::getInstance().getScene()),
-	material(nullptr), poolIndex(props.maxParticles - 1), texture(std::move(texture))
+	material(material), poolIndex(props.maxParticles - 1)
 {
 	particlePool.resize(props.maxParticles);
-
-	Material material(&texture, nullptr, props.startColor, 0.0f);
+	this->material.setColor(props.startColor);
 
 	std::for_each(particlePool.begin(), particlePool.end(), [&](Particle& particle) 
 		{
@@ -44,10 +43,6 @@ void ParticleSystem::update()
 				props.currentParticles--;
 				continue;
 			}
-
-			std::cout << particle.renderer->getMaterial().getColor().ambient.r <<
-				"," << particle.renderer->getMaterial().getColor().ambient.g <<
-				"," << particle.renderer->getMaterial().getColor().ambient.b << "\n";
 
 			for (Component* component : components)
 			{

@@ -28,8 +28,7 @@ private:
 	uint32_t poolIndex;
 
 	Mesh sphere;
-	Material* material;
-	Texture texture;
+	Material material;
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
@@ -39,7 +38,7 @@ private:
 	
 public:
 	ParticleSystem() = delete;
-	ParticleSystem(ParticleSystemProps props, Texture&& texture, std::unique_ptr<Emitter> emitter);
+	ParticleSystem(const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
 	~ParticleSystem() = default;
 
 	void addComponent(Component* component);

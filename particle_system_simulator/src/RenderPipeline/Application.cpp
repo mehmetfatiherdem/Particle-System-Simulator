@@ -62,17 +62,6 @@ void Application::run()
 	Random::init();
 
 	Texture texture(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
-
-	Mesh mesh = createQuad();
-	/*Material material(&texture, nullptr,
-		Color4
-		{
-		glm::vec3{0.72f, 0.48f, 0.24f},
-		glm::vec3{0.72f, 0.48f, 0.24f},
-		glm::vec3{0.72f, 0.48f, 0.24f},
-		1.0f,
-		}, 1.0f);*/
-
 	Material material(&texture, nullptr,
 		Color4
 		{
@@ -82,40 +71,48 @@ void Application::run()
 		1.0f,
 		}, 1.0f);
 
-	//MeshRenderer mr(TransformProps(), mesh, Shader::genericShader(), material);
-
-	scene.createObject(TransformProps(), mesh, Shader::genericShader(), material);
-
-#pragma region Legacy Shit
-	/*auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}}, mesh, Shader::genericShader(), material);
-	obj = scene.createObject(obj);
-	obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});*/
-
-	/*ParticleSystemProps psProps
+	ParticleSystemProps psPropsforFire
 	{
-		.startLifetime = 1.25f,
-		.startSpeed = 1.25f,
-		.startSize = 0.5f,
+		.startLifetime = 1.0f,
+		.startSpeed = 3.0f,
+		.startSize = 0.75f,
 		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
-		.maxParticles = 250,
-	};*/
+		.maxParticles = 700,
+	};
+	ParticleSystemProps psPropsforSmoke
+	{
+		.startLifetime = 1.8f,
+		.startSpeed = 1.8f,
+		.startSize = 0.1f,
+		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
+		.maxParticles = 350,
+		.position = glm::vec3{0.0f, 0.9f, 0.0f},
+	};
 
-	//   ParticleSystem ps(psProps, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
+	ParticleSystem ps2(psPropsforSmoke, material, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.25f, 0.4f}));
+	//ParticleSystem ps(psPropsforFire, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
 
-	   //CubicBezierCurve<float> solCurve{1.0f, 0.50f, 0.20f, 0.0f};
-	//   SizeOverLifetime* sol = new SizeOverLifetime(solCurve);
-	   //ps.addComponent(sol);
+	CubicBezierCurve<float> solCurve{1.0f, 0.90f, 0.7f, 0.0f};
+	SizeOverLifetime* sol = new SizeOverLifetime(solCurve);
+	CubicBezierCurve<float> solCurve2{0.5f, 0.40f, 0.3f, 0.0f};
+	SizeOverLifetime* sol2 = new SizeOverLifetime(solCurve2);
 
-	//   /*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
-	//       0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
+	//ps.addComponent(sol);
+	ps2.addComponent(sol2);
 
-	   //ps.addComponent(cbs);*/
+	/*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
+		0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
 
-	//   ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
-	//       0.9f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 1.0f}});
+	ps.addComponent(cbs);*/
 
-	   //ps.addComponent(col);
-#pragma endregion
+	ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 0.75f, 0.0f, 1.0f}},
+		1.0f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}});
+
+	ColorOverLifetime* col2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}},
+		1.0f, Color4{glm::vec4{0.60f, 0.60f, 0.60f, 1.0f}});
+
+	//ps.addComponent(col);
+	ps2.addComponent(col2);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
@@ -141,9 +138,9 @@ void Application::run()
 		}
 
 		//ps.update();
+		ps2.update();
 		scene.update();
 		scene.render();
-		//mr.render();
 
 		window.swapBuffers();
 		window.endFrame();
