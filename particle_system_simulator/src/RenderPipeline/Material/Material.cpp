@@ -34,7 +34,7 @@ Material Material::defaultMaterial()
 	return Material(nullptr, nullptr, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, 32.0f);
 }
 
-void Material::useMaterial(const Shader& shader, bool shaderUpdated) const
+void Material::useMaterial(const Shader& shader) const
 {
 	MaterialGLSL material
 	{
@@ -42,23 +42,19 @@ void Material::useMaterial(const Shader& shader, bool shaderUpdated) const
 		color.diffuse,
 		color.specular,
 		shininess,
-		diffuseMap ? 1 : 0,
-		specularMap ? 1 : 0,
+		diffuseMap ? true : false,
+		specularMap ? true : false,
 		0.0f,
 	};
 
 	Application::getInstance().getScene().getShaderManager().updateMaterial(material);
 
-
-	//TODO: maybe move the texture check to the Texture class
-	if (diffuseMap && (shaderUpdated || diffuseMap != lastDiffuseMap))
+	if (diffuseMap && (diffuseMap != lastDiffuseMap))
 	{
-		shader.setInt("diffuseMap", 0);
 		diffuseMap->useTexture();
 	}
-	if (specularMap && (shaderUpdated || specularMap != lastSpecularMap))
+	if (specularMap && (specularMap != lastSpecularMap))
 	{
-		shader.setInt("specularMap", 1);
 		specularMap->useTexture();
 	}
 }

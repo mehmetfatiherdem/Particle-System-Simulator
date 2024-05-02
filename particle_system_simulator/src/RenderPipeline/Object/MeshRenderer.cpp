@@ -80,8 +80,8 @@ void MeshRenderer::render()
 {
 	if (!enabled) return;
 
-	bool shaderUpdated = shader->useShader();
-	material.useMaterial(*shader, shaderUpdated);
+	shader->useShader();
+	material.useMaterial(*shader);
 
 	if (mesh->isInstanced())
 	{

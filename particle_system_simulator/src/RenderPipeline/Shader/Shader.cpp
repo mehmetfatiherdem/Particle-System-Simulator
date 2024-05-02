@@ -20,6 +20,9 @@ Shader::Shader(std::string_view vertex, std::string_view fragment, const VertexA
 	{
 		compileShaders(vertex.data(), fragment.data(), nullptr);
 	}
+
+	setInt("diffuseMap", 0);
+	setInt("specularMap", 1);
 }
 
 Shader::Shader(std::string_view vertex, std::string_view fragment, std::string_view geometry, const VertexAttributes& attributes, LoadMethod method)

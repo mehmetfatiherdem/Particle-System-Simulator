@@ -24,7 +24,7 @@ public:
 
 	static Material defaultMaterial();
 
-	void useMaterial(const Shader& shader, bool shaderUpdated) const;
+	void useMaterial(const Shader& shader) const;
 
 	Color4 getColor() const { return color; }
 	glm::vec4 getAmbientColor() const { return color.ambient; }
