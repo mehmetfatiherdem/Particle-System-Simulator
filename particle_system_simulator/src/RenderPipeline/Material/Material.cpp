@@ -39,8 +39,11 @@ void Material::useMaterial(const Shader& shader) const
 	MaterialGLSL material
 	{
 		color.ambient,
+		0.0f,
 		color.diffuse,
+		0.0f,
 		color.specular,
+		color.alpha,
 		shininess,
 		diffuseMap ? true : false,
 		specularMap ? true : false,

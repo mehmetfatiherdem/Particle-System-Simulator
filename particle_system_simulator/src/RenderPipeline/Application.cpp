@@ -67,17 +67,19 @@ void Application::run()
 	/*Material material(&texture, nullptr,
 		Color4
 		{
-		glm::vec4{0.72f, 0.48f, 0.24f, 1.0f},
-		glm::vec4{0.72f, 0.48f, 0.24f, 1.0f},
-		glm::vec4{0.72f, 0.48f, 0.24f, 1.0f},
+		glm::vec3{0.72f, 0.48f, 0.24f},
+		glm::vec3{0.72f, 0.48f, 0.24f},
+		glm::vec3{0.72f, 0.48f, 0.24f},
+		1.0f,
 		}, 1.0f);*/
 
 	Material material(&texture, nullptr,
 		Color4
 		{
-		glm::vec4{1.0f, 1.0f, 1.0f, 1.0f},
-		glm::vec4{1.0f, 1.0f, 1.0f, 1.0f},
-		glm::vec4{1.0f, 1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		1.0f,
 		}, 1.0f);
 
 	//MeshRenderer mr(TransformProps(), mesh, Shader::genericShader(), material);

@@ -8,6 +8,7 @@ struct Color3
 	glm::vec3 diffuse;
 	glm::vec3 specular;
 
+	Color3() : ambient(glm::vec3{0.0f}), diffuse(glm::vec3{0.0f}), specular(glm::vec3{0.0f}) { }
 	Color3(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular) : ambient(ambient), diffuse(diffuse),
 		specular(specular) { }
 

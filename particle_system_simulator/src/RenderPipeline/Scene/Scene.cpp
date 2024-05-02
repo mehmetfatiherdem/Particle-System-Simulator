@@ -1,3 +1,5 @@
+#include <functional>
+#include <algorithm>
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
@@ -7,6 +9,7 @@
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
 #include "GeneralUtility/stringify.h"
+#include "GeneralUtility/MathConstants.h"
 #include "Scene.h"
 
 std::string getTextureAddresses()
@@ -24,11 +27,13 @@ Scene::~Scene()
 	{
 		delete light;
 	}
-	
+
 	for (auto object : objects)
 	{
 		delete object;
 	}
+
+	
 }
 
 void Scene::update()
@@ -41,8 +46,41 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
-	for(auto object : objects)
+	//Render opaque objects first
+	std::for_each(objects.begin(), objects.end(), [](MeshRenderer* object)
+		{
+			if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON)
+			{
+				object->render();
+			}
+		});
+
+	//Sort the objects based on their distance from the camera (from farthest to nearest), also stack all the opaque objects
+	//at the back of the vector since they're rendered but still inside the vector.
+#pragma region Premature Optimization Possibility
+	/*std::sort uses quicksort, which is O(n ^ 2) in its worst case which happens when the array is already sorted or almost sorted.
+	The array will most likely be sorted or almost sorted due to it getting sorted each frame.
+	So, the worst case will most likely happen most frames.
+	You might want to apply a hybrid of insertion sort and quicksort to avoid the worst case.
+	Let's be real though, you won't do that. You're too lazy.*/
+#pragma endregion
+
+	//The saying of the day: true comes before false.
+
+	std::sort(objects.begin(), objects.end(), [&](MeshRenderer* obj1, MeshRenderer* obj2)
+		{
+			if (std::abs(obj1->getMaterial().getAlpha() - 1.0f) < EPSILON) return false;
+			if (std::abs(obj2->getMaterial().getAlpha() - 1.0f) < EPSILON) return true;
+
+			float obj1Distance = glm::length(obj1->getTransform().getPosition() - camera.getTransform().getPosition());
+			float obj2Distance = glm::length(obj2->getTransform().getPosition() - camera.getTransform().getPosition());
+
+			return obj1Distance > obj2Distance;
+		});
+
+	for (auto object : objects)
 	{
+		if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON) break;
 		object->render();
 	}
 

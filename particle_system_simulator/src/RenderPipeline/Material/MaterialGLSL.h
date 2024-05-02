@@ -7,13 +7,16 @@
 
 struct MaterialGLSL
 {
-	glm::vec4 ambient;
-	glm::vec4 diffuse;
-	glm::vec4 specular;
+	glm::vec3 ambient;
+	float padding1;
+	glm::vec3 diffuse;
+	float padding2;
+	glm::vec3 specular;
+	float padding3;
+	float alpha;
 	float shininess;
 	uint32_t useDiffuseMap;
 	uint32_t useSpecularMap;
-	float padding1;
 };
 
 #pragma pack(pop)
