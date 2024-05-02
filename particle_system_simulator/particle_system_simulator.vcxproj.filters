@@ -243,9 +243,6 @@
     <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp">
       <Filter>src\Particle System\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\Particle System\Components\Component.cpp">
-      <Filter>src\Particle System\Components</Filter>
-    </ClCompile>
     <ClCompile Include="src\Particle System\Components\SizeOverLifetime.cpp">
       <Filter>src\Particle System\Components</Filter>
     </ClCompile>
@@ -262,6 +259,9 @@
       <Filter>src\Particle System\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp">
       <Filter>src\Particle System\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -472,6 +472,21 @@
     </ClInclude>
     <ClInclude Include="src\Particle System\Components\LimitVelocityOverLifetime.h">
       <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ColorBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ComponentComparator.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Material\MaterialGLSL.h">
+      <Filter>src\Render Pipeline\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

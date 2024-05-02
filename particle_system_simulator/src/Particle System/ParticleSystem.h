@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <queue>
+#include <set>
+#include <algorithm>
 #include <memory>
 #include <stdint.h>
 #include "Data/ParticleSystemProps.h"
@@ -10,15 +13,13 @@
 #include "RenderPipeline/Scene/Scene.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Texture/Texture.h"
-
-//Color over lifetime
-//Color by speed
-
+#include "Components/Component.h"
+#include "Components/ComponentComparator.h"
 
 //Friction over lifetime
 //Rotation over lifetime
 
-//Components will have priorities, for example, limit velocity must execute after velocity over lifetime
+using OrderedComponentSet = std::set<Component*, ComponentComparator>;
 
 class ParticleSystem
 {
@@ -31,6 +32,7 @@ private:
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
+	OrderedComponentSet components;
 
 	Scene& scene;
 	
@@ -38,6 +40,8 @@ public:
 	ParticleSystem() = delete;
 	ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitter> emitter);
 	~ParticleSystem() = default;
+
+	void addComponent(Component* component);
 
 	void update();
 };

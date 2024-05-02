@@ -26,6 +26,15 @@
 #include "GeneralUtility/Random.h"
 #include "Particle System/Emitter/SphereEmitter.h"
 #include "Particle System/Emitter/ConeEmitter.h"
+#include "Particle System/Components/Component.h"
+#include "Particle System/Components/ColorBySpeed.h"
+#include "Particle System/Components/ColorOverLifetime.h"
+#include "Particle System/Components/ForceOverLifetime.h"
+#include "Particle System/Components/LimitVelocityOverLifetime.h"
+#include "Particle System/Components/RotationBySpeed.h"
+#include "Particle System/Components/SizeBySpeed.h"
+#include "Particle System/Components/SizeOverLifetime.h"
+#include "Particle System/Components/VelocityOverLifetime.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600) 
 {
@@ -46,7 +55,7 @@ void Application::run()
 {
     Random::init();
 
-    /*Mesh mesh = createSphere(500);
+    /*Mesh mesh = createCube();
     auto obj = scene.createObject(TransformProps{glm::vec3{1.0,2.0,3.0}, glm::vec3{1.0, 0.75, 0.63}}, mesh, Shader::genericShader(), Material::defaultMaterial());
     obj = scene.createObject(obj);
     obj->getTransform().setPosition(glm::vec3{1.0f, 1.0f, 1.0f});*/
@@ -61,7 +70,10 @@ void Application::run()
 
     ParticleSystem ps(psProps, std::make_unique<ConeEmitter>(ConeEmitter{10.0f, 0.25f}));
 
-    scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+
+
+    //scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.9f, 0.6f, 0.6f});
+	scene.createPointLight(glm::vec3{5.0f, 5.0f, 5.0f}, glm::vec3{0.9f, 0.6f, 0.6f}, LightDistance::AD_100);
 
     uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
     void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
@@ -83,8 +95,8 @@ void Application::run()
             glToggle[currentMode](GL_CULL_FACE);
         }
 
-        scene.update();
 		ps.update();
+        scene.update();
         scene.render();
 
         window.swapBuffers();

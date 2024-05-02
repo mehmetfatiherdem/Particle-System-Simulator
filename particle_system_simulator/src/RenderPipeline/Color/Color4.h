@@ -20,6 +20,13 @@ struct Color4
 	Color4(const glm::vec3& color) : ambient(glm::vec4(color, 1.0f)), diffuse(glm::vec4(color, 1.0f)),
 		specular(glm::vec4(color, 1.0f)) { }
 
+	bool operator==(const Color4& other) const
+	{
+		return ambient == other.ambient &&
+			diffuse == other.diffuse &&
+			specular == other.specular;
+	}
+
 	void setColor(const glm::vec4& color)
 	{
 		ambient = color;

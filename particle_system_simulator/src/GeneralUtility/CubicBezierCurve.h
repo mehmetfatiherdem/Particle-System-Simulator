@@ -3,7 +3,10 @@
 template<typename T>
 struct CubicBezierCurve
 {
-	T p0 = default(T), p1 = default(T), p2 = default(T), p3 = default(T);
+	T p0;
+	T p1;
+	T p2;
+	T p3;
 
 	T evaluate(float t) const
 	{

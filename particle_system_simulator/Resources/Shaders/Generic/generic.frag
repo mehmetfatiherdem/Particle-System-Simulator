@@ -16,20 +16,18 @@ struct Color3 {                 //padded size = 48 bytes
     vec3 specular;
 };
 
-struct Attenuation {
+struct Attenuation {            //padded size = 16 bytes
     float constant;
     float linear;
     float quadratic;
 };
 
-struct Material {               //size = 64 bytes (no padding)
+struct Material {               //padded size = 64 bytes
     Color4 color;
-    float ambientStrength;
     float shininess;
-    sampler2D diffuseMap;
-    sampler2D specularMap;
     bool useDiffuseMap;
     bool useSpecularMap;
+    //4 byte padding
 };
 
 struct DirectionalLight {       //padded size = 64 bytes
@@ -62,7 +60,8 @@ in VS_OUT {
 
 out vec4 fragmentColor; //Final fragment color
 
-uniform Material material;
+uniform sampler2D diffuseMap;
+uniform sampler2D specularMap;
 
 layout (std140, binding = 1) uniform Lights {
     SpotLight spotLights[MAX_SPOT_LIGHTS];
@@ -75,6 +74,10 @@ layout (std140, binding = 1) uniform Lights {
 
 layout (std140, binding = 2) uniform View {
     vec3 viewPosition;
+};
+
+layout (std140, binding = 3) uniform Mat {
+    Material material;
 };
 
 vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec4 matAmbient, vec4 matDiffuse, vec4 matSpecular);
@@ -112,7 +115,7 @@ vec4 calculateDirectionalLight(DirectionalLight light, vec3 viewDir, vec4 matAmb
     vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
     float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    vec4 ambient = vec4(light.color.ambient, 1.0) * material.ambientStrength * matAmbient;
+    vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * matDiffuse;
     vec4 specular = vec4(light.color.specular, 1.0) * specularFactor * matSpecular;
 
@@ -133,7 +136,7 @@ vec4 calculatePointLight(PointLight light, vec3 viewDir, vec4 matAmbient, vec4 m
     vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
     float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    vec4 ambient = vec4(light.color.ambient, 1.0) * material.ambientStrength * matAmbient;
+    vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * matDiffuse;
     vec4 specular = vec4(light.color.specular, 1.0) * specularFactor * matSpecular;
 
@@ -157,7 +160,7 @@ vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec4 matAmbient, vec4 mat
     vec3 reflectDir = reflect(-lightDir, fs_in.worldNormal);
     float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    vec4 ambient = vec4(light.color.ambient, 1.0) * material.ambientStrength * matAmbient;
+    vec4 ambient = vec4(light.color.ambient, 1.0) * matAmbient;
     vec4 diffuse = vec4(light.color.diffuse, 1.0) * diffuseFactor * intensity * matDiffuse;
     vec4 specular = vec4(light.color.specular, 1.0) * specularFactor * intensity * matSpecular;
 
@@ -166,21 +169,21 @@ vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec4 matAmbient, vec4 mat
 
 vec4 getMaterialAmbient() {
     if(material.useDiffuseMap)
-        return texture(material.diffuseMap, fs_in.texCoords);
+        return texture(diffuseMap, fs_in.texCoords);
     else
         return material.color.ambient;
 }
 
 vec4 getMaterialDiffuse() {
     if(material.useDiffuseMap)
-        return texture(material.diffuseMap, fs_in.texCoords);
+        return texture(diffuseMap, fs_in.texCoords);
     else
         return material.color.diffuse;
 }
 
 vec4 getMaterialSpecular() {
     if(material.useSpecularMap)
-        return texture(material.specularMap, fs_in.texCoords);
+        return texture(specularMap, fs_in.texCoords);
     else
         return material.color.specular;
 }

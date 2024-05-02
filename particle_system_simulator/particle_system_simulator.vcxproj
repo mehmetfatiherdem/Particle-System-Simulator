@@ -25,8 +25,8 @@
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
+    <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp" />
     <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp" />
-    <ClCompile Include="src\Particle System\Components\Component.cpp" />
     <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp" />
@@ -82,8 +82,10 @@
     <ClInclude Include="src\Input Management\Input.h" />
     <ClInclude Include="src\Input Management\Utility\InputUtility.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
+    <ClInclude Include="src\Particle System\Components\ColorBySpeed.h" />
     <ClInclude Include="src\Particle System\Components\ColorOverLifetime.h" />
     <ClInclude Include="src\Particle System\Components\Component.h" />
+    <ClInclude Include="src\Particle System\Components\ComponentComparator.h" />
     <ClInclude Include="src\Particle System\Components\ForceOverLifetime.h" />
     <ClInclude Include="src\Particle System\Components\LimitVelocityOverLifetime.h" />
     <ClInclude Include="src\Particle System\Components\RotationBySpeed.h" />
@@ -115,11 +117,14 @@
     <ClInclude Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.h" />
     <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h" />
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
+    <ClInclude Include="src\RenderPipeline\Material\MaterialGLSL.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
     <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />

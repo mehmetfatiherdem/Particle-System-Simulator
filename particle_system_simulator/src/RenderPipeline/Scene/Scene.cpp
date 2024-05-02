@@ -241,14 +241,14 @@ MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, S
 	return obj;
 }
 
-MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, const Material& material)
 {
 	MeshRenderer* obj = new MeshRenderer(transform, mesh, material);
 	objects.push_back(obj);
 	return obj;
 }
 
-MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
 {
 	MeshRenderer* obj = new MeshRenderer(transform, mesh, shader, material);
 	objects.push_back(obj);

@@ -25,5 +25,5 @@ void ColorOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 		color = colors[1];
 	}
 
-	particle.color = color;
+	particle.renderer->getMaterial().setColor(color);
 }

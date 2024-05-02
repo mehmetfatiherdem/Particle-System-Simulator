@@ -11,16 +11,20 @@ private:
 	Color4 color;
 	Texture* diffuseMap;
 	Texture* specularMap;
-	float ambientStrength;
 	float shininess;
+
+	static Texture* lastDiffuseMap;
+	static Texture* lastSpecularMap;
 
 public:
 	Material() = delete;
-	Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess);
+	Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float shininess);
 
-	static Material& defaultMaterial();
+	bool operator==(const Material& other) const;
 
-	void useMaterial(const Shader& shader) const;
+	static Material defaultMaterial();
+
+	void useMaterial(const Shader& shader, bool shaderUpdated) const;
 
 	Color4 getColor() const { return color; }
 	glm::vec4 getAmbientColor() const { return color.ambient; }
@@ -28,7 +32,6 @@ public:
 	glm::vec4 getSpecularColor() const { return color.specular; }
 	const Texture* getDiffuseMap() const { return diffuseMap; }
 	const Texture* getSpecularMap() const { return specularMap; }
-	float getAmbientStrength() const { return ambientStrength; }
 	float getShininess() const { return shininess; }
 
 	void setColor(const Color4& color) { this->color = color; }
@@ -42,6 +45,5 @@ public:
 	void setSpecularColor(const glm::vec3& specular) { this->color.specular = glm::vec4{specular, 1.0f}; }
 	void setDiffuseMap(Texture* diffuseMap) { this->diffuseMap = diffuseMap; }
 	void setSpecularMap(Texture* specularMap) { this->specularMap = specularMap; }
-	void setAmbientStrength(float ambientStrength) { this->ambientStrength = ambientStrength; }
 	void setShininess(float shininess) { this->shininess = shininess; }
 };

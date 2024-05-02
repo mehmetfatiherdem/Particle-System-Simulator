@@ -1,6 +1,8 @@
 #include "Emitter.h"
 #include "Time Management/Time.h"
 
+Emitter::~Emitter() { }
+
 void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex)
 {
 	float result = emissionRate * Time::deltaTime() + surplus;
@@ -28,8 +30,8 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 		particle.renderer->getTransform().setPosition(position);
 		particle.renderer->getTransform().setEulerRotation(props.startRotation);
 		particle.renderer->getTransform().setScale(glm::vec3{props.startSize, props.startSize, props.startSize});
+		particle.renderer->getMaterial().setColor(props.startColor);
 		particle.velocity = velocity;
-		particle.color = props.startColor;
 		particle.remainingLifetime = props.startLifetime;
 		particle.enable();
 	}

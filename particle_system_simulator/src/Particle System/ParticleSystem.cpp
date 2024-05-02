@@ -18,6 +18,11 @@ ParticleSystem::ParticleSystem(ParticleSystemProps props, std::unique_ptr<Emitte
 		});
 }
 
+void ParticleSystem::addComponent(Component* component)
+{
+	components.insert(component);
+}
+
 void ParticleSystem::update()
 {
 	emitter->tryEmit(props, particlePool, poolIndex);
@@ -34,11 +39,17 @@ void ParticleSystem::update()
 			{
 				particle.disable();
 				--props.currentParticles;
+				continue;
+			}
+
+			for (Component* component : components)
+			{
+				component->update(props, particle);
 			}
 			
 			Transform& transform = particle.renderer->getTransform();
 			transform.translate(particle.velocity * Time::deltaTime());
-			transform.rotate(particle.angularVelocity * Time::deltaTime());
+			//transform.rotate(particle.angularVelocity * Time::deltaTime());
 		}
 	}
 }

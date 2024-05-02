@@ -26,5 +26,5 @@ void ColorBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 		color = colors[1];
 	}
 
-	particle.color = color;
+	particle.renderer->getMaterial().setColor(color);
 }

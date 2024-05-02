@@ -5,10 +5,12 @@
 #include <glm/mat4x4.hpp>
 #include "GeneralUtility/gl2fw3.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
+#include "RenderPipeline/Material/MaterialGLSL.h"
 
 class DirectionalLight;
 class PointLight;
 class SpotLight;
+class MaterialGLSL;
 
 class GlobalShaderManager
 {
@@ -20,6 +22,7 @@ private:
 	GLuint UBO_Global_Matrices;
 	GLuint UBO_Lights;
 	GLuint UBO_View;
+	GLuint UBO_Material;
 
 	void editLightsUBO(uint32_t lightOffset, uint32_t lightDataSize, const void* lightData, uint32_t numOffset, const void* numData) const;
 
@@ -34,6 +37,7 @@ public:
 	void updateViewMatrix(const glm::mat4& view) const;
 	void updateProjectionMatrix(const glm::mat4& projection) const;
 	void updateViewProjectionMatrices(const glm::mat4& view, const glm::mat4& projection) const;
+	void updateMaterial(const MaterialGLSL& material) const;
 
 	void addDirectionalLight(const DirectionalLight& light, uint32_t newLength) const;
 	void addPointLight(const PointLight& light, uint32_t newLength) const;

@@ -1,31 +1,28 @@
 #include "RenderPipeline/Shader/Shader.h"
-#include "RenderPipeline/Material/Material.h"
 #include "MeshRenderer.h"
 
-Material* MeshRenderer::lastMaterial = nullptr;
-
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
-	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()), material(&Material::defaultMaterial()),
-	enabled(true)
+	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()),
+	material(Material::defaultMaterial()), enabled(true)
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
-	material(&Material::defaultMaterial()), enabled(true)
+	material(Material::defaultMaterial()), enabled(true)
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Material& material)
-	: Transformable(transform), mesh(mesh, false), material(&material), shader(&Shader::genericShader()), enabled(true)
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, const Material& material)
+	: Transformable(transform), mesh(mesh, false), material(material), shader(&Shader::genericShader()), enabled(true)
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
-MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
-	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(&material), shader(&shader),
+MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
+	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(material), shader(&shader),
 	enabled(true)
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
@@ -83,11 +80,8 @@ void MeshRenderer::render()
 {
 	if (!enabled) return;
 
-	if (shader->useShader() || material != lastMaterial)
-	{
-		lastMaterial = this->material;
-		this->material->useMaterial(*shader);
-	}
+	bool shaderUpdated = shader->useShader();
+	material.useMaterial(*shader, shaderUpdated);
 
 	if (mesh->isInstanced())
 	{
