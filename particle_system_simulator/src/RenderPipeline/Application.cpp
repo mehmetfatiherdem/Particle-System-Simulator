@@ -39,12 +39,12 @@
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600)
 {
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glCullFace(GL_BACK);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(GL_TRUE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 Application& Application::getInstance()
@@ -62,10 +62,9 @@ void Application::run()
 	Random::init();
 
 	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
-
-	Texture t2(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
-	Texture t1(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
-	Material m2(&t2, nullptr,
+	Texture texSmoke(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+	Texture texFire(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+	Material matSmoke(&texSmoke, nullptr,
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
@@ -74,7 +73,7 @@ void Application::run()
 		1.0f,
 		}, 1.0f);
 
-	Material m1(&t1, nullptr, 
+	Material matFire(&texFire, nullptr, 
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
@@ -83,52 +82,50 @@ void Application::run()
 		1.0f,
 		}, 1.0f);
 
-	Mesh mesh = createQuad();
-	MeshRenderer mr(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::genericShader(), m2);
-	MeshRenderer mr2(TransformProps{glm::vec3{0.0f, 0.0f, -2.0f}}, mesh, Shader::genericShader(), m2);
-
-	ParticleSystemProps psPropsforFire
+	ParticleSystemProps propsSmoke
 	{
-		.startLifetime = 1.0f,
+		.startLifetime = 2.2f,
+		.startSpeed = 1.8f,
+		.startSize = 0.35f,
+		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
+		.maxParticles = 850,
+		.position = glm::vec3{0.0f, 1.1f, 0.0f},
+	};
+
+	ParticleSystemProps propsFire
+	{
+		.startLifetime = 0.8f,
 		.startSpeed = 3.0f,
 		.startSize = 0.75f,
-		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
-		.maxParticles = 700,
+		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
+		.maxParticles = 1500,
 	};
-	ParticleSystemProps psPropsforSmoke
-	{
-		.startLifetime = 1.8f,
-		.startSpeed = 1.8f,
-		.startSize = 0.1f,
-		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}},
-		.maxParticles = 350,
-		.position = glm::vec3{0.0f, 0.9f, 0.0f},
-	};
+	
+	ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{75.0f, 0.45f, glm::radians(32.0f)}));
+	ParticleSystem psFire(propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{125.0f, 0.55f, glm::radians(25.0f)}));
 
-	ParticleSystem ps2(psPropsforSmoke, m2, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.25f, 0.4f}));
-	ParticleSystem ps(psPropsforFire, m1, std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
+	CubicBezierCurve<float> solBezierSmoke{0.72f, 0.38f, 0.24f, 0.01f};
+	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
 
-	CubicBezierCurve<float> solCurve{1.0f, 0.90f, 0.7f, 0.001f};
-	SizeOverLifetime* sol = new SizeOverLifetime(solCurve);
-	CubicBezierCurve<float> solCurve2{0.5f, 0.40f, 0.3f, 0.001f};
-	SizeOverLifetime* sol2 = new SizeOverLifetime(solCurve2);
+	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
+	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
 
-	ps.addComponent(sol);
-	ps2.addComponent(sol2);
+	psSmoke.addComponent(solSmoke);
+	psFire.addComponent(solFire);
 
 	/*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
 		0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
 
 	ps.addComponent(cbs);*/
 
-	ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 0.75f, 0.0f, 1.0f}},
-		1.0f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}});
+	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
 
-	ColorOverLifetime* col2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 1.0f}},
-		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.3f}});
+	ColorOverLifetime* colFire = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.7f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 0.27f}});
 
-	ps.addComponent(col);
-	ps2.addComponent(col2);
+	psSmoke.addComponent(colSmoke);
+	psFire.addComponent(colFire);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
@@ -153,8 +150,8 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		ps.update();
-		ps2.update();
+		psFire.update();
+		psSmoke.update();
 		scene.update();
 		//mr2.render();
 		//mr.render();
