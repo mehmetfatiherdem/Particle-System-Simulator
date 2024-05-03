@@ -142,6 +142,9 @@
     <Filter Include="Resources\Textures\Fire">
       <UniqueIdentifier>{4a36883f-bcfd-4d72-afb4-83a094b8e601}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{cc640736-13dd-4495-b415-c3d90fd0c765}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -266,6 +269,27 @@
     </ClCompile>
     <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp">
       <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +514,33 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h">
       <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

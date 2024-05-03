@@ -66,6 +66,8 @@ Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsy
 	{
 		mouseButtons.insert(std::make_pair(mouseButton, Action::IN_REST));
 	}
+
+	initImGui(window);
 }
 
 Window::~Window()
@@ -130,6 +132,18 @@ void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	ownerWindow->scroll = yOffset;
+}
+
+void Window::initImGui(GLFWwindow* window)
+{
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	ImGui::StyleColorsDark();
+	//ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init();
 }
 
 void Window::pollEvents()

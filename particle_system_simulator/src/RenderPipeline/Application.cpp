@@ -1,11 +1,17 @@
+
 #include <iostream>
 #include <cstring>
 #include <cmath>
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
 
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
 #include "GeneralUtility/gl2fw3.h"
+
 #include "UserInterface/Window.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/DirectionalLight.h"
@@ -136,12 +142,22 @@ void Application::run()
 
 	Time::start();
 
+
 	while (!window.shouldClose())
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 		glClear(clearMask);
 
 		window.pollEvents();
+
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("begin text");
+		ImGui::Text("Hello, world!");
+		ImGui::End();
 
 		if (Input::getKeyDown(KeyCode::KEY_X))
 		{
@@ -156,11 +172,20 @@ void Application::run()
 		//mr2.render();
 		//mr.render();
 		scene.render();
+		
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		window.swapBuffers();
 		window.endFrame();
 		Time::endFrame();
+
+		
 	}
 
 	glfwTerminate();
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }

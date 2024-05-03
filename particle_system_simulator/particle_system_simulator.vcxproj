@@ -19,6 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
@@ -62,6 +69,15 @@
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imconfig.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_internal.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h" />
     <ClInclude Include="src\EntityComponentSystem\Entity.h" />
     <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
@@ -225,7 +241,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -243,7 +259,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -261,7 +277,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -279,7 +295,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
