@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "GeneralUtility/RefOrValue.h"
 #include "RenderPipeline/Transform/Transformable.h"
 #include "RenderPipeline/Mesh/Mesh.h"
@@ -13,6 +14,7 @@ private:
 	Material material;
 	Shader* shader;
 	RefOrValue<Mesh> mesh;
+	std::function<void(Transform&)> preRenderAction;
 	bool enabled;
 
 public:
@@ -39,6 +41,7 @@ public:
 	Shader* getShader() const { return shader; }
 
 	void setMaterial(const Material& material) { this->material = material; }
+	void setPreRenderAction(std::function<void(Transform&)> preRenderAction) { this->preRenderAction = preRenderAction; }
 	void setShader(Shader& shader);
 	void setEnabled(bool enabled) { this->enabled = enabled; }
 };

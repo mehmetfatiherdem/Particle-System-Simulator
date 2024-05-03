@@ -44,6 +44,8 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
+	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
+
 	//Render opaque objects first
 	std::for_each(objects.begin(), objects.end(), [](MeshRenderer* object)
 		{
@@ -63,8 +65,6 @@ void Scene::render()
 	Let's be real though, you won't do that. You're too lazy.*/
 #pragma endregion
 
-	//The saying of the day: true comes before false.
-
 	std::sort(objects.begin(), objects.end(), [&](MeshRenderer* obj1, MeshRenderer* obj2)
 		{
 			if (std::abs(obj1->getMaterial().getAlpha() - 1.0f) < EPSILON) return false;
@@ -81,8 +81,6 @@ void Scene::render()
 		if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON) break;
 		object->render();
 	}
-
-	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
 }
 
 #pragma region Light Operations

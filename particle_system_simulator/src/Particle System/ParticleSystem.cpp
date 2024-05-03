@@ -17,6 +17,10 @@ ParticleSystem::ParticleSystem(const ParticleSystemProps& props, const Material&
 		{
 			particle.renderer = scene.createObject(TransformProps{}, sphere, Shader::instancedShader(), material);
 			particle.disable();
+			particle.renderer->setPreRenderAction([](Transform& transform)
+				{
+					transform.setForwardVector(Application::getInstance().getScene().getCamera().getTransform().getForwardVector());
+				});
 		});
 }
 

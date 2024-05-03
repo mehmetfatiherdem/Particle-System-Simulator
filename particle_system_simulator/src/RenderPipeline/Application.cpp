@@ -61,8 +61,11 @@ void Application::run()
 {
 	Random::init();
 
-	Texture texture(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
-	Material material(&texture, nullptr,
+	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
+
+	Texture t2(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
+	Texture t1(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR, GL_RGBA, GL_RGBA, ',');
+	Material m2(&t2, nullptr,
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
@@ -70,6 +73,19 @@ void Application::run()
 		glm::vec3{1.0f, 1.0f, 1.0f},
 		1.0f,
 		}, 1.0f);
+
+	Material m1(&t1, nullptr, 
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		1.0f,
+		}, 1.0f);
+
+	Mesh mesh = createQuad();
+	MeshRenderer mr(TransformProps{glm::vec3{0.0f, 0.0f, 0.0f}}, mesh, Shader::genericShader(), m2);
+	MeshRenderer mr2(TransformProps{glm::vec3{0.0f, 0.0f, -2.0f}}, mesh, Shader::genericShader(), m2);
 
 	ParticleSystemProps psPropsforFire
 	{
@@ -89,15 +105,15 @@ void Application::run()
 		.position = glm::vec3{0.0f, 0.9f, 0.0f},
 	};
 
-	ParticleSystem ps2(psPropsforSmoke, material, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.25f, 0.4f}));
-	//ParticleSystem ps(psPropsforFire, std::move(texture), std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
+	ParticleSystem ps2(psPropsforSmoke, m2, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.25f, 0.4f}));
+	ParticleSystem ps(psPropsforFire, m1, std::make_unique<ConeEmitter>(ConeEmitter{30.0f, 0.25f, 0.0f}));
 
-	CubicBezierCurve<float> solCurve{1.0f, 0.90f, 0.7f, 0.0f};
+	CubicBezierCurve<float> solCurve{1.0f, 0.90f, 0.7f, 0.001f};
 	SizeOverLifetime* sol = new SizeOverLifetime(solCurve);
-	CubicBezierCurve<float> solCurve2{0.5f, 0.40f, 0.3f, 0.0f};
+	CubicBezierCurve<float> solCurve2{0.5f, 0.40f, 0.3f, 0.001f};
 	SizeOverLifetime* sol2 = new SizeOverLifetime(solCurve2);
 
-	//ps.addComponent(sol);
+	ps.addComponent(sol);
 	ps2.addComponent(sol2);
 
 	/*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
@@ -108,10 +124,10 @@ void Application::run()
 	ColorOverLifetime* col = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 0.75f, 0.0f, 1.0f}},
 		1.0f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}});
 
-	ColorOverLifetime* col2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}},
-		1.0f, Color4{glm::vec4{0.60f, 0.60f, 0.60f, 1.0f}});
+	ColorOverLifetime* col2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 1.0f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.3f}});
 
-	//ps.addComponent(col);
+	ps.addComponent(col);
 	ps2.addComponent(col2);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
@@ -125,7 +141,7 @@ void Application::run()
 
 	while (!window.shouldClose())
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 		glClear(clearMask);
 
 		window.pollEvents();
@@ -137,9 +153,11 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		//ps.update();
+		ps.update();
 		ps2.update();
 		scene.update();
+		//mr2.render();
+		//mr.render();
 		scene.render();
 
 		window.swapBuffers();

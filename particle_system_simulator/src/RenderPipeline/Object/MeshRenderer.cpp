@@ -3,33 +3,35 @@
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
 	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()),
-	material(Material::defaultMaterial()), enabled(true)
+	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
-	material(Material::defaultMaterial()), enabled(true)
+	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, const Material& material)
-	: Transformable(transform), mesh(mesh, false), material(material), shader(&Shader::genericShader()), enabled(true)
+	: Transformable(transform), mesh(mesh, false), material(material), shader(&Shader::genericShader()), enabled(true),
+	preRenderAction([](Transform&) {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(material), shader(&shader),
-	enabled(true)
+	enabled(true), preRenderAction([](Transform&) {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
-	: material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled)
+	: material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled),
+	preRenderAction(meshRenderer.preRenderAction)
 {
 	MeshRenderer& constCasted = const_cast<MeshRenderer&>(meshRenderer);
 	this->mesh = RefOrValue(*constCasted.mesh.get(), constCasted.mesh->isInstanced());
@@ -37,8 +39,8 @@ MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
 }
 
 MeshRenderer::MeshRenderer(MeshRenderer&& meshRenderer) noexcept
-	: mesh(std::move(meshRenderer.mesh)), material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled)
-{}
+	: mesh(std::move(meshRenderer.mesh)), material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled),
+	preRenderAction(meshRenderer.preRenderAction) { }
 
 MeshRenderer::~MeshRenderer()
 {
@@ -79,6 +81,8 @@ MeshRenderer& MeshRenderer::operator=(MeshRenderer&& meshRenderer) noexcept
 void MeshRenderer::render()
 {
 	if (!enabled) return;
+
+	preRenderAction(transform);
 
 	shader->useShader();
 	material.useMaterial(*shader);
