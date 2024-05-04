@@ -145,6 +145,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{cc640736-13dd-4495-b415-c3d90fd0c765}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Editor">
+      <UniqueIdentifier>{872825f4-56cb-44b5-a02d-7d88e266ca01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -290,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Editor\Editor.cpp">
+      <Filter>src\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,6 +547,9 @@
     </ClInclude>
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Editor\Editor.h">
+      <Filter>src\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -151,13 +151,9 @@ void Application::run()
 		window.pollEvents();
 
 		// Start the Dear ImGui frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		// Editor::beginFrame();
 
-		ImGui::Begin("begin text");
-		ImGui::Text("Hello, world!");
-		ImGui::End();
+		// Editor::ShowDemoWindow();
 
 		if (Input::getKeyDown(KeyCode::KEY_X))
 		{
@@ -174,8 +170,7 @@ void Application::run()
 		scene.render();
 		
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		// Editor::render();
 
 		window.swapBuffers();
 		window.endFrame();
@@ -185,7 +180,5 @@ void Application::run()
 	}
 
 	glfwTerminate();
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+	// Editor::shutdown();
 }

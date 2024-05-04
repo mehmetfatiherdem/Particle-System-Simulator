@@ -1,8 +1,5 @@
 #pragma once
 
-#include "imgui/imgui.h" 
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
 #include <string_view>
 #include <map>
 #include <stdint.h>
@@ -37,7 +34,6 @@ private:
 	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
 	static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
-	static void initImGui(GLFWwindow* window);
 
 public:
 	Window() = delete;
