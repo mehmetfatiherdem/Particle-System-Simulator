@@ -68,17 +68,21 @@ void Application::run()
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
 		1.0f,
 		}, 1.0f);
 
+	Mesh quad = createQuad();
+	
+	//auto obj = scene.createObject(TransformProps{}, quad, matSmoke);
+	
 	Material matFire(&texFire, nullptr, 
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
 		1.0f,
 		}, 1.0f);
 
@@ -87,7 +91,7 @@ void Application::run()
 		.startLifetime = 3.2f,
 		.startSpeed = 1.0f,
 		.startSize = 5.0f,
-		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
+		.startColor = matSmoke.getColor(),
 		.maxParticles = 2000,
 		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
@@ -97,7 +101,7 @@ void Application::run()
 		.startLifetime = 0.5f,
 		.startSpeed = 3.0f,
 		.startSize = 5.75f,
-		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
+		.startColor = matFire.getColor(),
 		.maxParticles = 550,
 	};
 	//low poly
@@ -136,6 +140,7 @@ void Application::run()
 	psSmoke.addComponent(volSmoke);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
+	//scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
 
 	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
@@ -161,6 +166,7 @@ void Application::run()
 		//psFire.update();
 		psSmoke.update();
 		scene.update();
+		//obj->getTransform().lookAt(scene.getCamera().getTransform());
 		//mr2.render();
 		//mr.render();
 		scene.render();

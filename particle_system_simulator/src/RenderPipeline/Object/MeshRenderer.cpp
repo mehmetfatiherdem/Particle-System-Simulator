@@ -3,35 +3,36 @@
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
 	: Transformable(transform), mesh(mesh, false), shader(&Shader::genericShader()),
-	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {})
+	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {}),
+	postRenderAction([]() {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
-	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {})
+	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, const Material& material)
 	: Transformable(transform), mesh(mesh, false), material(material), shader(&Shader::genericShader()), enabled(true),
-	preRenderAction([](Transform&) {})
+	preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(material), shader(&shader),
-	enabled(true), preRenderAction([](Transform&) {})
+	enabled(true), preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
 	this->mesh->initialize(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
 	: material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled),
-	preRenderAction(meshRenderer.preRenderAction)
+	preRenderAction(meshRenderer.preRenderAction), postRenderAction(meshRenderer.postRenderAction)
 {
 	MeshRenderer& constCasted = const_cast<MeshRenderer&>(meshRenderer);
 	this->mesh = RefOrValue(*constCasted.mesh.get(), constCasted.mesh->isInstanced());
@@ -40,7 +41,7 @@ MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
 
 MeshRenderer::MeshRenderer(MeshRenderer&& meshRenderer) noexcept
 	: mesh(std::move(meshRenderer.mesh)), material(meshRenderer.material), shader(meshRenderer.shader), enabled(meshRenderer.enabled),
-	preRenderAction(meshRenderer.preRenderAction) { }
+	preRenderAction(meshRenderer.preRenderAction), postRenderAction(meshRenderer.postRenderAction) { }
 
 MeshRenderer::~MeshRenderer()
 {
