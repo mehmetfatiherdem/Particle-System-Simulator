@@ -96,6 +96,8 @@ void MeshRenderer::render()
 		shader->setMatrix4("model", getModelMatrix());
 		mesh->draw();
 	}
+
+	postRenderAction();
 }
 
 void MeshRenderer::setShader(Shader& shader)

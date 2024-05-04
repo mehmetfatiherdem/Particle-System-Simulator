@@ -84,34 +84,37 @@ void Application::run()
 
 	ParticleSystemProps propsSmoke
 	{
-		.startLifetime = 2.2f,
-		.startSpeed = 1.8f,
-		.startSize = 0.35f,
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
 		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
-		.maxParticles = 850,
-		.position = glm::vec3{0.0f, 1.1f, 0.0f},
+		.maxParticles = 2000,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
 
 	ParticleSystemProps propsFire
 	{
-		.startLifetime = 0.8f,
+		.startLifetime = 0.5f,
 		.startSpeed = 3.0f,
-		.startSize = 0.75f,
+		.startSize = 5.75f,
 		.startColor = Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.5f}},
-		.maxParticles = 1500,
+		.maxParticles = 550,
 	};
-	
-	ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{75.0f, 0.45f, glm::radians(32.0f)}));
-	ParticleSystem psFire(propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{125.0f, 0.55f, glm::radians(25.0f)}));
+	//low poly
+	//ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{200.0f, 0.25f, glm::radians(25.0f)}));
+	//3d realistic
+	ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	ParticleSystem psFire(propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{45.0f, 0.75f, glm::radians(15.0f)}));
 
-	CubicBezierCurve<float> solBezierSmoke{0.72f, 0.38f, 0.24f, 0.01f};
+	CubicBezierCurve<float> solBezierSmoke{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
 	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
 
 	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
 	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
 
-	psSmoke.addComponent(solSmoke);
-	psFire.addComponent(solFire);
+	//to make it realistic comment this line
+	//psSmoke.addComponent(solSmoke);
+	//psFire.addComponent(solFire);
 
 	/*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
 		0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
@@ -126,6 +129,11 @@ void Application::run()
 
 	psSmoke.addComponent(colSmoke);
 	psFire.addComponent(colFire);
+	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+	ForceOverLifetime* volSmoke = new ForceOverLifetime(solBezierSmoke2);
+	
+	psSmoke.addComponent(volSmoke);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
@@ -150,7 +158,7 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		psFire.update();
+		//psFire.update();
 		psSmoke.update();
 		scene.update();
 		//mr2.render();

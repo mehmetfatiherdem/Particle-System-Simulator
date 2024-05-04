@@ -57,13 +57,6 @@ void Scene::render()
 
 	//Sort the objects based on their distance from the camera (from farthest to nearest), also stack all the opaque objects
 	//at the back of the vector since they're rendered but still inside the vector.
-#pragma region Premature Optimization Possibility
-	/*std::sort uses quicksort, which is O(n ^ 2) in its worst case which happens when the array is already sorted or almost sorted.
-	The array will most likely be sorted or almost sorted due to it getting sorted each frame.
-	So, the worst case will most likely happen most frames.
-	You might want to apply a hybrid of insertion sort and quicksort to avoid the worst case.
-	Let's be real though, you won't do that. You're too lazy.*/
-#pragma endregion
 
 	std::sort(objects.begin(), objects.end(), [&](MeshRenderer* obj1, MeshRenderer* obj2)
 		{
