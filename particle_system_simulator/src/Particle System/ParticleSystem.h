@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <memory>
 #include <stdint.h>
+#include <string>
 #include "Data/ParticleSystemProps.h"
 #include "Particle System/Particle.h"
 #include "Emitter/Emitter.h"
@@ -16,15 +17,17 @@
 #include "Components/Component.h"
 #include "Components/ComponentComparator.h"
 
-//Friction over lifetime
-//Rotation over lifetime
-
 using OrderedComponentSet = std::set<Component*, ComponentComparator>;
+
+class ParticleSystemEditor;
 
 class ParticleSystem
 {
 private:
+	friend class ParticleSystemEditor;
+
 	std::vector<Particle> particlePool;
+	std::string name;
 	uint32_t poolIndex;
 
 	Mesh sphere;
@@ -38,7 +41,7 @@ private:
 	
 public:
 	ParticleSystem() = delete;
-	ParticleSystem(const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
+	ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
 	~ParticleSystem() = default;
 
 	void addComponent(Component* component);

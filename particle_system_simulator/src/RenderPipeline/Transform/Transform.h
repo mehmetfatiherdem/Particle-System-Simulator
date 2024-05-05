@@ -10,6 +10,10 @@ private:
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 _scale;
+
+	static bool isValidAngle(float angle);
+	static bool isValidAxis(const glm::vec3& axis);
+
 public:
 	static constexpr glm::vec3 WORLD_UP{0.0f, 1.0f, 0.0f};
 

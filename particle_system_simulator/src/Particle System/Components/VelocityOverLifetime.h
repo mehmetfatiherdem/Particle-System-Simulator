@@ -5,9 +5,13 @@
 #include "GeneralUtility/CubicBezierCurve.h"
 #include "Component.h"
 
+class ParticleSystemEditor;
+
 class VelocityOverLifetime : public Component
 {
 private:
+	friend class ParticleSystemEditor;
+
 	ComponentMethod method;
 	glm::vec3 minVelocity;
 	glm::vec3 maxVelocity;

@@ -3,9 +3,13 @@
 #include "Component.h"
 #include "RenderPipeline/Color/Color4.h"
 
+class ParticleSystemEditor;
+
 class ColorOverLifetime : public Component
 {
 private:
+	friend class ParticleSystemEditor;
+
 	float keypoints[2];
 	Color4 colors[2];
 

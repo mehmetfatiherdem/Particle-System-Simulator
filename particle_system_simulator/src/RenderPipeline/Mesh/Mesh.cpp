@@ -208,7 +208,7 @@ void Mesh::addInstance()
 
 void Mesh::removeInstance()
 {
-	if (props->isInstanced)
+	if (props->isInstanced && !instanceMatrices->empty())
 	{
 		instanceMatrices->pop_back();
 	}

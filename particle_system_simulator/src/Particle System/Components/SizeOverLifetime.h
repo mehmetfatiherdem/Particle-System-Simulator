@@ -4,9 +4,13 @@
 #include "GeneralUtility/CubicBezierCurve.h"
 #include "Component.h"
 
+class ParticleSystemEditor;
+
 class SizeOverLifetime : public Component
 {
 private:
+	friend class ParticleSystemEditor;
+
 	ComponentMethod method;
 	float minSize;
 	float maxSize;

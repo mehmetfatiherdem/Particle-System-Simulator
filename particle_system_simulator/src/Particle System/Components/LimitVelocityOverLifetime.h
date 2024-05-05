@@ -3,9 +3,13 @@
 #include "GeneralUtility/CubicBezierCurve.h"
 #include "Component.h"
 
+class ParticleSystemEditor;
+
 class LimitVelocityOverLifetime : public Component
 {
 private:
+	friend class ParticleSystemEditor;
+
 	ComponentMethod method;
 	float dampen;
 	glm::vec3 minVelocity;

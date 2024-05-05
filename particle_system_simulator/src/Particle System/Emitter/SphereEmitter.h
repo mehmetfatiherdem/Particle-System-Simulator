@@ -4,10 +4,12 @@
 #include "GeneralUtility/MathConstants.h"
 
 class ParticleSystemProps;
+class ParticleSystemEditor;
 
 class SphereEmitter : public Emitter
 {
 private:
+	friend class ParticleSystemEditor;
 	float radius;
 	float arc;
 

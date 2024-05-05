@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector>
+#include <set>
+#include <stdint.h>
 
 class ImGuiIO;
 class ImGuiContext;
@@ -11,14 +12,16 @@ class ParticleSystemEditor
 private:
 	ImGuiIO& io;
 	ImGuiContext& context;
-	std::vector<ParticleSystem*> particleSystems;
+	std::set<ParticleSystem*> particleSystems;
+
+	void addVerticalSpace(uint32_t count, bool useLargeSpaces = false);
+	void renderParticleTabs();
 
 public:
 	ParticleSystemEditor();
-	~ParticleSystemEditor() { shutdown(); }
+	~ParticleSystemEditor() = default;
 
 	void render();
-	void shutdown();
 
 	void addParticleSystem(ParticleSystem& ps);
 

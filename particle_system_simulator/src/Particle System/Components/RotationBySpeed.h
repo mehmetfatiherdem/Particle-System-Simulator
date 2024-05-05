@@ -5,22 +5,26 @@
 #include "GeneralUtility/CubicBezierCurve.h"
 #include "Component.h"
 
+class ParticleSystemEditor;
+
 class RotationBySpeed : Component
 {
 private:
+	friend class ParticleSystemEditor;
+
 	ComponentMethod method;
 	float minSpeed;
 	float maxSpeed;
-	CubicBezierCurve<glm::vec3> minBezier;
-	CubicBezierCurve<glm::vec3> maxBezier;
+	CubicBezierCurve<float> minBezier;
+	CubicBezierCurve<float> maxBezier;
 
 public:
 	RotationBySpeed() = delete;
 
-	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<glm::vec3>& bezier) :
+	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<float>& bezier) :
 		Component(5), method(ComponentMethod::Curve), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(bezier), maxBezier(bezier) { }
 
-	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
+	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<float>& minBezier, const CubicBezierCurve<float>& maxBezier) :
 		Component(5), method(ComponentMethod::RandomBetweenTwoCurves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~RotationBySpeed() override = default;

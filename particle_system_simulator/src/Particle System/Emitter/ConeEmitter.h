@@ -3,9 +3,12 @@
 #include <glm/glm.hpp>
 #include "Emitter.h"
 
+class ParticleSystemEditor;
+
 class ConeEmitter : public Emitter
 {
 private:
+	friend class ParticleSystemEditor;
 	float radius;
 	float angle;
 

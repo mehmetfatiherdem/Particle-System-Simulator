@@ -10,7 +10,7 @@ void RotationBySpeed::update(const ParticleSystemProps& props, Particle& particl
 	float speed = glm::length(particle.velocity);
 	float t = glm::clamp(speed, minSpeed, maxSpeed) / (maxSpeed - minSpeed);
 
-	glm::vec3 rotation;
+	float rotation = 0.0f;
 
 	switch (method)
 	{
@@ -18,16 +18,12 @@ void RotationBySpeed::update(const ParticleSystemProps& props, Particle& particl
 		rotation = minBezier.evaluate(t);
 		break;
 	case ComponentMethod::RandomBetweenTwoCurves:
-		glm::vec3 min = minBezier.evaluate(t);
-		glm::vec3 max = maxBezier.evaluate(t);
-		utility::math::swapToPreserveMinMax(min.x, max.x);
-		utility::math::swapToPreserveMinMax(min.y, max.y);
-		utility::math::swapToPreserveMinMax(min.z, max.z);
-		rotation.x = Random::getFloat(min.x, max.x);
-		rotation.y = Random::getFloat(min.y, max.y);
-		rotation.z = Random::getFloat(min.z, max.z);
+		float min = minBezier.evaluate(t);
+		float max = maxBezier.evaluate(t);
+		utility::math::swapToPreserveMinMax(min, max);
+		rotation = Random::getFloat(min, max);
 		break;
 	}
-
-	particle.renderer->getTransform().setEulerRotation(rotation);
+	
+	particle.rotation = rotation;
 }
