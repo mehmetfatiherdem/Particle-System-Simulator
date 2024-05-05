@@ -1,4 +1,5 @@
 #include <glm/ext/quaternion_float.hpp>
+#include "GeneralUtility/MathConstants.h"
 #include "Transform.h"
 
 Transform::Transform() : position(0.0f, 0.0f, 0.0f), rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f, 1.0f, 1.0f) { }
@@ -61,7 +62,9 @@ void Transform::scale(const glm::vec3& scale)
 
 void Transform::lookAt(const glm::vec3& position)
 {
-	rotation = glm::quatLookAt(glm::normalize(position - this->position), WORLD_UP);
+	glm::vec3 diff = this->position - position;
+	if (glm::length(diff) < EPSILON) return;
+	rotation = glm::quatLookAt(glm::normalize(diff), WORLD_UP);
 }
 
 void Transform::lookAt(const Transform& transform)

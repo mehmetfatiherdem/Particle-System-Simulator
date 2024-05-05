@@ -19,7 +19,13 @@ ParticleSystem::ParticleSystem(const ParticleSystemProps& props, const Material&
 			particle.disable();
 			particle.renderer->setPreRenderAction([](Transform& transform)
 				{
-					transform.setForwardVector(Application::getInstance().getScene().getCamera().getTransform().getForwardVector());
+					glDepthMask(GL_FALSE);
+					transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
+				});
+
+			particle.renderer->setPostRenderAction([]()
+				{
+					glDepthMask(GL_TRUE);
 				});
 		});
 }

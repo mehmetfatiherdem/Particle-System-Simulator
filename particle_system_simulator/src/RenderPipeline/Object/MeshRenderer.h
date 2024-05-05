@@ -15,6 +15,7 @@ private:
 	Shader* shader;
 	RefOrValue<Mesh> mesh;
 	std::function<void(Transform&)> preRenderAction;
+	std::function<void()> postRenderAction;
 	bool enabled;
 
 public:
@@ -42,6 +43,7 @@ public:
 
 	void setMaterial(const Material& material) { this->material = material; }
 	void setPreRenderAction(std::function<void(Transform&)> preRenderAction) { this->preRenderAction = preRenderAction; }
+	void setPostRenderAction(std::function<void()> postRenderAction) { this->postRenderAction = postRenderAction; }
 	void setShader(Shader& shader);
 	void setEnabled(bool enabled) { this->enabled = enabled; }
 };

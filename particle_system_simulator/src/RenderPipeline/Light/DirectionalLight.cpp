@@ -3,7 +3,7 @@
 
 DirectionalLight::DirectionalLight(const LightTracker& lightTracker, const Color3& color, const glm::vec3& direction) : LightSource(lightTracker, color)
 {
-	transform.setForwardVector(direction);
+	transform.lookAt(transform.getPosition() + direction);
 }
 
 void DirectionalLight::lightSourceUpdated() const

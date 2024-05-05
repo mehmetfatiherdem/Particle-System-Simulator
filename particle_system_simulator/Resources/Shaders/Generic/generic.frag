@@ -167,16 +167,17 @@ vec4 calculateSpotLight(SpotLight light, vec3 viewDir, vec3 normal, Color4 matCo
 
 Color4 getMaterialColor() {
     Color4 color = material.color;
+    vec4 texColor = texture(diffuseMap, fs_in.texCoords);
 
     if(material.useDiffuseMap) {
-        vec4 texColor = texture(diffuseMap, fs_in.texCoords);
         color.diffuse *= texColor.rgb;
         color.ambient *= texColor.rgb;
         color.alpha *= texColor.a;
     }
 
+    texColor = texture(specularMap, fs_in.texCoords);
+
     if(material.useSpecularMap) {
-		vec4 texColor = texture(specularMap, fs_in.texCoords);
 		color.specular *= texColor.rgb;
         color.alpha *= texColor.a;
 	}
