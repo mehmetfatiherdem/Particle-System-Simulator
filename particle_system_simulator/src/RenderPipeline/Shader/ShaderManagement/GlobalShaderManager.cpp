@@ -1,9 +1,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "RenderPipeline/Light/Utility/GLSLObjectUtils.h"
-#include "UBOConstants.h"
+#include "RenderPipeline/Material/MaterialGLSL.h"
+#include "RenderPipeline/Shader/Data/UBOConstants.h"
+#include "RenderPipeline/Shader/Data/MatrixPair.h"
 #include "GlobalShaderManager.h"
 
-GlobalShaderManager::GlobalShaderManager() : UBO_Global_Matrices(0), UBO_Lights(0), UBO_View(0)
+GlobalShaderManager::GlobalShaderManager() : UBO_Global_Matrices(0), UBO_Lights(0), UBO_View(0), UBO_Material(0)
 {
 	glGenBuffers(1, &UBO_Global_Matrices);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO_Global_Matrices);
@@ -19,6 +21,11 @@ GlobalShaderManager::GlobalShaderManager() : UBO_Global_Matrices(0), UBO_Lights(
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO_View);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(glm::vec3), (void*)0, GL_DYNAMIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, VIEW_UNIFORM_BLOCK_INDEX, UBO_View);
+
+	glGenBuffers(1, &UBO_Material);
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO_Material);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(MaterialGLSL), (void*)0, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, MATERIAL_UNIFORM_BLOCK_INDEX, UBO_Material);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
@@ -59,9 +66,17 @@ void GlobalShaderManager::updateProjectionMatrix(const glm::mat4& projection) co
 
 void GlobalShaderManager::updateViewProjectionMatrices(const glm::mat4& view, const glm::mat4& projection) const
 {
+	MatrixPair pair{view, projection};
+
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO_Global_Matrices);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(view));
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(projection));
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(pair), &pair);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void GlobalShaderManager::updateMaterial(const MaterialGLSL& material) const
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO_Material);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(MaterialGLSL), &material);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 

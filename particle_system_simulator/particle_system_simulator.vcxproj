@@ -19,12 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\EntityComponentSystem\Entity.cpp" />
+    <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
     <ClCompile Include="src\Input Management\Utility\InputUtility.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
+    <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp" />
+    <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp" />
+    <ClCompile Include="src\Particle System\Components\SizeBySpeed.cpp" />
+    <ClCompile Include="src\Particle System\Components\SizeOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\VelocityOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\Emitter.cpp" />
+    <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
+    <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
@@ -54,18 +66,39 @@
     <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
+    <ClInclude Include="src\GeneralUtility\BasicMath.h" />
+    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
-    <ClInclude Include="src\GeneralUtility\MathUtility.h" />
+    <ClInclude Include="src\GeneralUtility\SignUtility.h" />
+    <ClInclude Include="src\GeneralUtility\Random.h" />
     <ClInclude Include="src\GeneralUtility\RefOrValue.h" />
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
+    <ClInclude Include="src\GeneralUtility\Trigonometry.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
     <ClInclude Include="src\Input Management\Data\KeyCode.h" />
     <ClInclude Include="src\Input Management\Data\MouseButton.h" />
     <ClInclude Include="src\Input Management\Input.h" />
     <ClInclude Include="src\Input Management\Utility\InputUtility.h" />
     <ClInclude Include="src\MeshConstruction\Shapes.h" />
+    <ClInclude Include="src\Particle System\Components\ColorBySpeed.h" />
+    <ClInclude Include="src\Particle System\Components\ColorOverLifetime.h" />
+    <ClInclude Include="src\Particle System\Components\Component.h" />
+    <ClInclude Include="src\Particle System\Components\ComponentComparator.h" />
+    <ClInclude Include="src\Particle System\Components\ForceOverLifetime.h" />
+    <ClInclude Include="src\Particle System\Components\LimitVelocityOverLifetime.h" />
+    <ClInclude Include="src\Particle System\Components\RotationBySpeed.h" />
+    <ClInclude Include="src\Particle System\Components\SizeBySpeed.h" />
+    <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h" />
+    <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h" />
+    <ClInclude Include="src\Particle System\Data\ComponentMethod.h" />
+    <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h" />
+    <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h" />
+    <ClInclude Include="src\Particle System\Emitter\Emitter.h" />
+    <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h" />
+    <ClInclude Include="src\Particle System\Particle.h" />
+    <ClInclude Include="src\Particle System\ParticleSystem.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />
@@ -84,12 +117,14 @@
     <ClInclude Include="src\RenderPipeline\Light\Utility\GLSLObjectUtils.h" />
     <ClInclude Include="src\RenderPipeline\Light\Utility\LightSourceType.h" />
     <ClInclude Include="src\RenderPipeline\Material\Material.h" />
+    <ClInclude Include="src\RenderPipeline\Material\MaterialGLSL.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\BufferObjects.h" />
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Data\Vertex.h" />
     <ClInclude Include="src\RenderPipeline\Mesh\Mesh.h" />
     <ClInclude Include="src\RenderPipeline\Object\MeshRenderer.h" />
     <ClInclude Include="src\RenderPipeline\Scene\Scene.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h" />
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h" />
     <ClInclude Include="src\RenderPipeline\Shader\Shader.h" />
     <ClInclude Include="src\RenderPipeline\Shader\ShaderManagement\GlobalShaderManager.h" />
@@ -103,6 +138,7 @@
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Textures\Fire\fire.png" />
     <Image Include="Resources\Textures\Skybox\back.jpg" />
     <Image Include="Resources\Textures\Skybox\bottom.jpg" />
     <Image Include="Resources\Textures\Skybox\front.jpg" />

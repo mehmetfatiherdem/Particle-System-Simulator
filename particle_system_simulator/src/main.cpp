@@ -2,6 +2,7 @@
 #include "RenderPipeline/Initialization/Initialization.h"
 #include "GeneralUtility/RefOrValue.h"
 #include <iostream>
+#include <cmath>
 
 int main()
 {

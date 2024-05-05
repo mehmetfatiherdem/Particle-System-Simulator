@@ -31,7 +31,6 @@ private:
 	SceneCamera camera;
 	Skybox skybox;
 
-	MeshRenderer* createObj(MeshRenderer* object);
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
 public:
@@ -41,6 +40,9 @@ public:
 
 	void update();
 	void render();
+
+	GlobalShaderManager& getShaderManager() { return shaderManager; }
+	Camera& getCamera() { return camera; }
 	
 #pragma region Light Operations
 
@@ -79,8 +81,8 @@ public:
 
 	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh);
 	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader);
-	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Material& material);
-	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, const Material& material);
+	MeshRenderer* createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material);
 	MeshRenderer* createObject(MeshRenderer* object);
 
 	void destroyObject(MeshRenderer* object);
@@ -88,5 +90,4 @@ public:
 
 #pragma endregion
 
-	Camera& getCamera() { return camera; }
 };

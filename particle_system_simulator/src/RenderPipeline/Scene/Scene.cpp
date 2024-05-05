@@ -1,13 +1,15 @@
+#include <functional>
+#include <algorithm>
 #include "RenderPipeline/Light/DirectionalLight.h"
 #include "RenderPipeline/Light/PointLight.h"
 #include "RenderPipeline/Light/SpotLight.h"
 #include "RenderPipeline/Light/Data/LightConstants.h"
 #include "RenderPipeline/Object/MeshRenderer.h"
-#include "RenderPipeline/Object/MeshRendererSorter.h"
 #include "RenderPipeline/Mesh/Mesh.h"
 #include "RenderPipeline/Material/Material.h"
 #include "RenderPipeline/Shader/Shader.h"
 #include "GeneralUtility/stringify.h"
+#include "GeneralUtility/MathConstants.h"
 #include "Scene.h"
 
 std::string getTextureAddresses()
@@ -25,7 +27,7 @@ Scene::~Scene()
 	{
 		delete light;
 	}
-	
+
 	for (auto object : objects)
 	{
 		delete object;
@@ -42,13 +44,36 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
+	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
 
-	for(auto object : objects)
+	//Render opaque objects first
+	std::for_each(objects.begin(), objects.end(), [](MeshRenderer* object)
+		{
+			if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON)
+			{
+				object->render();
+			}
+		});
+
+	//Sort the objects based on their distance from the camera (from farthest to nearest), also stack all the opaque objects
+	//at the back of the vector since they're rendered but still inside the vector.
+
+	std::sort(objects.begin(), objects.end(), [&](MeshRenderer* obj1, MeshRenderer* obj2)
+		{
+			if (std::abs(obj1->getMaterial().getAlpha() - 1.0f) < EPSILON) return false;
+			if (std::abs(obj2->getMaterial().getAlpha() - 1.0f) < EPSILON) return true;
+
+			float obj1Distance = glm::length(obj1->getTransform().getPosition() - camera.getTransform().getPosition());
+			float obj2Distance = glm::length(obj2->getTransform().getPosition() - camera.getTransform().getPosition());
+
+			return obj1Distance > obj2Distance;
+		});
+
+	for (auto object : objects)
 	{
+		if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON) break;
 		object->render();
 	}
-
-	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
 }
 
 #pragma region Light Operations
@@ -217,28 +242,6 @@ void Scene::destroyLight(SpotLight* light)
 
 #pragma region Object Operations
 
-MeshRenderer* Scene::createObj(MeshRenderer* object)
-{
-	bool inserted = false;
-
-	for(size_t i = 0; i < objects.size(); ++i)
-	{
-		if(!compare(*objects[i], *object))
-		{
-			objects.insert(objects.begin() + i, object);
-			inserted = true;
-			break;
-		}
-	}
-
-	if(!inserted)
-	{
-		objects.push_back(object);
-	}
-
-	return object;
-}
-
 void Scene::destroyObject(MeshRenderer* object)
 {
 	auto end = objects.end();
@@ -253,27 +256,37 @@ void Scene::destroyObject(MeshRenderer* object)
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh)
 {
-	return createObj(new MeshRenderer(transform, mesh));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader)
 {
-	return createObj(new MeshRenderer(transform, mesh, shader));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, shader);
+	objects.push_back(obj);
+	return obj;
 }
 
-MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Material& material)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, const Material& material)
 {
-	return createObj(new MeshRenderer(transform, mesh, material));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, material);
+	objects.push_back(obj);
+	return obj;
 }
 
-MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, Material& material)
+MeshRenderer* Scene::createObject(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
 {
-	return createObj(new MeshRenderer(transform, mesh, shader, material));
+	MeshRenderer* obj = new MeshRenderer(transform, mesh, shader, material);
+	objects.push_back(obj);
+	return obj;
 }
 
 MeshRenderer* Scene::createObject(MeshRenderer* object)
 {
-	return createObj(new MeshRenderer(*object));
+	MeshRenderer* obj = new MeshRenderer(*object);
+	objects.push_back(obj);
+	return obj;
 }
 
 #pragma endregion

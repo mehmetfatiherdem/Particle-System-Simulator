@@ -127,6 +127,21 @@
     <Filter Include="src\Entity Component System">
       <UniqueIdentifier>{43955905-f2fd-463e-bbda-7acfb16b6d04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Particle System">
+      <UniqueIdentifier>{77f0b56a-7190-4b98-9824-f54f0efa2133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Data">
+      <UniqueIdentifier>{8dca8c97-c0ae-4049-a83f-1669960d1568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Components">
+      <UniqueIdentifier>{8035ef6a-9daf-4208-bf68-427c2e2bcfa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Emitter">
+      <UniqueIdentifier>{9acb7489-ed0a-442b-8167-a31b4549140e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Fire">
+      <UniqueIdentifier>{4a36883f-bcfd-4d72-afb4-83a094b8e601}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -213,8 +228,44 @@
     <ClCompile Include="src\Time Management\Time.cpp">
       <Filter>src\Time Management</Filter>
     </ClCompile>
-    <ClCompile Include="src\EntityComponentSystem\Entity.cpp">
-      <Filter>src\Entity Component System</Filter>
+    <ClCompile Include="src\Particle System\ParticleSystem.cpp">
+      <Filter>src\Particle System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\Emitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeneralUtility\Random.cpp">
+      <Filter>src\General Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\SizeOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\VelocityOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\SizeBySpeed.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp">
+      <Filter>src\Particle System\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +347,6 @@
     <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h">
       <Filter>src\Render Pipeline\Light\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Mesh\Data\MeshProperties.h">
-      <Filter>src\Render Pipeline\Mesh\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\RenderPipeline\Skybox\Skybox.h">
       <Filter>src\Render Pipeline\Skybox</Filter>
     </ClInclude>
@@ -353,7 +401,7 @@
     <ClInclude Include="src\Time Management\Time.h">
       <Filter>src\Time Management</Filter>
     </ClInclude>
-    <ClInclude Include="src\GeneralUtility\MathUtility.h">
+    <ClInclude Include="src\GeneralUtility\SignUtility.h">
       <Filter>src\General Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Shader\Data\VertexAttributes.h">
@@ -370,6 +418,78 @@
     </ClInclude>
     <ClInclude Include="src\EntityComponentSystem\IComponent.h">
       <Filter>src\Entity Component System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\Random.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Particle.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\ParticleSystem.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\Emitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h">
+      <Filter>src\Particle System\Emitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\Trigonometry.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\BasicMath.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ColorOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\Component.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\ComponentMethod.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ForceOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\SizeBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\RotationBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\LimitVelocityOverLifetime.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ColorBySpeed.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Components\ComponentComparator.h">
+      <Filter>src\Particle System\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Material\MaterialGLSL.h">
+      <Filter>src\Render Pipeline\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\UBOConstants.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h">
+      <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -390,6 +510,9 @@
     </Image>
     <Image Include="Resources\Textures\Skybox\front.jpg">
       <Filter>Resources\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Fire\fire.png">
+      <Filter>Resources\Textures\Fire</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

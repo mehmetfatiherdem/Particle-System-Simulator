@@ -1,9 +1,15 @@
 #include "RenderPipeline/Shader/Shader.h"
 #include "RenderPipeline/Texture/Texture.h"
 #include "Material.h"
+#include "RenderPipeline/Application.h"
+#include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
+#include "MaterialGLSL.h"
 
-Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float ambientStrength, float shininess) : diffuseMap(diffuseMap),
-specularMap(specularMap), color(color), ambientStrength(ambientStrength), shininess(shininess)
+Texture* Material::lastDiffuseMap = nullptr;
+Texture* Material::lastSpecularMap = nullptr;
+
+Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float shininess) : diffuseMap(diffuseMap),
+specularMap(specularMap), color(color), shininess(shininess)
 {
 	if (diffuseMap)
 	{
@@ -15,31 +21,43 @@ specularMap(specularMap), color(color), ambientStrength(ambientStrength), shinin
 	}
 }
 
-Material& Material::defaultMaterial()
+bool Material::operator==(const Material& other) const
 {
-	static Material defaultMaterial(nullptr, nullptr, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, 1.0f, 32.0f);
-	return defaultMaterial;
+	return color == other.color &&
+		diffuseMap == other.diffuseMap &&
+		specularMap == other.specularMap &&
+		shininess == other.shininess;
+}
+
+Material Material::defaultMaterial()
+{
+	return Material(nullptr, nullptr, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, 32.0f);
 }
 
 void Material::useMaterial(const Shader& shader) const
 {
-	shader.setVector("material.color.ambient", color.ambient);
-	shader.setVector("material.color.diffuse", color.diffuse);
-	shader.setVector("material.color.specular", color.specular);
-	shader.setFloat("material.ambientStrength", ambientStrength);
-	shader.setFloat("material.shininess", shininess);
+	MaterialGLSL material
+	{
+		color.ambient,
+		0.0f,
+		color.diffuse,
+		0.0f,
+		color.specular,
+		color.alpha,
+		shininess,
+		diffuseMap ? true : false,
+		specularMap ? true : false,
+		0.0f,
+	};
 
-	shader.setBool("material.useDiffuseMap", diffuseMap);
-	shader.setBool("material.useSpecularMap", specularMap);
+	Application::getInstance().getScene().getShaderManager().updateMaterial(material);
 
-	if (diffuseMap)
+	if (diffuseMap && (diffuseMap != lastDiffuseMap))
 	{
 		diffuseMap->useTexture();
-		shader.setInt("material.diffuseMap", 0);
 	}
-	if (specularMap)
+	if (specularMap && (specularMap != lastSpecularMap))
 	{
 		specularMap->useTexture();
-		shader.setInt("material.specularMap", 1);
 	}
 }

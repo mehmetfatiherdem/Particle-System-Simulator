@@ -22,6 +22,6 @@ void main() {
     gl_Position = projection * view * worldPos;
 
     vs_out.worldPosition = worldPos.xyz;
-    vs_out.worldNormal = (transpose(inverse(model)) * vec4(vertexNormal, 0.0)).xyz;
+    vs_out.worldNormal = mat3(transpose(inverse(model))) * vertexNormal;
     vs_out.texCoords = textureCoordinates;
 }

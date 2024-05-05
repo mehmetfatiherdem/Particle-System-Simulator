@@ -2,22 +2,18 @@
 
 #include <entt/entt.hpp>
 
-/*
-	entt::registry registry;
-    entt::entity entityObject = registry.create();
-    Entity e{registry, entityObject};
-    TranssformComponent tc{e};
-    tc->addComponent<TransformComponent>(1, 2, 3);
-    
-*/
-
 class Entity
 {
 private:
-	entt::registry& registry; // to store the entities
-	entt::entity handle; // entity itself
+	/*static entt::registry registry;
+	entt::entity handle;*/
+
 public:
-	Entity(entt::registry& registry, entt::entity handle) : registry(registry), handle(handle) {}
+	/*Entity()  { }
+	~Entity()
+	{
+		registry.destroy(handle);
+	}
 
     template<typename T, typename... Args>
     T& addComponent(Args&&... args) {
@@ -39,21 +35,12 @@ public:
         registry.remove<T>(handle);
     }
 
-    /*
-    
-        // destroys all the entities in a range
-        auto view = registry.view<a_component, another_component>();
-        registry.destroy(view.begin(), view.end());
-    
-    */
-
     template<typename... Component>
     auto getEntitiesWithComponents() {
 		return registry.view<Component...>();
-	}
+	}*/
 
     /*
-    
      now there are three different options to loop through the entities from our view
      1.: a basic lambda which will be called with the given components
      note: the lambda arguments need to match the components with which we create this view
@@ -69,15 +56,7 @@ public:
     4. a for loop with a forward iterator
     for (auto entity : view) {
        auto& vel = view.get<velocity>(entity);
-            
     }
-    
     */
-
-    void destroy() {
-		registry.destroy(handle);
-	}
-
-    entt::entity getHandle() const { return handle; }
 };
 
