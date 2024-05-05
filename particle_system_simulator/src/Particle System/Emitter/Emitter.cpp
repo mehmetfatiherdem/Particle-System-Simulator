@@ -1,3 +1,4 @@
+#include "RenderPipeline/Application.h"
 #include "Emitter.h"
 #include "Time Management/Time.h"
 
@@ -21,15 +22,19 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 
 	glm::vec3 position, velocity;
 
+	Transform& camT = Application::getInstance().getScene().getCamera().getTransform();
+
 	for (size_t i = 0; i < particleCount; ++i, poolIndex = (poolIndex - 1) % particlePool.size())
 	{
 		emit(props, position, velocity);
 
 		Particle& particle = particlePool[poolIndex];
+		Transform& transform = particle.renderer->getTransform();
 
-		particle.renderer->getTransform().setPosition(position);
-		particle.renderer->getTransform().setEulerRotation(props.startRotation);
-		particle.renderer->getTransform().setScale(glm::vec3{props.startSize, props.startSize, props.startSize});
+		transform.setPosition(position);
+		transform.lookAt(camT);
+		transform.rotateAround(transform.getForwardVector(), props.startRotation);
+		transform.setScale(glm::vec3{props.startSize, props.startSize, props.startSize});
 		particle.renderer->getMaterial().setColor(props.startColor);
 		particle.velocity = velocity;
 		particle.remainingLifetime = props.startLifetime;

@@ -100,12 +100,26 @@ void ParticleSystemEditor::renderParticleTabs()
 					ps->props.startSize = utility::math::max<float>(ps->props.startSize, 0.0f);
 				}
 
-				float rot[3] = 
+				float rot = ps->props.startRotation * TO_DEGREES;
+
+				imgui::SliderAngle("Start Rotation", &ps->props.startRotation, 0.0f, 360.0f);
+
+				/*if (imgui::InputFloat("Start Rotation", &rot))
 				{
-					ps->props.startRotation.x * TO_DEGREES,
-					ps->props.startRotation.y * TO_DEGREES,
-					ps->props.startRotation.z * TO_DEGREES
-				};
+					rot = utility::math::max<float>(rot, 0.0f);
+					ps->props.startRotation = utility::math::min<float>(rot, 360.0f) * TO_RADIANS;
+				}*/
+
+				if (imgui::TreeNode("Start Color"))
+				{
+					imgui::ColorEdit3("Ambient", &ps->props.startColor.ambient[0]);
+					imgui::ColorEdit3("Diffuse", &ps->props.startColor.diffuse[0]);
+					imgui::ColorEdit3("Specular", &ps->props.startColor.specular[0]);
+
+					imgui::SliderFloat("Alpha", &ps->props.startColor.alpha, 0.0f, 1.0f);
+
+					imgui::TreePop();
+				}
 
 				imgui::EndTabItem();
 			}

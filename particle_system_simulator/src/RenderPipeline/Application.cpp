@@ -130,7 +130,7 @@ void Application::run()
 		.startSpeed = 1.0f,
 		.startSize = 5.0f,
 		.startColor = matSmoke.getColor(),
-		.maxParticles = 2000,
+		.maxParticles = 1,
 		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
 
@@ -140,7 +140,7 @@ void Application::run()
 		.startSpeed = 3.0f,
 		.startSize = 5.75f,
 		.startColor = matFire.getColor(),
-		.maxParticles = 550,
+		.maxParticles = 1,
 	};
 
 	ParticleSystem psSmoke("Smoke", propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
