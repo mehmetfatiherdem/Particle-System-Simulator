@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-
+#include <functional>
 #include "RenderPipeline/Scene/Scene.h"
 #include "UserInterface/Window.h"
 
@@ -11,6 +11,8 @@ private:
     Window window;
     Scene scene;
     const uint32_t clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
+
+    void gameLoop(std::function<void()> gameLoop);
 
 public:
     Application();

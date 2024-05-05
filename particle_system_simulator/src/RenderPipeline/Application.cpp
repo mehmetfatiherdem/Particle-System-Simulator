@@ -3,10 +3,6 @@
 #include <cstring>
 #include <cmath>
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
-
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
@@ -41,6 +37,7 @@
 #include "Particle System/Components/SizeBySpeed.h"
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
+#include "UserInterface/Gui.h"
 
 Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600)
 {
@@ -51,6 +48,9 @@ Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600
 	glCullFace(GL_BACK);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Gui::init(window.getNativeWindow());
+	Random::init();
 }
 
 Application& Application::getInstance()
@@ -59,14 +59,45 @@ Application& Application::getInstance()
 	return application;
 }
 
+void Application::gameLoop(std::function<void()> frameLogic)
+{
+	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
+	void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
+	bool currentMode = 0;
+
+	Time::start();
+
+	while (!window.shouldClose())
+	{
+		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+		glClear(clearMask);
+		window.pollEvents();
+		Gui::beginFrame();
+
+		if (Input::getKeyDown(KeyCode::KEY_X))
+		{
+			currentMode = !currentMode;
+			glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
+			glToggle[currentMode](GL_CULL_FACE);
+		}
+
+		frameLogic();
+
+		window.swapBuffers();
+		window.endFrame();
+		Gui::endFrame();
+		Time::endFrame();
+	}
+
+	glfwTerminate();
+}
+
 std::string fire = "Resources/Textures/fire.png";
 std::string smoke = "Resources/Textures/smoke.png";
 std::string container = "Resources/Textures/container.jpg";
 
 void Application::run()
 {
-	Random::init();
-
 	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
 	Texture texSmoke(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
 	Texture texFire(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
@@ -149,50 +180,11 @@ void Application::run()
 	//scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
 
-	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
-	void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
-	bool currentMode = 0;
-
-	Time::start();
-
-
-	while (!window.shouldClose())
-	{
-		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
-		glClear(clearMask);
-
-		window.pollEvents();
-
-		// Start the Dear ImGui frame
-		// Editor::beginFrame();
-
-		// Editor::ShowDemoWindow();
-
-		if (Input::getKeyDown(KeyCode::KEY_X))
+	gameLoop([&]()
 		{
-			currentMode = !currentMode;
-			glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
-			glToggle[currentMode](GL_CULL_FACE);
-		}
-
-		//psFire.update();
-		psSmoke.update();
-		scene.update();
-		//obj->getTransform().lookAt(scene.getCamera().getTransform());
-		//mr2.render();
-		//mr.render();
-		scene.render();
-		
-
-		// Editor::render();
-
-		window.swapBuffers();
-		window.endFrame();
-		Time::endFrame();
-
-		
-	}
-
-	glfwTerminate();
-	// Editor::shutdown();
+			scene.update();
+			psFire.update();
+			psSmoke.update();
+			scene.render();
+		});
 }

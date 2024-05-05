@@ -26,7 +26,6 @@
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Editor\Editor.cpp" />
     <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
@@ -67,6 +66,8 @@
     <ClCompile Include="src\RenderPipeline\Transform\Transform.cpp" />
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="src\Time Management\Time.cpp" />
+    <ClCompile Include="src\UserInterface\ParticleSystemEditor.cpp" />
+    <ClCompile Include="src\UserInterface\Gui.cpp" />
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +80,6 @@
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\Editor\Editor.h" />
     <ClInclude Include="src\EntityComponentSystem\Entity.h" />
     <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
@@ -153,6 +153,8 @@
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
     <ClInclude Include="src\ResourceManagement\ResourceManager.h" />
     <ClInclude Include="src\Time Management\Time.h" />
+    <ClInclude Include="src\UserInterface\ParticleSystemEditor.h" />
+    <ClInclude Include="src\UserInterface\Gui.h" />
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>

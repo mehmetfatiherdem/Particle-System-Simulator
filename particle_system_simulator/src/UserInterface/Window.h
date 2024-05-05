@@ -46,6 +46,8 @@ public:
 	void swapBuffers() const;
 	void endFrame();
 
+	void* getNativeWindow() const { return window; }
+
 	glm::vec2 getMousePosition() const { return mousePos; }
 	float getMouseX() const { return mousePos.x; }
 	float getMouseY() const { return mousePos.y; }
