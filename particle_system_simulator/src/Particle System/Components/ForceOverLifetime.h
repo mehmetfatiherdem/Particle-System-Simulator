@@ -24,13 +24,15 @@ public:
 	ForceOverLifetime(const glm::vec3& constantForce) : 
 		Component(2), method(ComponentMethod::Constant), minForce(constantForce), maxForce(constantForce) { }
 	ForceOverLifetime(const glm::vec3& minForce, const glm::vec3& maxForce) :
-		Component(2), method(ComponentMethod::RandomBetweenTwoConstants), minForce(minForce), maxForce(maxForce) { }
+		Component(2), method(ComponentMethod::Random_Between_Two_Constants), minForce(minForce), maxForce(maxForce) { }
 	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& bezier) :
 		Component(2), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
 	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
-		Component(2), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
+		Component(2), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~ForceOverLifetime() override = default;
 
 	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
+	virtual ComponentType getType() const override { return ComponentType::Force_Over_Lifetime; }
 };

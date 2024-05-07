@@ -9,6 +9,7 @@ void SphereEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, 
 {
 	float dx, dy, x, y, z, randomRadius, randomXy, noise;
 
+	//Maybe come up with a better way to generate random vectors
 	do
 	{
 		dx = Random::getFloat(-1.0f, 1.0f);
@@ -27,4 +28,9 @@ void SphereEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, 
 	velocity = offset + glm::vec3{Random::getFloat(-noise, noise), Random::getFloat(-noise, noise), Random::getFloat(-noise, noise)};
 	velocity = glm::normalize(velocity) * props.startSpeed;
 	position = offset + props.position;
+}
+
+std::unique_ptr<SphereEmitter> SphereEmitter::defaultEmitter()
+{
+	return std::make_unique<SphereEmitter>(10.0f);
 }

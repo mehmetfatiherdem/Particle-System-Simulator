@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Emitter.h"
 #include "GeneralUtility/MathConstants.h"
 
@@ -19,4 +20,6 @@ protected:
 public:
 	SphereEmitter(float emissionRate, float radius = 10.0f, float arc = TAU) : Emitter(emissionRate), radius(radius), arc(arc) { }
 	virtual ~SphereEmitter() override = default;
+
+	static std::unique_ptr<SphereEmitter> defaultEmitter();
 };

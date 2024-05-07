@@ -38,3 +38,8 @@ void ConeEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, gl
 	position = glm::vec3{x, y, z} + props.position;
 	velocity = glm::vec3{dirX, dirY, dirZ} * props.startSpeed;
 }
+
+std::unique_ptr<ConeEmitter> ConeEmitter::defaultEmitter()
+{
+	return std::make_unique<ConeEmitter>(10.0f);
+}

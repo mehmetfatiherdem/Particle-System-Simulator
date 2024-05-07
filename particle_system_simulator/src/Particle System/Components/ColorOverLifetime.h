@@ -23,5 +23,7 @@ public:
 	virtual ~ColorOverLifetime() override = default;
 
 	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
+	virtual ComponentType getType() const override { return ComponentType::Color_Over_Lifetime; }
 };
 

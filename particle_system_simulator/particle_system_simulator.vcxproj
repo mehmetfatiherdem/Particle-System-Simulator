@@ -111,6 +111,7 @@
     <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h" />
     <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h" />
     <ClInclude Include="src\Particle System\Data\ComponentMethod.h" />
+    <ClInclude Include="src\Particle System\Data\ComponentType.h" />
     <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h" />
     <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h" />
     <ClInclude Include="src\Particle System\Emitter\Emitter.h" />

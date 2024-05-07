@@ -17,7 +17,7 @@ void SizeBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 	case ComponentMethod::Curve:
 		size = minBezier.evaluate(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
+	case ComponentMethod::Random_Between_Two_Curves:
 		float min = minBezier.evaluate(t);
 		float max = maxBezier.evaluate(t);
 		utility::math::swapToPreserveMinMax(min, max);

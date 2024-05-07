@@ -17,7 +17,7 @@ void RotationBySpeed::update(const ParticleSystemProps& props, Particle& particl
 	case ComponentMethod::Curve:
 		rotation = minBezier.evaluate(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
+	case ComponentMethod::Random_Between_Two_Curves:
 		float min = minBezier.evaluate(t);
 		float max = maxBezier.evaluate(t);
 		utility::math::swapToPreserveMinMax(min, max);

@@ -17,7 +17,7 @@ void LimitVelocityOverLifetime::update(const ParticleSystemProps& props, Particl
 	case ComponentMethod::Constant:
 		limitVelocity = minVelocity;
 		break;
-	case ComponentMethod::RandomBetweenTwoConstants:
+	case ComponentMethod::Random_Between_Two_Constants:
 		limitVelocity.x = Random::getFloat(minVelocity.x, maxVelocity.x);
 		limitVelocity.y = Random::getFloat(minVelocity.y, maxVelocity.y);
 		limitVelocity.z = Random::getFloat(minVelocity.z, maxVelocity.z);
@@ -25,7 +25,7 @@ void LimitVelocityOverLifetime::update(const ParticleSystemProps& props, Particl
 	case ComponentMethod::Curve:
 		limitVelocity = minBezier.evaluate(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
+	case ComponentMethod::Random_Between_Two_Curves:
 		glm::vec3 min = minBezier.evaluate(t);
 		glm::vec3 max = maxBezier.evaluate(t);
 

@@ -152,6 +152,9 @@ void Application::run()
 	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
 	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
 
+	psSmoke.addComponent(solSmoke);
+	psFire.addComponent(solFire);
+
 	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
 		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
 
@@ -164,9 +167,9 @@ void Application::run()
 	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
 			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
 
-	ForceOverLifetime* volSmoke = new ForceOverLifetime(solBezierSmoke2);
+	ForceOverLifetime* folSmoke = new ForceOverLifetime(solBezierSmoke2);
 	
-	psSmoke.addComponent(volSmoke);
+	psSmoke.addComponent(folSmoke);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 
@@ -185,5 +188,5 @@ void Application::run()
 	delete solFire;
 	delete colSmoke;
 	delete colFire;
-	delete volSmoke;
+	delete folSmoke;
 }

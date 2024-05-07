@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "Particle System/Data/ComponentType.h"
 
 class ParticleSystemProps;
 class Particle;
@@ -16,6 +17,7 @@ public:
 	virtual ~Component() = default;
 
 	virtual void update(const ParticleSystemProps& props, Particle& particle) = 0;
+	virtual ComponentType getType() const = 0;
 
 	uint32_t getPriority() const { return priority; }
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <glm/glm.hpp>
 #include "Emitter.h"
 
@@ -20,4 +21,6 @@ public:
 		Emitter(emissionRate), radius(radius), angle(angle) { }
 
 	virtual ~ConeEmitter() override = default;
+
+	static std::unique_ptr<ConeEmitter> defaultEmitter();
 };

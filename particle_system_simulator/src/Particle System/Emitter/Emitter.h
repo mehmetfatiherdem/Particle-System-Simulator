@@ -7,10 +7,13 @@
 class Emitter
 {
 private:
-	float emissionRate;
-	float surplus;
+	friend class ParticleSystemEditor;
 
+	float surplus;
 protected:
+
+	float emissionRate;
+
 	virtual void emit(const ParticleSystemProps& props, glm::vec3& position, glm::vec3& velocity) = 0;
 
 public:

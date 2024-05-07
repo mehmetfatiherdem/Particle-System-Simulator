@@ -11,13 +11,13 @@ void SizeOverLifetime::update(const ParticleSystemProps& props, Particle& partic
 
 	switch (method)
 	{
-	case ComponentMethod::RandomBetweenTwoConstants:
+	case ComponentMethod::Random_Between_Two_Constants:
 		size = Random::getFloat(minSize, maxSize);
 		break;
 	case ComponentMethod::Curve:
 		size = minBezier.evaluate(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
+	case ComponentMethod::Random_Between_Two_Curves:
 		float min = minBezier.evaluate(t);
 		float max = maxBezier.evaluate(t);
 		utility::math::swapToPreserveMinMax(min, max);

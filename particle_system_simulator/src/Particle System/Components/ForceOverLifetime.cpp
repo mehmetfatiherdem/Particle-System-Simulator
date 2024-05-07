@@ -17,7 +17,7 @@ void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	case ComponentMethod::Constant:
 		force = minForce;
 		break;
-	case ComponentMethod::RandomBetweenTwoConstants:
+	case ComponentMethod::Random_Between_Two_Constants:
 		force.x = Random::getFloat(minForce.x, maxForce.x);
 		force.y = Random::getFloat(minForce.y, maxForce.y);
 		force.z = Random::getFloat(minForce.z, maxForce.z);
@@ -25,7 +25,7 @@ void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	case ComponentMethod::Curve:
 		force = minBezier.evaluate(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
+	case ComponentMethod::Random_Between_Two_Curves:
 		glm::vec3 min = minBezier.evaluate(t);
 		glm::vec3 max = maxBezier.evaluate(t);
 
