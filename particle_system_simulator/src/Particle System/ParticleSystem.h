@@ -17,8 +17,6 @@
 #include "Components/Component.h"
 #include "Components/ComponentComparator.h"
 
-using OrderedComponentSet = std::set<Component*, ComponentComparator>;
-
 class ParticleSystemEditor;
 
 class ParticleSystem
@@ -35,7 +33,7 @@ private:
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
-	OrderedComponentSet components;
+	std::vector<Component*> components;
 
 	Scene& scene;
 	
@@ -45,6 +43,7 @@ public:
 	~ParticleSystem() = default;
 
 	void addComponent(Component* component);
+	void removeComponent(Component* component);
 
 	void update();
 };

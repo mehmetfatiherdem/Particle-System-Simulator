@@ -4,6 +4,10 @@
 #include <cmath>
 #include <stdint.h>
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
+
 #include <glm/glm.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
@@ -84,6 +88,9 @@ void Application::gameLoop(std::function<void()> frameLogic)
 
 		frameLogic();
 		editor.render();
+		/*ImGui::ShowDemoWindow();
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 
 		window.swapBuffers();
 		window.endFrame();
@@ -151,6 +158,8 @@ void Application::run()
 
 	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
 	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
+
+	RotationBySpeed* rbsSmoke = new RotationBySpeed(0.0f, 1.0f, CubicBezierCurve<float>(1.0f, 2.0f, 3.0f, 4.0f));
 
 	psSmoke.addComponent(solSmoke);
 	psFire.addComponent(solFire);

@@ -10,13 +10,13 @@ class ColorBySpeed : public Component
 private:
 	friend class ParticleSystemEditor;
 
-	float keypoints[2];
-	Color4 colors[2];
-	float minSpeed;
-	float maxSpeed;
+	float keypoints[2] = {0.0f, 1.0f};
+	Color4 colors[2] = {Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}};
+	float minSpeed = 0.0f;
+	float maxSpeed = 1.0f;
 
 public:
-	ColorBySpeed() = delete;
+	ColorBySpeed() : Component(6) { }
 
 	ColorBySpeed(float keypoint1, const Color4& color1, float keypoint2, const Color4& color2, float minSpeed, float maxSpeed) :
 		Component(6), keypoints{keypoint1, keypoint2}, colors{color1, color2}, minSpeed(minSpeed), maxSpeed(maxSpeed) { }

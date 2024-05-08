@@ -85,7 +85,7 @@ void ParticleSystemEditor::renderBezierFloat(const std::string& name, CubicBezie
 	}
 }
 
-void ParticleSystemEditor::renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags_ flags)
+void ParticleSystemEditor::renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags flags)
 {
 	if (imgui::TreeNodeEx(name.c_str(), flags))
 	{
@@ -197,16 +197,7 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				imgui::InputFloat3("Position", &ps->props.position[0]);
 
-				if (imgui::InputFloat("Min Size", &ps->props.minSize))
-				{
-					float temp = utility::math::max<float>(ps->props.minSize, 0.0f);
-					ps->props.minSize = utility::math::min<float>(temp, ps->props.maxSize);
-				}
-
-				if (imgui::InputFloat("Max Size", &ps->props.maxSize))
-				{
-					ps->props.maxSize = utility::math::max<float>(ps->props.maxSize, ps->props.minSize);
-				}
+				renderMinMaxFloat("Size", &ps->props.minSize, &ps->props.maxSize);
 
 				if (imgui::InputFloat("Gravity Modifier", &ps->props.gravityModifier))
 				{
@@ -235,7 +226,7 @@ void ParticleSystemEditor::renderParticleTabs()
 					ps->props.startRotation = rot * TO_RADIANS;
 				}
 
-				renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
+				renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 
 				renderEmitter(ps);
 				renderComponents(ps);
@@ -252,7 +243,7 @@ void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 {
 	addVerticalSpace(2, false);
 
-	if (imgui::TreeNodeEx("Emitter", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen))
+	if (imgui::TreeNodeEx("Emitter", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet))
 	{
 		int prevSelected, selected;
 		prevSelected = selected = getEmitterType(ps->emitter.get());
@@ -322,6 +313,7 @@ void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 		imgui::TreePop();
 	}
 }
+#include <iostream>
 
 void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 {
@@ -329,12 +321,47 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 
 	if (imgui::TreeNodeEx("Components", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Framed))
 	{
-		for (auto component : ps->components)
-		{
-			ComponentType type = component->getType();
+		std::vector<ComponentType> allTypes = {
+			ComponentType::Velocity_Over_Lifetime,
+			ComponentType::Size_Over_Lifetime,
+			ComponentType::Size_By_Speed,
+			ComponentType::Rotation_By_Speed,
+			ComponentType::Limit_Velocity_Over_Lifetime,
+			ComponentType::Force_Over_Lifetime,
+			ComponentType::Color_Over_Lifetime,
+			ComponentType::Color_By_Speed
+		};
 
-			if (imgui::TreeNodeEx(getComponentTypeName(type).c_str()))
+		for (size_t i = 0; i < ps->components.size(); ++i)
+		{
+			imgui::PushID(i);
+
+			Component* component = ps->components[i];
+			ComponentType type = component->getType();
+			allTypes.erase(std::remove(allTypes.begin(), allTypes.end(), type));
+
+			bool openComponent = imgui::TreeNodeEx(getComponentTypeName(type).c_str(), ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_AllowOverlap);
+
+			imgui::SameLine();
+
+			imgui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_FrameRounding, 8.0f);
+			imgui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+			ImVec2 buttonSize{15.0f, 15.0f};
+			ImVec2 windowSize = imgui::GetWindowSize();
+			imgui::SetCursorPosX(windowSize.x * 0.9f - buttonSize.x / 2);
+
+			if(imgui::Button("", buttonSize))
 			{
+				ps->removeComponent(component);
+			}
+
+			imgui::PopStyleColor();
+			imgui::PopStyleVar();
+
+			if (openComponent)
+			{
+				addVerticalSpace(2);
 				switch (type)
 				{
 				case ComponentType::Velocity_Over_Lifetime:
@@ -343,7 +370,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 
 					int selected = static_cast<int>(vol->method);
 
-					if (imgui::Combo("Method", &selected, "Constant\0Curve\0Random Between Two Constants\0Random Between TwoCurves\0\0"))
+					if (imgui::Combo("Method", &selected, "Constant\0Curve\0Random Between Two Constants\0Random Between Two Curves\0\0"))
 					{
 						vol->method = static_cast<ComponentMethod>(selected);
 					}
@@ -578,6 +605,46 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 				}
 
 				imgui::TreePop();
+			}
+
+			imgui::PopID();
+		}
+
+		if (allTypes.size() > 0)
+		{
+			addVerticalSpace(2, false);
+
+			ImVec2 windowSize = imgui::GetWindowSize();
+			ImVec2 buttonSize{windowSize.x * 0.64f, 25.0f};
+			imgui::SetCursorPosX(windowSize.x / 2 - buttonSize.x / 2);
+
+			if (imgui::Button("Add Component", buttonSize))
+			{
+				imgui::OpenPopup("Components");
+			}
+
+			if (imgui::BeginPopup("Components", ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysUseWindowPadding))
+			{
+				for (size_t i = 0; i < allTypes.size(); ++i)
+				{
+					if (imgui::Selectable(getComponentTypeName(allTypes[i]).c_str()))
+					{
+						switch (allTypes[i])
+						{
+						case ComponentType::Velocity_Over_Lifetime: ps->addComponent(new VelocityOverLifetime()); break;
+						case ComponentType::Size_Over_Lifetime: ps->addComponent(new SizeOverLifetime()); break;
+						case ComponentType::Size_By_Speed: ps->addComponent(new SizeBySpeed()); break;
+						case ComponentType::Rotation_By_Speed: ps->addComponent(new RotationBySpeed()); break;
+						case ComponentType::Limit_Velocity_Over_Lifetime: ps->addComponent(new LimitVelocityOverLifetime()); break;
+						case ComponentType::Force_Over_Lifetime: ps->addComponent(new ForceOverLifetime()); break;
+						case ComponentType::Color_Over_Lifetime: ps->addComponent(new ColorOverLifetime()); break;
+						case ComponentType::Color_By_Speed: ps->addComponent(new ColorBySpeed()); break;
+						default: throw 100;
+						}
+					}
+				}
+
+				imgui::EndPopup();
 			}
 		}
 

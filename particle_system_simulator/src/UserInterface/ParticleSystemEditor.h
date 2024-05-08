@@ -28,7 +28,7 @@ private:
 	void renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy = nullptr);
 	void renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy = nullptr);
 
-	void renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags_ flags = ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_None);
+	void renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags flags = 0);
 
 	void renderMinMaxFloat(const std::string& name, float* min, float* max, float minLimit = 0.0f);
 	void renderMinMaxFloat(const std::string& minName, const std::string& maxName, float* min, float* max, float minLimit = 0.0f);

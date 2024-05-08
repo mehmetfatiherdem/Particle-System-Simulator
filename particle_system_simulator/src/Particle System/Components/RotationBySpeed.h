@@ -7,19 +7,19 @@
 
 class ParticleSystemEditor;
 
-class RotationBySpeed : Component
+class RotationBySpeed : public Component
 {
 private:
 	friend class ParticleSystemEditor;
 
-	ComponentMethod method;
-	float minSpeed;
-	float maxSpeed;
-	CubicBezierCurve<float> minBezier;
-	CubicBezierCurve<float> maxBezier;
+	ComponentMethod method = ComponentMethod::Curve;
+	float minSpeed = 0.0f;
+	float maxSpeed = 1.0f;
+	CubicBezierCurve<float> minBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
+	CubicBezierCurve<float> maxBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 
 public:
-	RotationBySpeed() = delete;
+	RotationBySpeed() : Component(5) { }
 
 	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<float>& bezier) :
 		Component(5), method(ComponentMethod::Curve), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(bezier), maxBezier(bezier) { }

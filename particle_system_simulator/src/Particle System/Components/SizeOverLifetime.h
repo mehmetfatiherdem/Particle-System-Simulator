@@ -11,14 +11,15 @@ class SizeOverLifetime : public Component
 private:
 	friend class ParticleSystemEditor;
 
-	ComponentMethod method;
-	float minSize;
-	float maxSize;
-	CubicBezierCurve<float> minBezier;
-	CubicBezierCurve<float> maxBezier;
+	ComponentMethod method = ComponentMethod::Random_Between_Two_Constants;
+	float minSize = 0.0f;
+	float maxSize = 0.0f;
+	CubicBezierCurve<float> minBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
+	CubicBezierCurve<float> maxBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 
 public:
-	SizeOverLifetime() = delete;
+	SizeOverLifetime() : Component(1) { }
+
 	SizeOverLifetime(float minConstant, float maxConstant) :
 		Component(1), method(ComponentMethod::Random_Between_Two_Constants), minSize(minConstant), maxSize(maxConstant) {}
 

@@ -10,12 +10,12 @@ class ColorOverLifetime : public Component
 private:
 	friend class ParticleSystemEditor;
 
-	float keypoints[2];
-	Color4 colors[2];
+	float keypoints[2] = {0.0f, 1.0f};
+	Color4 colors[2] = {Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}};
 
 public:
 
-	ColorOverLifetime() = delete;
+	ColorOverLifetime() : Component(3) { }
 
 	ColorOverLifetime(float keypoint1, const Color4& color1, float keypoint2, const Color4& color2) :
 		Component(3), keypoints{keypoint1, keypoint2}, colors{color1, color2} { }

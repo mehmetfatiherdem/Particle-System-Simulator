@@ -12,14 +12,14 @@ class VelocityOverLifetime : public Component
 private:
 	friend class ParticleSystemEditor;
 
-	ComponentMethod method;
-	glm::vec3 minVelocity;
-	glm::vec3 maxVelocity;
-	CubicBezierCurve<glm::vec3> minBezier;
-	CubicBezierCurve<glm::vec3> maxBezier;
+	ComponentMethod method = ComponentMethod::Constant;
+	glm::vec3 minVelocity = glm::vec3{0.0f, 0.0f, 0.0f};
+	glm::vec3 maxVelocity = glm::vec3{1.0f, 1.0f, 1.0f};
+	CubicBezierCurve<glm::vec3> minBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
+	CubicBezierCurve<glm::vec3> maxBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
 
 public:
-	VelocityOverLifetime() = delete;
+	VelocityOverLifetime() : Component(0) { }
 
 	VelocityOverLifetime(const glm::vec3& constantVelocity) :
 		Component(0), method(ComponentMethod::Constant), minVelocity(constantVelocity), maxVelocity(constantVelocity)
