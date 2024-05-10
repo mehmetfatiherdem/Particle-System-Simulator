@@ -87,6 +87,8 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height)
 
 void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
 {
+	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
+
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	KeyCode keyCode = toKeyCode(key);
 
@@ -107,6 +109,8 @@ void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, 
 
 void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
+
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
 	if(action == GLFW_PRESS)
@@ -129,6 +133,7 @@ void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 
 void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
+	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	ownerWindow->scroll = yOffset;
 }

@@ -13,6 +13,9 @@ private:
 	float keypoints[2] = {0.0f, 1.0f};
 	Color4 colors[2] = {Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}}};
 
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
 public:
 
 	ColorOverLifetime() : Component(3) { }
@@ -21,8 +24,6 @@ public:
 		Component(3), keypoints{keypoint1, keypoint2}, colors{color1, color2} { }
 
 	virtual ~ColorOverLifetime() override = default;
-
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 	virtual ComponentType getType() const override { return ComponentType::Color_Over_Lifetime; }
 };

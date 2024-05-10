@@ -51,7 +51,7 @@ void Scene::render()
 		{
 			if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON)
 			{
-				object->render();
+				object->render(false);
 			}
 		});
 
@@ -72,7 +72,7 @@ void Scene::render()
 	for (auto object : objects)
 	{
 		if (std::abs(object->getMaterial().getAlpha() - 1.0f) < EPSILON) break;
-		object->render();
+		object->render(true);
 	}
 }
 

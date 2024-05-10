@@ -9,17 +9,7 @@ Texture* Material::lastDiffuseMap = nullptr;
 Texture* Material::lastSpecularMap = nullptr;
 
 Material::Material(Texture* diffuseMap, Texture* specularMap, const Color4& color, float shininess) : diffuseMap(diffuseMap),
-specularMap(specularMap), color(color), shininess(shininess)
-{
-	if (diffuseMap)
-	{
-		diffuseMap->setTextureUnit(0);
-	}
-	if (specularMap)
-	{
-		specularMap->setTextureUnit(1);
-	}
-}
+	specularMap(specularMap), color(color), shininess(shininess) { }
 
 bool Material::operator==(const Material& other) const
 {
@@ -54,10 +44,10 @@ void Material::useMaterial(const Shader& shader) const
 
 	if (diffuseMap && (diffuseMap != lastDiffuseMap))
 	{
-		diffuseMap->useTexture();
+		diffuseMap->useTexture(0);
 	}
 	if (specularMap && (specularMap != lastSpecularMap))
 	{
-		specularMap->useTexture();
+		specularMap->useTexture(1);
 	}
 }

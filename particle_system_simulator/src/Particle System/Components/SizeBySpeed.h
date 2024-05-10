@@ -17,6 +17,9 @@ private:
 	CubicBezierCurve<float> minBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 	CubicBezierCurve<float> maxBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
 public:
 	SizeBySpeed() : Component(4) { }
 
@@ -27,8 +30,6 @@ public:
 		Component(4), method(ComponentMethod::Random_Between_Two_Curves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~SizeBySpeed() override = default;
-
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 	virtual ComponentType getType() const override { return ComponentType::Size_By_Speed; }
 };

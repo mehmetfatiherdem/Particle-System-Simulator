@@ -18,6 +18,9 @@ private:
 	CubicBezierCurve<glm::vec3> minBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
 	CubicBezierCurve<glm::vec3> maxBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
 
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
 public:
 	ForceOverLifetime() : Component(2) { }
 
@@ -31,8 +34,6 @@ public:
 		Component(2), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~ForceOverLifetime() override = default;
-
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 	virtual ComponentType getType() const override { return ComponentType::Force_Over_Lifetime; }
 };

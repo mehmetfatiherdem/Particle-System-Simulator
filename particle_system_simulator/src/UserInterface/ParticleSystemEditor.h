@@ -3,6 +3,7 @@
 #include <set>
 #include <stdint.h>
 #include <glm/glm.hpp>
+#include "RenderPipeline/Texture/Texture.h"
 #include "GeneralUtility/CubicBezierCurve.h"
 #include "imgui/imgui.h"
 
@@ -19,6 +20,9 @@ private:
 	ImGuiIO& io;
 	ImGuiContext& context;
 	std::set<ParticleSystem*> particleSystems;
+	Texture* emptyTexture;
+	bool hasFocus;
+	bool isHovered;
 
 	void addVerticalSpace(uint32_t count, bool useLargeSpaces = false);
 	void renderParticleTabs();
@@ -37,11 +41,14 @@ private:
 	int getEmitterType(const Emitter* emitter) const;
 public:
 	ParticleSystemEditor();
-	~ParticleSystemEditor() = default;
+	~ParticleSystemEditor();
 
 	void render();
 
 	void addParticleSystem(ParticleSystem& ps);
+
+	bool isEditorWindowFocused() const { return hasFocus; }
+	bool isEditorWindowHovered() const { return isHovered; }
 
 	ImGuiContext& getContext() const { return context; }
 	ImGuiIO& getIO() const { return io; }

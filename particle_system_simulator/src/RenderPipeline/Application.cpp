@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <string>
 #include <cstring>
 #include <cmath>
 #include <stdint.h>
@@ -12,6 +13,7 @@
 #include <glm/ext/quaternion_float.hpp>
 
 #include "UserInterface/ParticleSystemEditor.h"
+#include "ResourceManagement/ResourceManager.h"
 #include "UserInterface/Gui.h"
 #include "GeneralUtility/gl2fw3.h"
 #include "UserInterface/Window.h"
@@ -48,6 +50,15 @@ Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600
 {
 	Gui::init(window.getNativeWindow());
 	Random::init();
+
+	Texture texSmoke("Resources/Textures/smoke.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texFire("Resources/Textures/fire.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	ResourceManager::addTexture(std::move(texSmoke), "smoke");
+	ResourceManager::addTexture(std::move(texFire), "fire");
 }
 
 Application& Application::getInstance()
@@ -102,16 +113,14 @@ void Application::gameLoop(std::function<void()> frameLogic)
 	glfwTerminate();
 }
 
-std::string fire = "Resources/Textures/fire.png";
-std::string smoke = "Resources/Textures/smoke.png";
-std::string container = "Resources/Textures/container.jpg";
+
 
 void Application::run()
 {
-	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
-	Texture texSmoke(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+	Texture& texSmoke = *const_cast<Texture*>(ResourceManager::getTexture("smoke"));
+	Texture& texFire = *const_cast<Texture*>(ResourceManager::getTexture("fire"));
 
-	Texture texFire(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
 
 	Material matSmoke(&texSmoke, nullptr,
 		Color4
@@ -137,7 +146,7 @@ void Application::run()
 		.startSpeed = 1.0f,
 		.startSize = 5.0f,
 		.startColor = matSmoke.getColor(),
-		.maxParticles = 1,
+		.maxParticles = 100,
 		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
 
@@ -183,7 +192,7 @@ void Application::run()
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 
 	editor.addParticleSystem(psSmoke);
-	editor.addParticleSystem(psFire);
+	//editor.addParticleSystem(psFire);
 
 	gameLoop([&]()
 		{
@@ -192,10 +201,4 @@ void Application::run()
 			psSmoke.update();
 			scene.render();
 		});
-
-	delete solSmoke;
-	delete solFire;
-	delete colSmoke;
-	delete colFire;
-	delete folSmoke;
 }

@@ -18,6 +18,9 @@ private:
 	CubicBezierCurve<float> minBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 	CubicBezierCurve<float> maxBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
 
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
 public:
 	RotationBySpeed() : Component(5) { }
 
@@ -28,8 +31,6 @@ public:
 		Component(5), method(ComponentMethod::Random_Between_Two_Curves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~RotationBySpeed() override = default;
-
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 	virtual ComponentType getType() const override { return ComponentType::Rotation_By_Speed; }
 };

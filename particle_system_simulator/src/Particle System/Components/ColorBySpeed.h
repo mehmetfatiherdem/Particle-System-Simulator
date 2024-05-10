@@ -15,6 +15,9 @@ private:
 	float minSpeed = 0.0f;
 	float maxSpeed = 1.0f;
 
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+
 public:
 	ColorBySpeed() : Component(6) { }
 
@@ -22,8 +25,6 @@ public:
 		Component(6), keypoints{keypoint1, keypoint2}, colors{color1, color2}, minSpeed(minSpeed), maxSpeed(maxSpeed) { }
 
 	virtual ~ColorBySpeed() override = default;
-
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 	virtual ComponentType getType() const override { return ComponentType::Color_By_Speed; }
 };

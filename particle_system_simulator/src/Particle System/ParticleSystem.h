@@ -19,6 +19,8 @@
 
 class ParticleSystemEditor;
 
+using OrderedComponentSet = std::set<Component*, ComponentComparator>;
+
 class ParticleSystem
 {
 private:
@@ -26,9 +28,10 @@ private:
 
 	std::vector<Particle> particlePool;
 	std::string name;
+	bool enabled;
 	uint32_t poolIndex;
 
-	Mesh sphere;
+	Mesh quad;
 	Material material;
 
 	ParticleSystemProps props;
@@ -44,6 +47,12 @@ public:
 
 	void addComponent(Component* component);
 	void removeComponent(Component* component);
+	OrderedComponentSet::iterator removeComponent(OrderedComponentSet::iterator iterator);
 
 	void update();
+
+	bool isEnabled() const { return enabled; }
+	void enable() { enabled = true; }
+	void disable() { enabled = false; }
+	void toggle() { enabled = !enabled; }
 };

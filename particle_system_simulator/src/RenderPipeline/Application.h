@@ -25,4 +25,5 @@ public:
 
     Window& getWindow() { return this->window; }
     Scene& getScene() { return this->scene; }
+	ParticleSystemEditor& getEditor() { return this->editor; }
 };

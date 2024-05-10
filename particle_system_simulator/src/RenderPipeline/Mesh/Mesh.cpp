@@ -166,14 +166,24 @@ void Mesh::initialize(VertexAttributes vertexAttribs)
 	initialize();
 }
 
-void Mesh::draw() const
+void Mesh::draw(bool disableDepthMask) const
 {
+	if (disableDepthMask)
+	{
+		glDepthMask(GL_FALSE);
+	}
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	if (disableDepthMask)
+	{
+		glDepthMask(GL_TRUE);
+	}
 }
 
-void Mesh::setModelMatrix(const glm::mat4& model)
+void Mesh::setModelMatrix(const glm::mat4& model, bool disableDepthMask)
 {
 	(*instanceMatrices)[updatedSinceLastDraw++] = model;
 
@@ -181,12 +191,22 @@ void Mesh::setModelMatrix(const glm::mat4& model)
 	{
 		updatedSinceLastDraw = 0;
 
+		if (disableDepthMask)
+		{
+			glDepthMask(GL_FALSE);
+		}
+
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[MBO]);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, instanceMatrices->size() * sizeof(glm::mat4), &(*instanceMatrices)[0]);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(VAO);
 		glDrawElementsInstanced(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0, instanceMatrices->size());
 		glBindVertexArray(0);
+
+		if (disableDepthMask)
+		{
+			glDepthMask(GL_TRUE);
+		}
 	}
 }
 

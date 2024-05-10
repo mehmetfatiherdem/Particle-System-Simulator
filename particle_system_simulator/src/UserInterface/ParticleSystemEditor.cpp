@@ -1,3 +1,4 @@
+#include <iostream>
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "GeneralUtility/BasicMath.h"
@@ -19,14 +20,34 @@
 namespace imgui = ImGui;
 using namespace std::string_literals;
 
-ParticleSystemEditor::ParticleSystemEditor() : io(imgui::GetIO()), context(*imgui::GetCurrentContext()) {}
+ParticleSystemEditor::ParticleSystemEditor() : io(imgui::GetIO()), context(*imgui::GetCurrentContext()), emptyTexture(nullptr),
+	hasFocus(true), isHovered(false)
+{
+	uint32_t width, height;
+	width = height = 4;
+	unsigned char* pixels = new unsigned char[width * height * 3];
+
+	for (size_t i = 0; i < width * height; ++i)
+	{
+		pixels[i * 3] = 255;
+		pixels[i * 3 + 1] = 255;
+		pixels[i * 3 + 2] = 255;
+	}
+
+	emptyTexture = new Texture(pixels, width, height, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGB, GL_RGB);
+
+	delete[] pixels;
+}
+
+ParticleSystemEditor::~ParticleSystemEditor()
+{
+	delete emptyTexture;
+}
 
 void ParticleSystemEditor::addParticleSystem(ParticleSystem& ps)
 {
 	particleSystems.insert(&ps);
 }
-
-
 
 void ParticleSystemEditor::addVerticalSpace(uint32_t count, bool useLargeSpaces)
 {
@@ -167,8 +188,13 @@ void ParticleSystemEditor::render()
 {
 	bool isOpen;
 
-	if (imgui::Begin("Particle System Editor", &isOpen))
+	imgui::Begin("Particle System Editor", &isOpen);
+
+	if(isOpen)
 	{
+		hasFocus = imgui::IsWindowFocused();
+		isHovered = imgui::IsWindowHovered();
+
 		renderParticleTabs();
 		imgui::End();
 	}
@@ -185,6 +211,10 @@ void ParticleSystemEditor::renderParticleTabs()
 		{
 			if (imgui::BeginTabItem(ps->name.c_str()))
 			{
+				imgui::Checkbox("Enabled", &ps->enabled);
+
+				imgui::BeginDisabled(!ps->enabled);
+
 				imgui::Text("Active Particles: %d", ps->props.currentParticles);
 
 				addVerticalSpace(1, false);
@@ -226,11 +256,41 @@ void ParticleSystemEditor::renderParticleTabs()
 					ps->props.startRotation = rot * TO_RADIANS;
 				}
 
-				renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+				if (imgui::TreeNodeEx("Material", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet))
+				{
+					float shininess = ps->material.getShininess();
+
+					if(imgui::InputFloat("Shininess", &shininess))
+					{
+						ps->material.setShininess(utility::math::max<float>(0.0f, shininess));
+					}
+
+					renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
+
+					imgui::Text("Diffuse Map");
+					imgui::SameLine();
+
+					const Texture* diffuseMap = ps->material.getDiffuseMap();
+					void* textureId = (void*)(intptr_t)(diffuseMap == nullptr ? emptyTexture->getTextureID() : diffuseMap->getTextureID());
+
+					ImVec2 imageSize = ImVec2(25.0f, 25.0f);
+					ImVec2 windowSize = imgui::GetWindowSize();
+					imgui::SetCursorPosX(windowSize.x * 0.7f - imageSize.x / 2);
+
+					imgui::Image(textureId, ImVec2(30.0f, 30.0f));
+
+					if (imgui::BeginPopup("Textures"))
+					{
+						imgui::EndPopup();
+					}
+
+					imgui::TreePop();
+				}
 
 				renderEmitter(ps);
 				renderComponents(ps);
 
+				imgui::EndDisabled();
 				imgui::EndTabItem();
 			}
 		}
@@ -332,7 +392,9 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 			ComponentType::Color_By_Speed
 		};
 
-		for (size_t i = 0; i < ps->components.size(); ++i)
+		auto iterator = ps->components.begin();
+
+		for (uint32_t i = 0; i < ps->components.size(); ++i)
 		{
 			imgui::PushID(i);
 
@@ -340,8 +402,17 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 			ComponentType type = component->getType();
 			allTypes.erase(std::remove(allTypes.begin(), allTypes.end(), type));
 
-			bool openComponent = imgui::TreeNodeEx(getComponentTypeName(type).c_str(), ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_AllowOverlap);
+			bool enabled = component->isEnabled();
 
+			if (imgui::Checkbox("", &enabled))
+			{
+				component->toggle();
+			}
+
+			imgui::SameLine();
+			imgui::BeginDisabled(!enabled);
+			bool openComponent = imgui::TreeNodeEx(getComponentTypeName(type).c_str(), ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_AllowOverlap);
+			imgui::EndDisabled();
 			imgui::SameLine();
 
 			imgui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_FrameRounding, 8.0f);
@@ -351,16 +422,21 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 			ImVec2 windowSize = imgui::GetWindowSize();
 			imgui::SetCursorPosX(windowSize.x * 0.9f - buttonSize.x / 2);
 
-			if(imgui::Button("", buttonSize))
-			{
-				ps->removeComponent(component);
-			}
+			imgui::Button("", buttonSize);
 
 			imgui::PopStyleColor();
 			imgui::PopStyleVar();
 
-			if (openComponent)
+			if (imgui::IsItemClicked(0))
 			{
+				ps->removeComponent(component);
+				enabled = false;
+			}
+
+			if (enabled && openComponent)
+			{
+				imgui::BeginDisabled(!enabled);
+
 				addVerticalSpace(2);
 				switch (type)
 				{
@@ -604,6 +680,11 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 				default: throw 100;
 				}
 
+				imgui::EndDisabled();
+			}
+
+			if (openComponent)
+			{
 				imgui::TreePop();
 			}
 

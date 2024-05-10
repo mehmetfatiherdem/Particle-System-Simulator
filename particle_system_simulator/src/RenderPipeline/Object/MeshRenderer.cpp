@@ -79,23 +79,23 @@ MeshRenderer& MeshRenderer::operator=(MeshRenderer&& meshRenderer) noexcept
 	return *this;
 }
 
-void MeshRenderer::render()
+void MeshRenderer::render(bool disableDepthMask)
 {
 	if (!enabled) return;
-
-	preRenderAction(transform);
 
 	shader->useShader();
 	material.useMaterial(*shader);
 
+	preRenderAction(transform);
+
 	if (mesh->isInstanced())
 	{
-		mesh->setModelMatrix(getModelMatrix());
+		mesh->setModelMatrix(getModelMatrix(), disableDepthMask);
 	}
 	else
 	{
 		shader->setMatrix4("model", getModelMatrix());
-		mesh->draw();
+		mesh->draw(disableDepthMask);
 	}
 
 	postRenderAction();

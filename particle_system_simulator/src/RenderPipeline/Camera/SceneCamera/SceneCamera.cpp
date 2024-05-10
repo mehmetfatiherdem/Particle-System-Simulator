@@ -17,7 +17,10 @@ void SceneCamera::update()
 		cameraType = static_cast<CameraType>(!static_cast<bool>(cameraType));
 	}
 
-	fov += -150 * Input::getScroll() * zoomSensitivity * Time::deltaTime();
+	if (Input::getKey(KeyCode::CTRL))
+	{
+		fov += -150 * Input::getScroll() * zoomSensitivity * Time::deltaTime();
+	}
 
 	if(fov <= 0)
 	{
@@ -31,7 +34,7 @@ void SceneCamera::update()
 	if(!Input::getMouseButton(MouseButton::MOUSE_RIGHT))
 		return;
 
-	glm::vec2 rot = -350 * rotationSpeed * Input::getMouseDelta() * Time::deltaTime();
+	glm::vec2 rot = -300 * rotationSpeed * Input::getMouseDelta() * Time::deltaTime();
 
 	transform.rotateAround(transform.WORLD_UP, rot.x);
 	transform.rotateAround(transform.getRightVector(), rot.y);

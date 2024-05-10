@@ -15,38 +15,29 @@
 #include "Components/ColorBySpeed.h"
 
 ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter)
-	: name(std::move(name)), props(props), emitter(std::move(emitter)), sphere(createQuad()),
-	scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1)
+	: name(std::move(name)), props(props), emitter(std::move(emitter)), quad(createQuad()),
+	scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1), enabled(true)
 {
 	particlePool.resize(props.maxParticles);
 	this->material.setColor(props.startColor);
 
 	std::for_each(particlePool.begin(), particlePool.end(), [&](Particle& particle)
 		{
-			particle.renderer = scene.createObject(TransformProps{}, sphere, Shader::instancedShader(), material);
+			particle.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
 			particle.disable();
 			particle.renderer->setPreRenderAction([&](Transform& transform)
 				{
-					glDepthMask(GL_FALSE);
 					transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
 					transform.rotateAround(transform.getForwardVector(), particle.rotation);
-				});
-
-			particle.renderer->setPostRenderAction([]()
-				{
-					glDepthMask(GL_TRUE);
 				});
 		});
 }
 
 void ParticleSystem::addComponent(Component* component)
 {
-	for (auto cmp : components)
+	for (auto it : components)
 	{
-		if (cmp->getType() == component->getType())
-		{
-			return;
-		}
+		if (it == component) return;
 	}
 
 	components.push_back(component);
@@ -54,17 +45,16 @@ void ParticleSystem::addComponent(Component* component)
 
 void ParticleSystem::removeComponent(Component* component)
 {
-	auto it = std::find(components.begin(), components.end(), component);
-
-	if (it != components.end())
-	{
-		components.erase(it);
-	}
+	components.erase(std::remove(components.begin(), components.end(), component));
+	delete component;
 }
 
 void ParticleSystem::update()
 {
-	emitter->tryEmit(props, particlePool, poolIndex);
+	if (enabled)
+	{
+		emitter->tryEmit(props, particlePool, poolIndex);
+	}
 
 	for (uint32_t i = 0; i < particlePool.size(); ++i)
 	{
@@ -83,7 +73,7 @@ void ParticleSystem::update()
 
 			for (Component* component : components)
 			{
-				component->update(props, particle);
+				component->tryUpdate(props, particle);
 			}
 
 			Transform& transform = particle.renderer->getTransform();
