@@ -31,8 +31,8 @@ private:
 
 	void initialize();
 	void initialize(VertexAttributes vertexAttribs);
-	void draw(bool disableDepthMask) const;
-	void setModelMatrix(const glm::mat4& model, bool disableDepthMask);
+	void draw() const;
+	void setModelMatrix(const glm::mat4& model);
 	void addInstance();
 	void removeInstance();
 	void cleanup();

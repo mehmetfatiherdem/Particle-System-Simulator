@@ -1,4 +1,6 @@
 #include <iostream>
+#include <map>
+#include "ResourceManagement/ResourceManager.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "GeneralUtility/BasicMath.h"
@@ -21,7 +23,7 @@ namespace imgui = ImGui;
 using namespace std::string_literals;
 
 ParticleSystemEditor::ParticleSystemEditor() : io(imgui::GetIO()), context(*imgui::GetCurrentContext()), emptyTexture(nullptr),
-	hasFocus(true), isHovered(false)
+hasFocus(true), isHovered(false)
 {
 	uint32_t width, height;
 	width = height = 4;
@@ -64,9 +66,9 @@ void ParticleSystemEditor::addVerticalSpace(uint32_t count, bool useLargeSpaces)
 	}
 }
 
-void ParticleSystemEditor::renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy)
+void ParticleSystemEditor::renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy, ImGuiTreeNodeFlags flags)
 {
-	if (imgui::TreeNodeEx(name.c_str()))
+	if (imgui::TreeNodeEx(name.c_str(), flags))
 	{
 		imgui::InputFloat3("Point 0", &bezier->p0[0]);
 		imgui::InputFloat3("Point 1", &bezier->p1[0]);
@@ -85,9 +87,9 @@ void ParticleSystemEditor::renderBezierVector(const std::string& name, CubicBezi
 	}
 }
 
-void ParticleSystemEditor::renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy)
+void ParticleSystemEditor::renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy, ImGuiTreeNodeFlags flags)
 {
-	if (imgui::TreeNodeEx(name.c_str()))
+	if (imgui::TreeNodeEx(name.c_str(), flags))
 	{
 		imgui::InputFloat("Point 0", &bezier->p0);
 		imgui::InputFloat("Point 1", &bezier->p1);
@@ -168,6 +170,108 @@ void ParticleSystemEditor::renderMinMaxFloat(const std::string& minName, const s
 	}
 }
 
+void ParticleSystemEditor::renderTextureSelect(const std::string& text, Texture** texture)
+{
+	const float framePadding = 1.0f;
+	const ImVec2 imageSize = ImVec2(30.0f, 30.0f);
+	const float imagePosY = imgui::GetCursorPosY();
+	const float textPosY = imagePosY + framePadding + imageSize.y / 2 - 2.0f;
+	const std::string popupName = "Textures" + text;
+	void* textureId = (void*)(intptr_t)(*texture == nullptr ? emptyTexture->getTextureID() : (*texture)->getTextureID());
+
+	const float popupImageSpacing = 7.0f;
+	const float popupImagePadding = 10.0f;
+	const ImVec2 defaultSpacing = imgui::GetStyle().ItemSpacing;
+	const ImVec2 defaultPadding = imgui::GetStyle().WindowPadding;
+
+	imgui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_FramePadding, ImVec2(framePadding, framePadding));
+
+	imgui::SetCursorPosY(textPosY);
+	imgui::Text(text.c_str());
+
+	imgui::SameLine();
+	imgui::SetCursorPos(ImVec2(windowSize.x * 0.75f - imageSize.x / 2, imagePosY));
+
+	imgui::Image(textureId, imageSize, ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1.0f, 0.2f, 0.3f, 1.0f));
+	imgui::PopStyleVar();
+
+	imgui::SameLine();
+	imgui::SetCursorPosY((imagePosY + textPosY) / 2.0f);
+
+	imgui::ArrowButton("", ImGuiDir_::ImGuiDir_Down);
+
+	if (imgui::IsItemClicked())
+	{
+		imgui::OpenPopup(popupName.c_str());
+	}
+
+	if (imgui::BeginPopup(popupName.c_str(), ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
+	{
+		ImVec2 cursorPos = imgui::GetCursorPos();
+		imgui::SetCursorPos(ImVec2(cursorPos.x + popupImagePadding - defaultPadding.x, cursorPos.y + popupImagePadding - defaultPadding.y));
+
+		if (imgui::ImageButton((void*)(intptr_t)emptyTexture->getTextureID(), imageSize, ImVec2(0, 0), ImVec2(1, 1), -1,
+			ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
+		{
+			*texture = nullptr;
+			imgui::CloseCurrentPopup();
+		}
+
+		if (imgui::IsItemHovered())
+		{
+			imgui::SetTooltip("None");
+		}
+
+		uint32_t index = 1;
+
+		for (auto it = ResourceManager::texturesBegin(); it != ResourceManager::texturesEnd(); ++it, ++index)
+		{
+			if (index % 5 != 0)
+			{
+				imgui::SameLine(0.0f, popupImageSpacing);
+			}
+			else
+			{
+				cursorPos = imgui::GetCursorPos();
+				imgui::SetCursorPos(ImVec2(cursorPos.x + popupImagePadding - defaultPadding.x, cursorPos.y + popupImageSpacing - defaultSpacing.y));
+			}
+
+			if (imgui::ImageButton((void*)(intptr_t)it->second.getTextureID(), imageSize, ImVec2(0, 0), ImVec2(1, 1), -1,
+				ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
+			{
+				*texture = &it->second;
+				imgui::CloseCurrentPopup();
+			}
+
+			if (imgui::IsItemHovered())
+			{
+				imgui::SetTooltip(it->first.c_str());
+			}
+		}
+
+		imgui::EndPopup();
+	}
+}
+
+void ParticleSystemEditor::renderSeparatorText(const std::string& text, const ImVec4& color, bool extraFlashy)
+{
+	imgui::PushStyleColor(ImGuiCol_::ImGuiCol_Text, color);
+
+	if (extraFlashy)
+	{
+		imgui::Separator();
+	}
+
+	imgui::SeparatorText(text.c_str());
+
+	if (extraFlashy)
+	{
+		imgui::Separator();
+	}
+
+	imgui::PopStyleColor();
+}
+
 int ParticleSystemEditor::getEmitterType(const Emitter* emitter) const
 {
 	if (dynamic_cast<const SphereEmitter*>(emitter))
@@ -187,11 +291,11 @@ int ParticleSystemEditor::getEmitterType(const Emitter* emitter) const
 void ParticleSystemEditor::render()
 {
 	bool isOpen;
-
 	imgui::Begin("Particle System Editor", &isOpen);
 
-	if(isOpen)
+	if (isOpen)
 	{
+		windowSize = imgui::GetWindowSize();
 		hasFocus = imgui::IsWindowFocused();
 		isHovered = imgui::IsWindowHovered();
 
@@ -214,12 +318,25 @@ void ParticleSystemEditor::renderParticleTabs()
 				imgui::Checkbox("Enabled", &ps->enabled);
 
 				imgui::BeginDisabled(!ps->enabled);
-
 				imgui::Text("Active Particles: %d", ps->props.currentParticles);
 
+				char buffer[50];
+				ps->name.copy(buffer, sizeof(buffer) - 1);
+				uint32_t size = ps->name.size() > 49 ? 49 : ps->name.size();
+				buffer[size] = '\0';
+
+				addVerticalSpace(1, false);
+				renderSeparatorText("Properties", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), true);
 				addVerticalSpace(1, false);
 
+				if (imgui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					std::memcpy(ps->name.data(), buffer, size);
+					ps->name = buffer;
+				}
+
 				int mp = ps->props.maxParticles;
+
 				if (imgui::InputInt("Max Particles", &mp))
 				{
 					ps->props.maxParticles = utility::math::max<int>(mp, 0);
@@ -256,36 +373,22 @@ void ParticleSystemEditor::renderParticleTabs()
 					ps->props.startRotation = rot * TO_RADIANS;
 				}
 
-				if (imgui::TreeNodeEx("Material", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet))
+				renderSeparatorText("Material", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
+
+				renderTextureSelect("Diffuse Map", &ps->material.diffuseMap);
+				addVerticalSpace(1, false);
+				renderTextureSelect("Specular Map", &ps->material.specularMap);
+
+				addVerticalSpace(2, false);
+
+				float shininess = ps->material.getShininess();
+
+				if (imgui::InputFloat("Shininess", &shininess))
 				{
-					float shininess = ps->material.getShininess();
-
-					if(imgui::InputFloat("Shininess", &shininess))
-					{
-						ps->material.setShininess(utility::math::max<float>(0.0f, shininess));
-					}
-
-					renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
-
-					imgui::Text("Diffuse Map");
-					imgui::SameLine();
-
-					const Texture* diffuseMap = ps->material.getDiffuseMap();
-					void* textureId = (void*)(intptr_t)(diffuseMap == nullptr ? emptyTexture->getTextureID() : diffuseMap->getTextureID());
-
-					ImVec2 imageSize = ImVec2(25.0f, 25.0f);
-					ImVec2 windowSize = imgui::GetWindowSize();
-					imgui::SetCursorPosX(windowSize.x * 0.7f - imageSize.x / 2);
-
-					imgui::Image(textureId, ImVec2(30.0f, 30.0f));
-
-					if (imgui::BeginPopup("Textures"))
-					{
-						imgui::EndPopup();
-					}
-
-					imgui::TreePop();
+					ps->material.setShininess(utility::math::max<float>(0.0f, shininess));
 				}
+
+				renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
 
 				renderEmitter(ps);
 				renderComponents(ps);
@@ -301,83 +404,77 @@ void ParticleSystemEditor::renderParticleTabs()
 
 void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 {
-	addVerticalSpace(2, false);
+	renderSeparatorText("Emitter", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
 
-	if (imgui::TreeNodeEx("Emitter", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet))
+	int prevSelected, selected;
+	prevSelected = selected = getEmitterType(ps->emitter.get());
+
+	if (imgui::Combo("Emitter Type", &selected, "Sphere\0Cone\0\0"))
 	{
-		int prevSelected, selected;
-		prevSelected = selected = getEmitterType(ps->emitter.get());
-
-		if (imgui::Combo("Emitter Type", &selected, "Sphere\0Cone\0\0"))
+		if (selected != prevSelected)
 		{
-			if (selected != prevSelected)
+			switch (selected)
 			{
-				switch (selected)
-				{
-				case 0:
-					ps->emitter = std::move(SphereEmitter::defaultEmitter());
-					break;
-				case 1:
-					ps->emitter = std::move(ConeEmitter::defaultEmitter());
-					break;
-				default:
-					throw 100;
-				}
+			case 0:
+				ps->emitter = std::move(SphereEmitter::defaultEmitter());
+				break;
+			case 1:
+				ps->emitter = std::move(ConeEmitter::defaultEmitter());
+				break;
+			default:
+				throw 100;
 			}
 		}
+	}
 
-		if (imgui::InputFloat("Emission Rate", &ps->emitter->emissionRate))
+	if (imgui::InputFloat("Emission Rate", &ps->emitter->emissionRate))
+	{
+		ps->emitter->emissionRate = utility::math::max<float>(ps->emitter->emissionRate, 0.0f);
+	}
+
+	switch (selected)
+	{
+	case 0:
+	{
+		SphereEmitter* emitter = dynamic_cast<SphereEmitter*>(ps->emitter.get());
+
+		if (imgui::InputFloat("Radius", &emitter->radius))
 		{
-			ps->emitter->emissionRate = utility::math::max<float>(ps->emitter->emissionRate, 0.0f);
+			emitter->radius = utility::math::max<float>(emitter->radius, 0.0f);
 		}
 
-		switch (selected)
+		float rot = emitter->arc * TO_DEGREES;
+
+		if (imgui::SliderFloat("Arc", &rot, 1.0f, 360.0f))
 		{
-		case 0:
-		{
-			SphereEmitter* emitter = dynamic_cast<SphereEmitter*>(ps->emitter.get());
-
-			if (imgui::InputFloat("Radius", &emitter->radius))
-			{
-				emitter->radius = utility::math::max<float>(emitter->radius, 0.0f);
-			}
-
-			float rot = emitter->arc * TO_DEGREES;
-
-			if (imgui::SliderFloat("Arc", &rot, 1.0f, 360.0f))
-			{
-				emitter->arc = rot * TO_RADIANS;
-			}
+			emitter->arc = rot * TO_RADIANS;
 		}
-		break;
-		case 1:
+	}
+	break;
+	case 1:
+	{
+		ConeEmitter* emitter = dynamic_cast<ConeEmitter*>(ps->emitter.get());
+
+		if (imgui::InputFloat("Radius", &emitter->radius))
 		{
-			ConeEmitter* emitter = dynamic_cast<ConeEmitter*>(ps->emitter.get());
-
-			if (imgui::InputFloat("Radius", &emitter->radius))
-			{
-				emitter->radius = utility::math::max<float>(emitter->radius, 0.0f);
-			}
-
-			float rot = emitter->angle * TO_DEGREES;
-
-			if (imgui::SliderFloat("Arc", &rot, 0.0f, 360.0f))
-			{
-				emitter->angle = rot * TO_RADIANS;
-			}
-		}
-		break;
-		default: throw 100;
+			emitter->radius = utility::math::max<float>(emitter->radius, 0.0f);
 		}
 
-		imgui::TreePop();
+		float rot = emitter->angle * TO_DEGREES;
+
+		if (imgui::SliderFloat("Arc", &rot, 0.0f, 360.0f))
+		{
+			emitter->angle = rot * TO_RADIANS;
+		}
+	}
+	break;
+	default: throw 100;
 	}
 }
-#include <iostream>
 
 void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 {
-	addVerticalSpace(2, false);
+	addVerticalSpace(1, false);
 
 	if (imgui::TreeNodeEx("Components", ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Framed))
 	{
@@ -419,7 +516,6 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 			imgui::PushStyleColor(ImGuiCol_::ImGuiCol_Button, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 
 			ImVec2 buttonSize{15.0f, 15.0f};
-			ImVec2 windowSize = imgui::GetWindowSize();
 			imgui::SetCursorPosX(windowSize.x * 0.9f - buttonSize.x / 2);
 
 			imgui::Button("", buttonSize);
@@ -463,7 +559,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &vol->minBezier, &vol->maxBezier);
+						renderBezierVector("Bezier Curve", &vol->minBezier, &vol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -473,8 +569,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &vol->minBezier);
-						renderBezierVector("Upper Bezier Curve", &vol->maxBezier);
+						renderBezierVector("Lower Bezier Curve", &vol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", &vol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -496,7 +592,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &sol->minBezier, &sol->maxBezier);
+						renderBezierFloat("Bezier Curve", &sol->minBezier, &sol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
@@ -506,8 +602,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 2:
 					{
-						renderBezierFloat("Lower Bezier Curve", &sol->minBezier);
-						renderBezierFloat("Upper Bezier Curve", &sol->maxBezier);
+						renderBezierFloat("Lower Bezier Curve", &sol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", &sol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -532,13 +628,13 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &sbs->minBezier, &sbs->maxBezier);
+						renderBezierFloat("Bezier Curve", &sbs->minBezier, &sbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
 					{
-						renderBezierFloat("Lower Bezier Curve", &sbs->minBezier);
-						renderBezierFloat("Upper Bezier Curve", &sbs->maxBezier);
+						renderBezierFloat("Lower Bezier Curve", &sbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", &sbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -563,13 +659,13 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &rbs->minBezier, &rbs->maxBezier);
+						renderBezierFloat("Bezier Curve", &rbs->minBezier, &rbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
 					{
-						renderBezierFloat("Lower Bezier Curve", &rbs->minBezier);
-						renderBezierFloat("Upper Bezier Curve", &rbs->maxBezier);
+						renderBezierFloat("Lower Bezier Curve", &rbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", &rbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -601,7 +697,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &lvol->minBezier, &lvol->maxBezier);
+						renderBezierVector("Bezier Curve", &lvol->minBezier, &lvol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -611,8 +707,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &lvol->minBezier);
-						renderBezierVector("Upper Bezier Curve", &lvol->maxBezier);
+						renderBezierVector("Lower Bezier Curve", &lvol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", &lvol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -642,7 +738,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &fol->minBezier, &fol->maxBezier);
+						renderBezierVector("Bezier Curve", &fol->minBezier, &fol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -652,8 +748,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &fol->minBezier);
-						renderBezierVector("Upper Bezier Curve", &fol->maxBezier);
+						renderBezierVector("Lower Bezier Curve", &fol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", &fol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -664,8 +760,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 				{
 					ColorOverLifetime* col = dynamic_cast<ColorOverLifetime*>(component);
 					renderMinMaxFloat("Keypoint-1", "Keypoint-2", &col->keypoints[0], &col->keypoints[1]);
-					renderColor("Color-1", &col->colors[0]);
-					renderColor("Color-2", &col->colors[1]);
+					renderColor("Color-1", &col->colors[0], ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+					renderColor("Color-2", &col->colors[1], ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 				}
 				break;
 				case ComponentType::Color_By_Speed:
@@ -673,8 +769,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					ColorBySpeed* cbs = dynamic_cast<ColorBySpeed*>(component);
 					renderMinMaxFloat("Speed", &cbs->minSpeed, &cbs->maxSpeed);
 					renderMinMaxFloat("Keypoint-1", "Keypoint-2", &cbs->keypoints[0], &cbs->keypoints[1]);
-					renderColor("Color-1", &cbs->colors[0]);
-					renderColor("Color-2", &cbs->colors[1]);
+					renderColor("Color-1", &cbs->colors[0], ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+					renderColor("Color-2", &cbs->colors[1], ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 				}
 				break;
 				default: throw 100;
@@ -695,7 +791,6 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 		{
 			addVerticalSpace(2, false);
 
-			ImVec2 windowSize = imgui::GetWindowSize();
 			ImVec2 buttonSize{windowSize.x * 0.64f, 25.0f};
 			imgui::SetCursorPosX(windowSize.x / 2 - buttonSize.x / 2);
 
@@ -704,7 +799,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 				imgui::OpenPopup("Components");
 			}
 
-			if (imgui::BeginPopup("Components", ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysUseWindowPadding))
+			if (imgui::BeginPopup("Components", ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
 			{
 				for (size_t i = 0; i < allTypes.size(); ++i)
 				{

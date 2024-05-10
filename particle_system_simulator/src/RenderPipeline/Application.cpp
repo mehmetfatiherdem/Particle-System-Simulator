@@ -46,7 +46,7 @@
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
 
-Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600), editor()
+Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), editor()
 {
 	Gui::init(window.getNativeWindow());
 	Random::init();

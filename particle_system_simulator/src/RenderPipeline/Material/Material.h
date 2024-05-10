@@ -4,10 +4,13 @@
 
 class Shader;
 class Texture;
+class ParticleSystemEditor;
 
 class Material
 {
 private:
+	friend class ParticleSystemEditor;
+
 	Color4 color;
 	Texture* diffuseMap;
 	Texture* specularMap;
@@ -31,8 +34,8 @@ public:
 	glm::vec3 getDiffuseColor() const { return color.diffuse; }
 	glm::vec3 getSpecularColor() const { return color.specular; }
 	float getAlpha() const { return color.alpha; }
-	const Texture* getDiffuseMap() const { return diffuseMap; }
-	const Texture* getSpecularMap() const { return specularMap; }
+	const Texture& getDiffuseMap() const { return *diffuseMap; }
+	const Texture& getSpecularMap() const { return *specularMap; }
 	float getShininess() const { return shininess; }
 
 	void setColor(const Color4& color) { this->color = color; }

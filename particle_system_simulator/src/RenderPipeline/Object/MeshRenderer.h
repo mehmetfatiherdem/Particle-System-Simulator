@@ -31,7 +31,7 @@ public:
 	MeshRenderer& operator=(const MeshRenderer& meshRenderer);
 	MeshRenderer& operator=(MeshRenderer&& meshRenderer) noexcept;
 
-	void render(bool disableDepthMask);
+	void render();
 
 	void enable() { enabled = true; }
 	void disable() { enabled = false; }

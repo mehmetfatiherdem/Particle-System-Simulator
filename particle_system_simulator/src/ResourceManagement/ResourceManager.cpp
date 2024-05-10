@@ -14,12 +14,15 @@ const Texture* ResourceManager::getTexture(const std::string& name)
 	return (iter == textures.end() ? nullptr : &iter->second);
 }
 
-RM_Texture_iter ResourceManager::texturesBegin()
+std::string ResourceManager::getTextureName(const Texture* texture)
 {
-	return textures.begin();
-}
+	for (RM_Texture_iter iter = texturesBegin(); iter != texturesEnd(); ++iter)
+	{
+		if (&iter->second == texture)
+		{
+			return iter->first;
+		}
+	}
 
-RM_Texture_iter ResourceManager::texturesEnd()
-{
-	return textures.end();
+	return "None";
 }
