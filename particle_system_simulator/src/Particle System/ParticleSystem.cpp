@@ -18,6 +18,7 @@ ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& pr
 	: name(std::move(name)), props(props), emitter(std::move(emitter)), quad(createQuad()),
 	scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1), enabled(true)
 {
+	// setMaxParticleSize(props.maxParticles);
 	particlePool.resize(props.maxParticles);
 	this->material.setColor(props.startColor);
 
@@ -31,6 +32,35 @@ ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& pr
 					transform.rotateAround(transform.getForwardVector(), particle.rotation);
 				});
 		});
+}
+
+void ParticleSystem::setMaxParticleSize(uint32_t size)
+{
+	props.maxParticles = size;
+
+	std::for_each(particlePool.begin(), particlePool.end(), [&](Particle& particle)
+		{
+			scene.destroyObject(particle.renderer);
+		});
+
+	particlePool = std::vector<Particle>();
+	poolIndex = size - 1;
+
+	particlePool.resize(size);
+	quad = createQuad();
+
+	// do for each for the new particles
+	std::for_each(particlePool.begin(), particlePool.end(), [&](Particle& particle)
+			{
+				particle.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+				particle.disable();
+				particle.renderer->setPreRenderAction([&](Transform& transform)
+					{
+						transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
+						transform.rotateAround(transform.getForwardVector(), particle.rotation);
+					});
+			});
+
 }
 
 void ParticleSystem::addComponent(Component* component)

@@ -339,7 +339,7 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				if (imgui::InputInt("Max Particles", &mp))
 				{
-					ps->props.maxParticles = utility::math::max<int>(mp, 0);
+					ps->setMaxParticleSize(utility::math::max<int>(mp, 0));
 				}
 
 				imgui::InputFloat3("Position", &ps->props.position[0]);

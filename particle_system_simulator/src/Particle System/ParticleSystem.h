@@ -49,6 +49,8 @@ public:
 	void removeComponent(Component* component);
 	OrderedComponentSet::iterator removeComponent(OrderedComponentSet::iterator iterator);
 
+	void setMaxParticleSize(uint32_t size);
+
 	void update();
 
 	bool isEnabled() const { return enabled; }

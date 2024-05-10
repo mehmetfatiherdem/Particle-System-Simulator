@@ -192,7 +192,7 @@ void Application::run()
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 
 	editor.addParticleSystem(psSmoke);
-	//editor.addParticleSystem(psFire);
+	editor.addParticleSystem(psFire);
 
 	gameLoop([&]()
 		{
