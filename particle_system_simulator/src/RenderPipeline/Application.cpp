@@ -150,7 +150,34 @@ void Application::run()
 		1.0f,
 		}, 1.0f);
 
-	Material matSmoke(&texSmoke, nullptr,
+	Material matSmoke1(&texSmoke, nullptr,
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		1.0f,
+		}, 1.0f);
+
+	Material matSmoke2(&texSmoke, nullptr,
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		1.0f,
+		}, 1.0f);
+
+	Material matSmoke3(&texSmoke, nullptr,
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		glm::vec3{0.0f, 0.0f, 0.0f},
+		1.0f,
+		}, 1.0f);
+
+	Material matSmoke4(&texSmoke, nullptr,
 		Color4
 		{
 		glm::vec3{1.0f, 1.0f, 1.0f},
@@ -189,12 +216,42 @@ void Application::run()
 		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
 
-	ParticleSystemProps propsSmoke
+	ParticleSystemProps propsSmoke1
 	{
 		.startLifetime = 3.2f,
 		.startSpeed = 1.0f,
 		.startSize = 5.0f,
-		.startColor = matSmoke.getColor(),
+		.startColor = matSmoke1.getColor(),
+		.maxParticles = 100,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
+	};
+
+	ParticleSystemProps propsSmoke2
+	{
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
+		.startColor = matSmoke2.getColor(),
+		.maxParticles = 100,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
+	};
+
+	ParticleSystemProps propsSmoke3
+	{
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
+		.startColor = matSmoke3.getColor(),
+		.maxParticles = 100,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
+	};
+
+	ParticleSystemProps propsSmoke4
+	{
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
+		.startColor = matSmoke4.getColor(),
 		.maxParticles = 100,
 		.position = glm::vec3{0.0f, 1.1f, -2.0f},
 	};
@@ -209,9 +266,12 @@ void Application::run()
 	};
 
 
-	ParticleSystem psRain("Rain", propsRaindrops, matRaindrops, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	//ParticleSystem psRain("Rain", propsRaindrops, matRaindrops, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
 	//ParticleSystem psSnow("Snow", propsSnowflake, matSnowflake, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
-	//ParticleSystem psSmoke("Smoke", propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	ParticleSystem psSmoke1("Smoke", propsSmoke1, matSmoke1, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	ParticleSystem psSmoke2("Smoke", propsSmoke2, matSmoke2, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	ParticleSystem psSmoke3("Smoke", propsSmoke3, matSmoke3, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	ParticleSystem psSmoke4("Smoke", propsSmoke4, matSmoke4, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
 	ParticleSystem psFire("Fire", propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{45.0f, 0.75f, glm::radians(15.0f)}));
 
 	CubicBezierCurve<float> solBezierRain{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
@@ -220,27 +280,51 @@ void Application::run()
 	CubicBezierCurve<float> solBezierSnow{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
 	SizeOverLifetime* solSnow = new SizeOverLifetime(solBezierSnow);
 
-	CubicBezierCurve<float> solBezierSmoke{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
-	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
+	CubicBezierCurve<float> solBezierSmoke1{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solSmoke1 = new SizeOverLifetime(solBezierSmoke1);
+
+	CubicBezierCurve<float> solBezierSmoke2{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solSmoke2 = new SizeOverLifetime(solBezierSmoke2);
+
+	CubicBezierCurve<float> solBezierSmoke3{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solSmoke3 = new SizeOverLifetime(solBezierSmoke3);
+
+	CubicBezierCurve<float> solBezierSmoke4{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solSmoke4 = new SizeOverLifetime(solBezierSmoke4);
 
 	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
 	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
 
 	RotationBySpeed* rbsSmoke = new RotationBySpeed(0.0f, 1.0f, CubicBezierCurve<float>(1.0f, 2.0f, 3.0f, 4.0f));
 
-	//psSmoke.addComponent(solSmoke);
+	psSmoke1.addComponent(solSmoke1);
+	psSmoke2.addComponent(solSmoke2);
+	psSmoke3.addComponent(solSmoke3);
+	psSmoke4.addComponent(solSmoke4);
 	//psSnow.addComponent(solSnow);
-	psFire.addComponent(solRain);
+	//psRain.addComponent(solRain);
 	psFire.addComponent(solFire);
 	
 
-	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
+	ColorOverLifetime* colSmoke1 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
+
+	ColorOverLifetime* colSmoke2 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
+
+	ColorOverLifetime* colSmoke3 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
+		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
+
+	ColorOverLifetime* colSmoke4 = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
 		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
 
 	ColorOverLifetime* colFire = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.7f}},
 		1.0f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 0.27f}});
 
-	//psSmoke.addComponent(colSmoke);
+	psSmoke1.addComponent(colSmoke1);
+	psSmoke2.addComponent(colSmoke2);
+	psSmoke3.addComponent(colSmoke3);
+	psSmoke4.addComponent(colSmoke4);
 	psFire.addComponent(colFire);
 
 	CubicBezierCurve<glm::vec3> solBezierRain2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
@@ -248,7 +332,7 @@ void Application::run()
 
 	ForceOverLifetime* folRain = new ForceOverLifetime(solBezierRain2);
 
-	psRain.addComponent(folRain);
+	//psRain.addComponent(folRain);
 
 	CubicBezierCurve<glm::vec3> solBezierSnow2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
 		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
@@ -257,27 +341,51 @@ void Application::run()
 
 	//psSnow.addComponent(folSnow);
 
-	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+	CubicBezierCurve<glm::vec3> solBezierSmoke2_1{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
 			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
 
-	ForceOverLifetime* folSmoke = new ForceOverLifetime(solBezierSmoke2);
+	ForceOverLifetime* folSmoke1 = new ForceOverLifetime(solBezierSmoke2_1);
+
+	CubicBezierCurve<glm::vec3> solBezierSmoke2_2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+
+	ForceOverLifetime* folSmoke2 = new ForceOverLifetime(solBezierSmoke2_2);
+
+	CubicBezierCurve<glm::vec3> solBezierSmoke2_3{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+
+	ForceOverLifetime* folSmoke3 = new ForceOverLifetime(solBezierSmoke2_3);
+
+	CubicBezierCurve<glm::vec3> solBezierSmoke2_4{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+
+	ForceOverLifetime* folSmoke4 = new ForceOverLifetime(solBezierSmoke2_4);
 	
-	//psSmoke.addComponent(folSmoke);
+	psSmoke1.addComponent(folSmoke1);
+	psSmoke2.addComponent(folSmoke2);
+	psSmoke3.addComponent(folSmoke3);
+	psSmoke4.addComponent(folSmoke4);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	//editor.addParticleSystem(psSmoke);
+	editor.addParticleSystem(psSmoke1);
+	//editor.addParticleSystem(psSmoke2);
+	//editor.addParticleSystem(psSmoke3);
+	//editor.addParticleSystem(psSmoke4);
 	//editor.addParticleSystem(psSnow);
-	editor.addParticleSystem(psRain);
+	//editor.addParticleSystem(psRain);
 	editor.addParticleSystem(psFire);
 
 	gameLoop([&]()
 		{
 			scene.update();
 			psFire.update();
-			psRain.update();
+			//psRain.update();
 			//psSnow.update();
-			//psSmoke.update();
+			psSmoke1.update();
+			//psSmoke2.update();
+			//psSmoke3.update();
+			//psSmoke4.update();
 			scene.render();
 		});
 }
