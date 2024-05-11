@@ -57,8 +57,16 @@ Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 
 	Texture texFire("Resources/Textures/fire.png",
 		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
 
+	Texture texSnowflake("Resources/Textures/snowflake.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+	
+	Texture texRaindrops("Resources/Textures/raindrops.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
 	ResourceManager::addTexture(std::move(texSmoke), "smoke");
 	ResourceManager::addTexture(std::move(texFire), "fire");
+	ResourceManager::addTexture(std::move(texSnowflake), "snowflake");
+	ResourceManager::addTexture(std::move(texRaindrops), "raindrops");
 }
 
 Application& Application::getInstance()
@@ -119,8 +127,28 @@ void Application::run()
 {
 	Texture& texSmoke = *const_cast<Texture*>(ResourceManager::getTexture("smoke"));
 	Texture& texFire = *const_cast<Texture*>(ResourceManager::getTexture("fire"));
+	Texture& texSnowFlake = *const_cast<Texture*>(ResourceManager::getTexture("snowflake"));
+	Texture& texRaindrops = *const_cast<Texture*>(ResourceManager::getTexture("raindrops"));
 
 	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
+
+	Material matRaindrops(&texRaindrops, nullptr,
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		1.0f,
+		}, 1.0f);
+
+	Material matSnowflake(&texSnowFlake, nullptr,
+		Color4
+		{
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		glm::vec3{1.0f, 1.0f, 1.0f},
+		1.0f,
+		}, 1.0f);
 
 	Material matSmoke(&texSmoke, nullptr,
 		Color4
@@ -139,6 +167,27 @@ void Application::run()
 		glm::vec3{0.0f, 0.0f, 0.0f},
 		1.0f,
 		}, 1.0f);
+
+
+	ParticleSystemProps propsRaindrops
+	{
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
+		.startColor = matRaindrops.getColor(),
+		.maxParticles = 100,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
+	};
+
+	ParticleSystemProps propsSnowflake
+	{
+		.startLifetime = 3.2f,
+		.startSpeed = 1.0f,
+		.startSize = 5.0f,
+		.startColor = matSnowflake.getColor(),
+		.maxParticles = 100,
+		.position = glm::vec3{0.0f, 1.1f, -2.0f},
+	};
 
 	ParticleSystemProps propsSmoke
 	{
@@ -159,8 +208,17 @@ void Application::run()
 		.maxParticles = 1,
 	};
 
-	ParticleSystem psSmoke("Smoke", propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+
+	ParticleSystem psRain("Rain", propsRaindrops, matRaindrops, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	//ParticleSystem psSnow("Snow", propsSnowflake, matSnowflake, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
+	//ParticleSystem psSmoke("Smoke", propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
 	ParticleSystem psFire("Fire", propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{45.0f, 0.75f, glm::radians(15.0f)}));
+
+	CubicBezierCurve<float> solBezierRain{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solRain = new SizeOverLifetime(solBezierRain);
+
+	CubicBezierCurve<float> solBezierSnow{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
+	SizeOverLifetime* solSnow = new SizeOverLifetime(solBezierSnow);
 
 	CubicBezierCurve<float> solBezierSmoke{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
 	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
@@ -170,8 +228,11 @@ void Application::run()
 
 	RotationBySpeed* rbsSmoke = new RotationBySpeed(0.0f, 1.0f, CubicBezierCurve<float>(1.0f, 2.0f, 3.0f, 4.0f));
 
-	psSmoke.addComponent(solSmoke);
+	//psSmoke.addComponent(solSmoke);
+	//psSnow.addComponent(solSnow);
+	psFire.addComponent(solRain);
 	psFire.addComponent(solFire);
+	
 
 	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
 		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
@@ -179,26 +240,44 @@ void Application::run()
 	ColorOverLifetime* colFire = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.7f}},
 		1.0f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 0.27f}});
 
-	psSmoke.addComponent(colSmoke);
+	//psSmoke.addComponent(colSmoke);
 	psFire.addComponent(colFire);
+
+	CubicBezierCurve<glm::vec3> solBezierRain2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+
+	ForceOverLifetime* folRain = new ForceOverLifetime(solBezierRain2);
+
+	psRain.addComponent(folRain);
+
+	CubicBezierCurve<glm::vec3> solBezierSnow2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
+		glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
+
+	ForceOverLifetime* folSnow = new ForceOverLifetime(solBezierSnow2);
+
+	//psSnow.addComponent(folSnow);
 
 	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
 			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
 
 	ForceOverLifetime* folSmoke = new ForceOverLifetime(solBezierSmoke2);
 	
-	psSmoke.addComponent(folSmoke);
+	//psSmoke.addComponent(folSmoke);
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	editor.addParticleSystem(psSmoke);
+	//editor.addParticleSystem(psSmoke);
+	//editor.addParticleSystem(psSnow);
+	editor.addParticleSystem(psRain);
 	editor.addParticleSystem(psFire);
 
 	gameLoop([&]()
 		{
 			scene.update();
 			psFire.update();
-			psSmoke.update();
+			psRain.update();
+			//psSnow.update();
+			//psSmoke.update();
 			scene.render();
 		});
 }

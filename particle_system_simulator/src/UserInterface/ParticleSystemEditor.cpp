@@ -358,7 +358,8 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				if (imgui::InputFloat("Start Speed", &ps->props.startSpeed))
 				{
-					ps->props.startSpeed = utility::math::max<float>(ps->props.startSpeed, 0.0f);
+					//ps->props.startSpeed = utility::math::max<float>(ps->props.startSpeed, 0.0f);
+					ps->props.startSpeed = ps->props.startSpeed;
 				}
 
 				if (imgui::InputFloat("Start Size", &ps->props.startSize))
