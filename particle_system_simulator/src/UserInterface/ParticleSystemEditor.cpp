@@ -1,5 +1,8 @@
 #include <iostream>
 #include <map>
+#include <set>
+#include <optional>
+#include "RenderPipeline/Application.h"
 #include "ResourceManagement/ResourceManager.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -44,11 +47,6 @@ hasFocus(true), isHovered(false)
 ParticleSystemEditor::~ParticleSystemEditor()
 {
 	delete emptyTexture;
-}
-
-void ParticleSystemEditor::addParticleSystem(ParticleSystem& ps)
-{
-	particleSystems.insert(&ps);
 }
 
 void ParticleSystemEditor::addVerticalSpace(uint32_t count, bool useLargeSpaces)
@@ -272,22 +270,6 @@ void ParticleSystemEditor::renderSeparatorText(const std::string& text, const Im
 	imgui::PopStyleColor();
 }
 
-int ParticleSystemEditor::getEmitterType(const Emitter* emitter) const
-{
-	if (dynamic_cast<const SphereEmitter*>(emitter))
-	{
-		return 0;
-	}
-	else if (dynamic_cast<const ConeEmitter*>(emitter))
-	{
-		return 1;
-	}
-	else
-	{
-		throw 100;
-	}
-}
-
 void ParticleSystemEditor::render()
 {
 	bool isOpen;
@@ -311,18 +293,29 @@ void ParticleSystemEditor::renderParticleTabs()
 {
 	if (imgui::BeginTabBar("Particle Systems"))
 	{
-		for (ParticleSystem* ps : particleSystems)
-		{
-			if (imgui::BeginTabItem(ps->name.c_str()))
-			{
-				imgui::Checkbox("Enabled", &ps->enabled);
+		ParticleSystem* selectedForRemoval = nullptr;
 
-				imgui::BeginDisabled(!ps->enabled);
-				imgui::Text("Active Particles: %d", ps->props.currentParticles);
+		for (auto& temp : Application::getInstance().getParticleSystems())
+		{
+			ParticleSystem& ps = const_cast<ParticleSystem&>(temp);
+
+			bool tab = imgui::BeginTabItem(ps.name.c_str());
+
+			if (imgui::IsMouseClicked(1) && imgui::IsItemHovered())
+			{
+				selectedForRemoval = &ps;
+			}
+
+			if (tab)
+			{
+				imgui::Checkbox("Enabled", &ps.enabled);
+
+				imgui::BeginDisabled(!ps.enabled);
+				imgui::Text("Active Particles: %d", ps.props.currentParticles);
 
 				char buffer[50];
-				ps->name.copy(buffer, sizeof(buffer) - 1);
-				uint32_t size = ps->name.size() > 49 ? 49 : ps->name.size();
+				ps.name.copy(buffer, sizeof(buffer) - 1);
+				uint32_t size = ps.name.size() > 49 ? 49 : ps.name.size();
 				buffer[size] = '\0';
 
 				addVerticalSpace(1, false);
@@ -331,64 +324,64 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				if (imgui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue))
 				{
-					std::memcpy(ps->name.data(), buffer, size);
-					ps->name = buffer;
+					std::memcpy(ps.name.data(), buffer, size);
+					ps.name = buffer;
 				}
 
-				int mp = ps->props.maxParticles;
+				int mp = ps.props.maxParticles;
 
 				if (imgui::InputInt("Max Particles", &mp))
 				{
-					ps->props.maxParticles = utility::math::max<int>(mp, 0);
+					ps.props.maxParticles = utility::math::max<int>(mp, 0);
 				}
 
-				imgui::InputFloat3("Position", &ps->props.position[0]);
+				imgui::InputFloat3("Position", &ps.props.position[0]);
 
-				renderMinMaxFloat("Size", &ps->props.minSize, &ps->props.maxSize);
+				renderMinMaxFloat("Size", &ps.props.minSize, &ps.props.maxSize);
 
-				if (imgui::InputFloat("Gravity Modifier", &ps->props.gravityModifier))
+				if (imgui::InputFloat("Gravity Modifier", &ps.props.gravityModifier))
 				{
-					ps->props.gravityModifier = utility::math::max<float>(ps->props.gravityModifier, 0.0f);
+					ps.props.gravityModifier = utility::math::max<float>(ps.props.gravityModifier, 0.0f);
 				}
 
-				if (imgui::InputFloat("Start Lifetime", &ps->props.startLifetime))
+				if (imgui::InputFloat("Start Lifetime", &ps.props.startLifetime))
 				{
-					ps->props.startLifetime = utility::math::max<float>(ps->props.startLifetime, 0.0f);
+					ps.props.startLifetime = utility::math::max<float>(ps.props.startLifetime, 0.0f);
 				}
 
-				if (imgui::InputFloat("Start Speed", &ps->props.startSpeed))
+				if (imgui::InputFloat("Start Speed", &ps.props.startSpeed))
 				{
-					ps->props.startSpeed = utility::math::max<float>(ps->props.startSpeed, 0.0f);
+					ps.props.startSpeed = utility::math::max<float>(ps.props.startSpeed, 0.0f);
 				}
 
-				if (imgui::InputFloat("Start Size", &ps->props.startSize))
+				if (imgui::InputFloat("Start Size", &ps.props.startSize))
 				{
-					ps->props.startSize = utility::math::max<float>(ps->props.startSize, 0.0f);
+					ps.props.startSize = utility::math::max<float>(ps.props.startSize, 0.0f);
 				}
 
-				float rot = ps->props.startRotation * TO_DEGREES;
+				float rot = ps.props.startRotation * TO_DEGREES;
 
 				if (imgui::SliderAngle("Start Rotation", &rot, 0.0f, 360.0f))
 				{
-					ps->props.startRotation = rot * TO_RADIANS;
+					ps.props.startRotation = rot * TO_RADIANS;
 				}
 
 				renderSeparatorText("Material", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
 
-				renderTextureSelect("Diffuse Map", &ps->material.diffuseMap);
+				renderTextureSelect("Diffuse Map", &ps.material.diffuseMap);
 				addVerticalSpace(1, false);
-				renderTextureSelect("Specular Map", &ps->material.specularMap);
+				renderTextureSelect("Specular Map", &ps.material.specularMap);
 
 				addVerticalSpace(2, false);
 
-				float shininess = ps->material.getShininess();
+				float shininess = ps.material.getShininess();
 
 				if (imgui::InputFloat("Shininess", &shininess))
 				{
-					ps->material.setShininess(utility::math::max<float>(0.0f, shininess));
+					ps.material.setShininess(utility::math::max<float>(0.0f, shininess));
 				}
 
-				renderColor("Start Color", &ps->props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
+				renderColor("Start Color", &ps.props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
 
 				renderEmitter(ps);
 				renderComponents(ps);
@@ -398,28 +391,40 @@ void ParticleSystemEditor::renderParticleTabs()
 			}
 		}
 
+		if (selectedForRemoval != nullptr)
+		{
+			Application::getInstance().removeParticleSystem(*selectedForRemoval);
+		}
+
+		if (imgui::TabItemButton("+", ImGuiTabItemFlags_::ImGuiTabItemFlags_Trailing))
+		{
+			auto emitter = SphereEmitter::defaultEmitter();
+			ParticleSystem ps("New Particle System", ParticleSystemProps(), Material::defaultMaterial(), std::move(emitter));
+			Application::getInstance().addParticleSystem(std::move(ps));
+		}
+
 		imgui::EndTabBar();
 	}
 }
 
-void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
+void ParticleSystemEditor::renderEmitter(ParticleSystem& ps)
 {
 	renderSeparatorText("Emitter", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
 
 	int prevSelected, selected;
-	prevSelected = selected = getEmitterType(ps->emitter.get());
+	prevSelected = selected = static_cast<int>(ps.emitter.get()->getType());
 
 	if (imgui::Combo("Emitter Type", &selected, "Sphere\0Cone\0\0"))
 	{
 		if (selected != prevSelected)
 		{
-			switch (selected)
+			switch (static_cast<EmitterType>(selected))
 			{
-			case 0:
-				ps->emitter = std::move(SphereEmitter::defaultEmitter());
+			case EmitterType::SphereEmitter:
+				ps.emitter = std::move(SphereEmitter::defaultEmitter());
 				break;
-			case 1:
-				ps->emitter = std::move(ConeEmitter::defaultEmitter());
+			case EmitterType::ConeEmitter:
+				ps.emitter = std::move(ConeEmitter::defaultEmitter());
 				break;
 			default:
 				throw 100;
@@ -427,16 +432,16 @@ void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 		}
 	}
 
-	if (imgui::InputFloat("Emission Rate", &ps->emitter->emissionRate))
+	if (imgui::InputFloat("Emission Rate", &ps.emitter->emissionRate))
 	{
-		ps->emitter->emissionRate = utility::math::max<float>(ps->emitter->emissionRate, 0.0f);
+		ps.emitter->emissionRate = utility::math::max<float>(ps.emitter->emissionRate, 0.0f);
 	}
 
 	switch (selected)
 	{
 	case 0:
 	{
-		SphereEmitter* emitter = dynamic_cast<SphereEmitter*>(ps->emitter.get());
+		SphereEmitter* emitter = dynamic_cast<SphereEmitter*>(ps.emitter.get());
 
 		if (imgui::InputFloat("Radius", &emitter->radius))
 		{
@@ -453,7 +458,7 @@ void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 	break;
 	case 1:
 	{
-		ConeEmitter* emitter = dynamic_cast<ConeEmitter*>(ps->emitter.get());
+		ConeEmitter* emitter = dynamic_cast<ConeEmitter*>(ps.emitter.get());
 
 		if (imgui::InputFloat("Radius", &emitter->radius))
 		{
@@ -472,7 +477,7 @@ void ParticleSystemEditor::renderEmitter(ParticleSystem* ps)
 	}
 }
 
-void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
+void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 {
 	addVerticalSpace(1, false);
 
@@ -489,13 +494,13 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 			ComponentType::Color_By_Speed
 		};
 
-		auto iterator = ps->components.begin();
+		auto iterator = ps.components.begin();
 
-		for (uint32_t i = 0; i < ps->components.size(); ++i)
+		for (uint32_t i = 0; i < ps.components.size(); ++i)
 		{
 			imgui::PushID(i);
 
-			Component* component = ps->components[i];
+			Component* component = ps.components[i];
 			ComponentType type = component->getType();
 			allTypes.erase(std::remove(allTypes.begin(), allTypes.end(), type));
 
@@ -525,7 +530,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 
 			if (imgui::IsItemClicked(0))
 			{
-				ps->removeComponent(component);
+				ps.removeComponent(component);
 				enabled = false;
 			}
 
@@ -807,14 +812,14 @@ void ParticleSystemEditor::renderComponents(ParticleSystem* ps)
 					{
 						switch (allTypes[i])
 						{
-						case ComponentType::Velocity_Over_Lifetime: ps->addComponent(new VelocityOverLifetime()); break;
-						case ComponentType::Size_Over_Lifetime: ps->addComponent(new SizeOverLifetime()); break;
-						case ComponentType::Size_By_Speed: ps->addComponent(new SizeBySpeed()); break;
-						case ComponentType::Rotation_By_Speed: ps->addComponent(new RotationBySpeed()); break;
-						case ComponentType::Limit_Velocity_Over_Lifetime: ps->addComponent(new LimitVelocityOverLifetime()); break;
-						case ComponentType::Force_Over_Lifetime: ps->addComponent(new ForceOverLifetime()); break;
-						case ComponentType::Color_Over_Lifetime: ps->addComponent(new ColorOverLifetime()); break;
-						case ComponentType::Color_By_Speed: ps->addComponent(new ColorBySpeed()); break;
+						case ComponentType::Velocity_Over_Lifetime: ps.addComponent(new VelocityOverLifetime()); break;
+						case ComponentType::Size_Over_Lifetime: ps.addComponent(new SizeOverLifetime()); break;
+						case ComponentType::Size_By_Speed: ps.addComponent(new SizeBySpeed()); break;
+						case ComponentType::Rotation_By_Speed: ps.addComponent(new RotationBySpeed()); break;
+						case ComponentType::Limit_Velocity_Over_Lifetime: ps.addComponent(new LimitVelocityOverLifetime()); break;
+						case ComponentType::Force_Over_Lifetime: ps.addComponent(new ForceOverLifetime()); break;
+						case ComponentType::Color_Over_Lifetime: ps.addComponent(new ColorOverLifetime()); break;
+						case ComponentType::Color_By_Speed: ps.addComponent(new ColorBySpeed()); break;
 						default: throw 100;
 						}
 					}

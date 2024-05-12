@@ -31,19 +31,25 @@ private:
 	bool enabled;
 	uint32_t poolIndex;
 
-	Mesh quad;
 	Material material;
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
 	std::vector<Component*> components;
 
+	static Mesh quad;
+
 	Scene& scene;
 	
 public:
 	ParticleSystem() = delete;
 	ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
-	~ParticleSystem() = default;
+	ParticleSystem(const ParticleSystem& other) = delete;
+	ParticleSystem(ParticleSystem&& other) noexcept;
+	~ParticleSystem();
+
+	ParticleSystem& operator=(const ParticleSystem& other) = delete;
+	ParticleSystem& operator=(ParticleSystem&& other) noexcept;
 
 	void addComponent(Component* component);
 	void removeComponent(Component* component);
@@ -55,4 +61,6 @@ public:
 	void enable() { enabled = true; }
 	void disable() { enabled = false; }
 	void toggle() { enabled = !enabled; }
+
+	const std::string& getName() const { return name; }
 };

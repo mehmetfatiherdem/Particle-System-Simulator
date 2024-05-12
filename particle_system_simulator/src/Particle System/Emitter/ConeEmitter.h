@@ -22,5 +22,7 @@ public:
 
 	virtual ~ConeEmitter() override = default;
 
+	virtual EmitterType getType() const override { return EmitterType::ConeEmitter; }
+
 	static std::unique_ptr<ConeEmitter> defaultEmitter();
 };

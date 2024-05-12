@@ -557,6 +557,12 @@
     <ClInclude Include="src\Particle System\Data\ComponentType.h">
       <Filter>src\Particle System\Data</Filter>
     </ClInclude>
+    <ClInclude Include="src\Particle System\ParticleSystemComparator.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\EmitterType.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">

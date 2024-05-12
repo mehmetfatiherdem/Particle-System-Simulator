@@ -19,7 +19,6 @@ class ParticleSystemEditor
 private:
 	ImGuiIO& io;
 	ImGuiContext& context;
-	std::set<ParticleSystem*> particleSystems;
 	Texture* emptyTexture;
 	bool hasFocus;
 	bool isHovered;
@@ -27,8 +26,8 @@ private:
 
 	void addVerticalSpace(uint32_t count, bool useLargeSpaces = false);
 	void renderParticleTabs();
-	void renderEmitter(ParticleSystem* ps);
-	void renderComponents(ParticleSystem* ps);
+	void renderEmitter(ParticleSystem& ps);
+	void renderComponents(ParticleSystem& ps);
 
 	void renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy = nullptr, ImGuiTreeNodeFlags flags = 0);
 	void renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy = nullptr,
@@ -42,14 +41,11 @@ private:
 	void renderTextureSelect(const std::string& text, Texture** texture);
 	void renderSeparatorText(const std::string& text, const ImVec4& color = ImVec4(1, 1, 1, 1), bool extraFlashy = false);
 
-	int getEmitterType(const Emitter* emitter) const;
 public:
 	ParticleSystemEditor();
 	~ParticleSystemEditor();
 
 	void render();
-
-	void addParticleSystem(ParticleSystem& ps);
 
 	bool isEditorWindowFocused() const { return hasFocus; }
 	bool isEditorWindowHovered() const { return isHovered; }

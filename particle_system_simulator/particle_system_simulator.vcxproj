@@ -112,12 +112,14 @@
     <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h" />
     <ClInclude Include="src\Particle System\Data\ComponentMethod.h" />
     <ClInclude Include="src\Particle System\Data\ComponentType.h" />
+    <ClInclude Include="src\Particle System\Data\EmitterType.h" />
     <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h" />
     <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h" />
     <ClInclude Include="src\Particle System\Emitter\Emitter.h" />
     <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h" />
     <ClInclude Include="src\Particle System\Particle.h" />
     <ClInclude Include="src\Particle System\ParticleSystem.h" />
+    <ClInclude Include="src\Particle System\ParticleSystemComparator.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />

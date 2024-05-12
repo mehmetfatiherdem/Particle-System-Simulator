@@ -46,7 +46,7 @@
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
 
-Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), editor()
+Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
 	Gui::init(window.getNativeWindow());
 	Random::init();
@@ -59,6 +59,8 @@ Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 
 
 	ResourceManager::addTexture(std::move(texSmoke), "smoke");
 	ResourceManager::addTexture(std::move(texFire), "fire");
+
+	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 }
 
 Application& Application::getInstance()
@@ -67,7 +69,7 @@ Application& Application::getInstance()
 	return application;
 }
 
-void Application::gameLoop(std::function<void()> frameLogic)
+void Application::run()
 {
 	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
 	void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
@@ -97,7 +99,14 @@ void Application::gameLoop(std::function<void()> frameLogic)
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		frameLogic();
+		scene.update();
+
+		for (auto& ps : particleSystems)
+		{
+			const_cast<ParticleSystem&>(ps).update();
+		}
+
+		scene.render();
 		editor.render();
 		/*ImGui::ShowDemoWindow();
 		ImGui::Render();
@@ -111,94 +120,4 @@ void Application::gameLoop(std::function<void()> frameLogic)
 
 	Gui::shutdown();
 	glfwTerminate();
-}
-
-
-
-void Application::run()
-{
-	Texture& texSmoke = *const_cast<Texture*>(ResourceManager::getTexture("smoke"));
-	Texture& texFire = *const_cast<Texture*>(ResourceManager::getTexture("fire"));
-
-	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
-
-	Material matSmoke(&texSmoke, nullptr,
-		Color4
-		{
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		1.0f,
-		}, 1.0f);
-
-	Material matFire(&texFire, nullptr, 
-		Color4
-		{
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		1.0f,
-		}, 1.0f);
-
-	ParticleSystemProps propsSmoke
-	{
-		.startLifetime = 3.2f,
-		.startSpeed = 1.0f,
-		.startSize = 5.0f,
-		.startColor = matSmoke.getColor(),
-		.maxParticles = 100,
-		.position = glm::vec3{0.0f, 1.1f, -2.0f},
-	};
-
-	ParticleSystemProps propsFire
-	{
-		.startLifetime = 0.5f,
-		.startSpeed = 3.0f,
-		.startSize = 5.75f,
-		.startColor = matFire.getColor(),
-		.maxParticles = 1,
-	};
-
-	ParticleSystem psSmoke("Smoke", propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
-	ParticleSystem psFire("Fire", propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{45.0f, 0.75f, glm::radians(15.0f)}));
-
-	CubicBezierCurve<float> solBezierSmoke{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
-	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
-
-	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
-	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
-
-	RotationBySpeed* rbsSmoke = new RotationBySpeed(0.0f, 1.0f, CubicBezierCurve<float>(1.0f, 2.0f, 3.0f, 4.0f));
-
-	psSmoke.addComponent(solSmoke);
-	psFire.addComponent(solFire);
-
-	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
-		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
-
-	ColorOverLifetime* colFire = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.7f}},
-		1.0f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 0.27f}});
-
-	psSmoke.addComponent(colSmoke);
-	psFire.addComponent(colFire);
-
-	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
-			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
-
-	ForceOverLifetime* folSmoke = new ForceOverLifetime(solBezierSmoke2);
-	
-	psSmoke.addComponent(folSmoke);
-
-	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
-
-	editor.addParticleSystem(psSmoke);
-	//editor.addParticleSystem(psFire);
-
-	gameLoop([&]()
-		{
-			scene.update();
-			psFire.update();
-			psSmoke.update();
-			scene.render();
-		});
 }
