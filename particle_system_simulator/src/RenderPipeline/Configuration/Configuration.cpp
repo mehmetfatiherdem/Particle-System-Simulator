@@ -1,11 +1,8 @@
 #include <iostream>
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
 #include "GeneralUtility/gl2fw3.h"
-#include "Initialization.h"
+#include "Configuration.h"
 
-void initializeSettings()
+void Configuration::init()
 {
 	if(!glfwInit())
 	{
@@ -40,10 +37,9 @@ void initializeSettings()
 	}
 
 	glfwDestroyWindow(tempWindow);
+}
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+void Configuration::shutdown()
+{
+	glfwTerminate();
 }

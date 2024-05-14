@@ -36,8 +36,8 @@ void SceneCamera::update()
 
 	glm::vec2 rot = -300 * rotationSpeed * Input::getMouseDelta() * Time::deltaTime();
 
-	transform.rotateAround(transform.WORLD_UP, rot.x);
-	transform.rotateAround(transform.getRightVector(), rot.y);
+	transform.rotate(glm::angleAxis(rot.x, transform.WORLD_UP));
+	transform.rotate(glm::angleAxis(rot.y, transform.getRightVector()));
 
 	glm::vec3 move{0.0f, 0.0f, 0.0f};
 

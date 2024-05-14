@@ -33,8 +33,6 @@ ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& pr
 					transform.rotateAround(transform.getForwardVector(), particle.rotation);
 				});
 		});
-
-	int a = 3 + 6;
 }
 
 ParticleSystem::ParticleSystem(ParticleSystem&& other) noexcept
@@ -102,6 +100,40 @@ void ParticleSystem::removeComponent(Component* component)
 	delete component;
 }
 
+void ParticleSystem::setMaxParticles(uint32_t maxParticles)
+{
+	if (maxParticles == props.maxParticles) return;
+
+	props.maxParticles = maxParticles;
+	props.currentParticles = 0;
+	poolIndex = maxParticles - 1;
+
+	if (maxParticles < particlePool.size())
+	{
+		for (size_t i = maxParticles; i < particlePool.size(); ++i)
+		{
+			scene.destroyObject(particlePool[i].renderer);
+		}
+	}
+
+	particlePool.resize(maxParticles);
+
+	for (auto& pr : particlePool)
+	{
+		if (pr.renderer == nullptr)
+		{
+			pr.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+		}
+
+		pr.disable();
+		pr.renderer->setPreRenderAction([&](Transform& transform)
+			{
+				transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
+				transform.rotateAround(transform.getForwardVector(), pr.rotation);
+			});
+	}
+}
+
 void ParticleSystem::update()
 {
 	if (enabled)
@@ -130,6 +162,7 @@ void ParticleSystem::update()
 			}
 
 			Transform& transform = particle.renderer->getTransform();
+			particle.velocity.y -= props.gravityModifier * 9.8f;
 			transform.translate(particle.velocity * Time::deltaTime());
 			//transform.rotate(particle.angularVelocity * Time::deltaTime());
 		}

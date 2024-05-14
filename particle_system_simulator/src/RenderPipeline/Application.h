@@ -27,6 +27,7 @@ public:
 
 	void addParticleSystem(ParticleSystem&& particleSystem) { this->particleSystems.insert(std::move(particleSystem)); }
 	void removeParticleSystem(const ParticleSystem& particleSystem) { this->particleSystems.erase(particleSystem); }
+    ParticleSystem* getParticleSystem(const std::string& name);
     std::set<ParticleSystem, ParticleSystemComparator>& getParticleSystems() { return particleSystems; }
     Window& getWindow() { return this->window; }
     Scene& getScene() { return this->scene; }

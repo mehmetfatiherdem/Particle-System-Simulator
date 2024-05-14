@@ -2,9 +2,10 @@
 
 #include <set>
 #include <stdint.h>
+#include <limits>
 #include <glm/glm.hpp>
 #include "RenderPipeline/Texture/Texture.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "imgui/imgui.h"
 
 class ImGuiIO;
@@ -29,15 +30,16 @@ private:
 	void renderEmitter(ParticleSystem& ps);
 	void renderComponents(ParticleSystem& ps);
 
-	void renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy = nullptr, ImGuiTreeNodeFlags flags = 0);
-	void renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy = nullptr,
+	void renderBezierVector(const std::string& name, const std::string& yAxis, BezierCurve<glm::vec3>* bezier, BezierCurve<glm::vec3>* copy = nullptr, ImGuiTreeNodeFlags flags = 0);
+	void renderBezierFloat(const std::string& name, const std::string& yAxis, BezierCurve<float>* bezier, BezierCurve<float>* copy = nullptr,
 		ImGuiTreeNodeFlags flags = 0);
 
 	void renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags flags = 0);
 
 	void renderMinMaxFloat(const std::string& name, float* min, float* max, float minLimit = 0.0f);
 	void renderMinMaxFloat(const std::string& minName, const std::string& maxName, float* min, float* max, float minLimit = 0.0f);
-	void renderMinMaxVector(const std::string& name, glm::vec3* min, glm::vec3* max, const glm::vec3& minLimit = glm::vec3{0.0f, 0.0f, 0.0f});
+	void renderMinMaxVector(const std::string& name, glm::vec3* min, glm::vec3* max, const glm::vec3& minLimit = 
+		glm::vec3{std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()});
 	void renderTextureSelect(const std::string& text, Texture** texture);
 	void renderSeparatorText(const std::string& text, const ImVec4& color = ImVec4(1, 1, 1, 1), bool extraFlashy = false);
 

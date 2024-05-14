@@ -2,6 +2,7 @@
 #include <cmath>
 #include "Input Management/Utility/InputUtility.h"
 #include "RenderPipeline/Application.h"
+#include "UserInterface/Gui.h"
 #include "Window.h"
 
 void APIENTRY glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum severity,
@@ -87,7 +88,7 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height)
 
 void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
 {
-	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
+	if (Gui::wantCaptureKeyboard()) return;
 
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	KeyCode keyCode = toKeyCode(key);
@@ -109,7 +110,7 @@ void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, 
 
 void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
+	if (Gui::wantCaptureMouse()) return;
 
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
@@ -125,6 +126,8 @@ void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int
 
 void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 {
+	if (Gui::wantCaptureMouse()) return;
+
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	glm::vec2 newPos = glm::vec2{xPos / ownerWindow->width, yPos / ownerWindow->height};
 	ownerWindow->mouseDelta += (newPos - ownerWindow->mousePos);
@@ -133,6 +136,8 @@ void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 
 void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
+	if (Gui::wantCaptureMouse()) return;
+
 	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	ownerWindow->scroll = yOffset;

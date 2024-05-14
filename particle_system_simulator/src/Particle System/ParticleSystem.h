@@ -53,7 +53,8 @@ public:
 
 	void addComponent(Component* component);
 	void removeComponent(Component* component);
-	OrderedComponentSet::iterator removeComponent(OrderedComponentSet::iterator iterator);
+
+	void setMaxParticles(uint32_t maxParticles);
 
 	void update();
 

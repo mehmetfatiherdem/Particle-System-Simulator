@@ -5,10 +5,6 @@
 #include <cmath>
 #include <stdint.h>
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
-
 #include <glm/glm.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
@@ -48,9 +44,6 @@
 
 Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
-	Gui::init(window.getNativeWindow());
-	Random::init();
-
 	Texture texSmoke("Resources/Textures/smoke.png",
 		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
 
@@ -67,6 +60,21 @@ Application& Application::getInstance()
 {
 	static Application application;
 	return application;
+}
+
+ParticleSystem* Application::getParticleSystem(const std::string& name)
+{
+	auto it = std::find_if(particleSystems.begin(), particleSystems.end(), [&](const ParticleSystem& ps)
+		{
+			return ps.getName() == name;
+		});
+
+	if (it == particleSystems.end())
+	{
+		return nullptr;
+	}
+
+	return const_cast<ParticleSystem*>(&(*it));
 }
 
 void Application::run()
@@ -98,7 +106,6 @@ void Application::run()
 			glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
 			glToggle[currentMode](GL_CULL_FACE);
 		}
-
 		scene.update();
 
 		for (auto& ps : particleSystems)
@@ -108,16 +115,10 @@ void Application::run()
 
 		scene.render();
 		editor.render();
-		/*ImGui::ShowDemoWindow();
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 
 		window.swapBuffers();
 		window.endFrame();
 		Gui::endFrame();
 		Time::endFrame();
 	}
-
-	Gui::shutdown();
-	glfwTerminate();
 }

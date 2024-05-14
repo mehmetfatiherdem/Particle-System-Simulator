@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Particle System/Data/ComponentMethod.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "Component.h"
 
 class ParticleSystemEditor;
@@ -14,8 +14,8 @@ private:
 	ComponentMethod method = ComponentMethod::Random_Between_Two_Constants;
 	float minSize = 0.0f;
 	float maxSize = 0.0f;
-	CubicBezierCurve<float> minBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
-	CubicBezierCurve<float> maxBezier = CubicBezierCurve<float>(0.0f, 1.0f, 2.0f, 3.0f);
+	BezierCurve<float> minBezier = Bezier::createLinear();
+	BezierCurve<float> maxBezier = Bezier::createLinear();
 
 protected:
 	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
@@ -26,10 +26,10 @@ public:
 	SizeOverLifetime(float minConstant, float maxConstant) :
 		Component(1), method(ComponentMethod::Random_Between_Two_Constants), minSize(minConstant), maxSize(maxConstant) {}
 
-	SizeOverLifetime(const CubicBezierCurve<float>& bezier) :
+	SizeOverLifetime(const BezierCurve<float>& bezier) :
 		Component(1), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
 
-	SizeOverLifetime(const CubicBezierCurve<float>& minBezier, const CubicBezierCurve<float>& maxBezier) :
+	SizeOverLifetime(const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) :
 		Component(1), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~SizeOverLifetime() override = default;

@@ -26,6 +26,9 @@
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_demo.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_items.cpp" />
     <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
@@ -47,7 +50,7 @@
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
-    <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp" />
+    <ClCompile Include="src\RenderPipeline\Configuration\Configuration.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\DirectionalLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\LightSource.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\PositionalLight.cpp" />
@@ -77,6 +80,8 @@
     <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_internal.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot_internal.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h" />
@@ -85,7 +90,7 @@
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\BasicMath.h" />
-    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h" />
+    <ClInclude Include="src\GeneralUtility\BezierCurve.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\SignUtility.h" />
@@ -126,7 +131,7 @@
     <ClInclude Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color4.h" />
-    <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h" />
+    <ClInclude Include="src\RenderPipeline\Configuration\Configuration.h" />
     <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h" />
     <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h" />
     <ClInclude Include="src\RenderPipeline\Light\DirectionalLight.h" />

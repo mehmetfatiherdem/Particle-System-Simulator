@@ -23,11 +23,11 @@ void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& pa
 		velocity.z = Random::getFloat(minVelocity.z, maxVelocity.z);
 		break;
 	case ComponentMethod::Curve:
-		velocity = minBezier.evaluate(t);
+		velocity = minBezier.evaluatePoint(t);
 		break;
 	case ComponentMethod::Random_Between_Two_Curves:
-		glm::vec3 min = minBezier.evaluate(t);
-		glm::vec3 max = maxBezier.evaluate(t);
+		glm::vec3 min = minBezier.evaluatePoint(t);
+		glm::vec3 max = maxBezier.evaluatePoint(t);
 
 		utility::math::swapToPreserveMinMax(min.x, max.x);
 		utility::math::swapToPreserveMinMax(min.y, max.y);

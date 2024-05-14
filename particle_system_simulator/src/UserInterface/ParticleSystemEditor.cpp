@@ -5,7 +5,7 @@
 #include "RenderPipeline/Application.h"
 #include "ResourceManagement/ResourceManager.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
+#include "imgui/implot.h"
 #include "GeneralUtility/BasicMath.h"
 #include "GeneralUtility/MathConstants.h"
 #include "Particle System/ParticleSystem.h"
@@ -23,6 +23,7 @@
 #include "Particle System/Components/VelocityOverLifetime.h"
 
 namespace imgui = ImGui;
+namespace implot = ImPlot;
 using namespace std::string_literals;
 
 ParticleSystemEditor::ParticleSystemEditor() : io(imgui::GetIO()), context(*imgui::GetCurrentContext()), emptyTexture(nullptr),
@@ -64,42 +65,170 @@ void ParticleSystemEditor::addVerticalSpace(uint32_t count, bool useLargeSpaces)
 	}
 }
 
-void ParticleSystemEditor::renderBezierVector(const std::string& name, CubicBezierCurve<glm::vec3>* bezier, CubicBezierCurve<glm::vec3>* copy, ImGuiTreeNodeFlags flags)
+void ParticleSystemEditor::renderBezierVector(const std::string& name, const std::string& yAxis, BezierCurve<glm::vec3>* bezier, BezierCurve<glm::vec3>* copy, ImGuiTreeNodeFlags flags)
 {
 	if (imgui::TreeNodeEx(name.c_str(), flags))
 	{
-		imgui::InputFloat3("Point 0", &bezier->p0[0]);
-		imgui::InputFloat3("Point 1", &bezier->p1[0]);
-		imgui::InputFloat3("Point 2", &bezier->p2[0]);
-		imgui::InputFloat3("Point 3", &bezier->p3[0]);
-
-		if (copy != nullptr)
+		if (imgui::TreeNodeEx("Control Points"))
 		{
-			copy->p0 = bezier->p0;
-			copy->p1 = bezier->p1;
-			copy->p2 = bezier->p2;
-			copy->p3 = bezier->p3;
+			ImGuiStyle& style = imgui::GetStyle();
+			ImVec4 defaultButtonColor = style.Colors[ImGuiCol_Button];
+
+			if (imgui::Button("Add In Front"))
+			{
+				bezier->addControlPoint(-1, glm::vec3{0.0f, 0.0f, 0.0f});
+			}
+
+			for (size_t i = 0; i < bezier->size(); ++i)
+			{
+				style.Colors[ImGuiCol_Button] = defaultButtonColor;
+				imgui::InputFloat3(("Point " + std::to_string(i)).c_str(), &(*bezier)[i][0]);
+
+				if (bezier->size() < 25)
+				{
+					style.Colors[ImGuiCol_Button] = ImVec4(0.3f, 1.0f, 0.3f, 1.0f);
+					imgui::SameLine(0.0f, 5.0f);
+					imgui::SetCursorPosX(windowSize.x * 0.9f);
+					imgui::Button("+", ImVec2(20.0f, 20.0f));
+
+					if (imgui::IsItemClicked())
+					{
+						bezier->addControlPoint(i, glm::vec3{0.0f, 0.0f, 0.0f});
+					}
+				}
+
+				if (bezier->size() > 2)
+				{
+					style.Colors[ImGuiCol_Button] = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);
+					imgui::SameLine(0.0f, 5.0f);
+
+					if (bezier->size() >= 25)
+					{
+						imgui::SetCursorPosX(windowSize.x * 0.9f + 25.0f);
+					}
+
+					imgui::Button("-", ImVec2(20.0f, 20.0f));
+
+					if (imgui::IsItemClicked())
+					{
+						bezier->deleteControlPoint(i);
+					}
+				}
+			}
+
+			style.Colors[ImGuiCol_Button] = defaultButtonColor;
+
+			if (copy != nullptr)
+			{
+				*copy = *bezier;
+			}
+
+			imgui::TreePop();
+		}
+
+		auto [time, values] = bezier->evaluateCurve(50);
+
+		std::vector<float> x, y, z;
+		x.reserve(values.size());
+		y.reserve(values.size());
+		z.reserve(values.size());
+
+		std::for_each(values.begin(), values.end(), [&x, &y, &z](const glm::vec3& vec)
+			{
+				x.push_back(vec.x);
+				y.push_back(vec.y);
+				z.push_back(vec.z);
+			});
+
+		implot::SetNextAxesToFit();
+		if (implot::BeginPlot("Bezier"))
+		{
+			implot::SetupAxes("time", yAxis.c_str());
+			implot::SetNextLineStyle(ImVec4(1.0f, 0.1f, 0.2f, 1.0f));
+			implot::PlotLine("x", time.data(), x.data(), values.size());
+			implot::SetNextLineStyle(ImVec4(0.2f, 1.0f, 0.1f, 1.0f));
+			implot::PlotLine("y", time.data(), y.data(), values.size());
+			implot::SetNextLineStyle(ImVec4(0.1f, 0.2f, 1.0f, 1.0f));
+			implot::PlotLine("z", time.data(), z.data(), values.size());
+			implot::EndPlot();
 		}
 
 		imgui::TreePop();
 	}
 }
 
-void ParticleSystemEditor::renderBezierFloat(const std::string& name, CubicBezierCurve<float>* bezier, CubicBezierCurve<float>* copy, ImGuiTreeNodeFlags flags)
+void ParticleSystemEditor::renderBezierFloat(const std::string& name, const std::string& yAxis, BezierCurve<float>* bezier, BezierCurve<float>* copy, ImGuiTreeNodeFlags flags)
 {
 	if (imgui::TreeNodeEx(name.c_str(), flags))
 	{
-		imgui::InputFloat("Point 0", &bezier->p0);
-		imgui::InputFloat("Point 1", &bezier->p1);
-		imgui::InputFloat("Point 2", &bezier->p2);
-		imgui::InputFloat("Point 3", &bezier->p3);
-
-		if (copy != nullptr)
+		if (imgui::TreeNodeEx("Control Points"))
 		{
-			copy->p0 = bezier->p0;
-			copy->p1 = bezier->p1;
-			copy->p2 = bezier->p2;
-			copy->p3 = bezier->p3;
+			ImGuiStyle& style = imgui::GetStyle();
+			ImVec4 defaultButtonColor = style.Colors[ImGuiCol_Button];
+
+			if (imgui::Button("Add In Front"))
+			{
+				bezier->addControlPoint(-1, 0.0f);
+			}
+
+			for (size_t i = 0; i < bezier->size(); ++i)
+			{
+				style.Colors[ImGuiCol_Button] = defaultButtonColor;
+				imgui::InputFloat(("Point " + std::to_string(i)).c_str(), &(*bezier)[i], 0.01f, 0.1f);
+
+				if (bezier->size() < 25)
+				{
+					style.Colors[ImGuiCol_Button] = ImVec4(0.3f, 1.0f, 0.3f, 1.0f);
+					imgui::SameLine(0.0f, 5.0f);
+					imgui::SetCursorPosX(windowSize.x * 0.9f);
+					imgui::Button("+", ImVec2(20.0f, 20.0f));
+
+					if (imgui::IsItemClicked())
+					{
+						bezier->addControlPoint(i, 0.0f);
+					}
+				}
+
+				if (bezier->size() > 2)
+				{
+					style.Colors[ImGuiCol_Button] = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);
+					imgui::SameLine(0.0f, 5.0f);
+
+					if (bezier->size() >= 25)
+					{
+						imgui::SetCursorPosX(windowSize.x * 0.9f + 25.0f);
+					}
+
+					imgui::Button("-", ImVec2(20.0f, 20.0f));
+
+					if (imgui::IsItemClicked())
+					{
+						bezier->deleteControlPoint(i);
+					}
+				}
+			}
+
+			style.Colors[ImGuiCol_Button] = defaultButtonColor;
+
+			if (copy != nullptr)
+			{
+				*copy = *bezier;
+			}
+
+			imgui::TreePop();
+		}
+
+		auto [time, values] = bezier->evaluateCurve(50);
+
+		implot::SetNextAxesToFit();
+		if (implot::BeginPlot("Bezier"))
+		{
+			//implot::SetupAxisZoomConstraints(ImAxis_::ImAxis_X1, 1.0f, 1.0f);
+			//implot::SetupAxisZoomConstraints(ImAxis_::ImAxis_Y1, 1.0f, 1.0f);
+
+			implot::SetupAxes("time", yAxis.c_str());
+			implot::PlotLine("s", time.data(), values.data(), values.size());
+			implot::EndPlot();
 		}
 
 		imgui::TreePop();
@@ -272,10 +401,7 @@ void ParticleSystemEditor::renderSeparatorText(const std::string& text, const Im
 
 void ParticleSystemEditor::render()
 {
-	bool isOpen;
-	imgui::Begin("Particle System Editor", &isOpen);
-
-	if (isOpen)
+	if (imgui::Begin("Particle System Editor"))
 	{
 		windowSize = imgui::GetWindowSize();
 		hasFocus = imgui::IsWindowFocused();
@@ -332,7 +458,7 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				if (imgui::InputInt("Max Particles", &mp))
 				{
-					ps.props.maxParticles = utility::math::max<int>(mp, 0);
+					ps.setMaxParticles(utility::math::max<uint32_t>(mp, 0));
 				}
 
 				imgui::InputFloat3("Position", &ps.props.position[0]);
@@ -399,7 +525,17 @@ void ParticleSystemEditor::renderParticleTabs()
 		if (imgui::TabItemButton("+", ImGuiTabItemFlags_::ImGuiTabItemFlags_Trailing))
 		{
 			auto emitter = SphereEmitter::defaultEmitter();
-			ParticleSystem ps("New Particle System", ParticleSystemProps(), Material::defaultMaterial(), std::move(emitter));
+
+			std::string name = "New Particle System";
+			ParticleSystem* existing = Application::getInstance().getParticleSystem(name);
+
+			for (size_t nr = 1; existing != nullptr; ++nr)
+			{
+				name = "New Particle System(" + std::to_string(nr) + ")";
+				existing = Application::getInstance().getParticleSystem(name);
+			}
+
+			ParticleSystem ps(std::move(name), ParticleSystemProps(), Material::defaultMaterial(), std::move(emitter));
 			Application::getInstance().addParticleSystem(std::move(ps));
 		}
 
@@ -564,7 +700,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &vol->minBezier, &vol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Bezier Curve", "Velocity", & vol->minBezier, &vol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -574,8 +710,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &vol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierVector("Upper Bezier Curve", &vol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Lower Bezier Curve", "Velocity", & vol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", "Velocity", & vol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -597,7 +733,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &sol->minBezier, &sol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Bezier Curve", "Size", & sol->minBezier, &sol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
@@ -607,8 +743,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 2:
 					{
-						renderBezierFloat("Lower Bezier Curve", &sol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierFloat("Upper Bezier Curve", &sol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Lower Bezier Curve", "Size", & sol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", "Size", & sol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -633,13 +769,13 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &sbs->minBezier, &sbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Bezier Curve", "Size", & sbs->minBezier, &sbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
 					{
-						renderBezierFloat("Lower Bezier Curve", &sbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierFloat("Upper Bezier Curve", &sbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Lower Bezier Curve", "Size", & sbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", "Size", & sbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -664,13 +800,13 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", &rbs->minBezier, &rbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Bezier Curve", "Rotation", & rbs->minBezier, &rbs->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 1:
 					{
-						renderBezierFloat("Lower Bezier Curve", &rbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierFloat("Upper Bezier Curve", &rbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Lower Bezier Curve", "Rotation", & rbs->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierFloat("Upper Bezier Curve", "Rotation", & rbs->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -702,7 +838,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &lvol->minBezier, &lvol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Bezier Curve", "Limit Velocity", &lvol->minBezier, &lvol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -712,8 +848,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &lvol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierVector("Upper Bezier Curve", &lvol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Lower Bezier Curve", "Limit Velocity", &lvol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", "Limit Velocity", &lvol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -743,7 +879,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 1:
 					{
-						renderBezierVector("Bezier Curve", &fol->minBezier, &fol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Bezier Curve", "Force", &fol->minBezier, &fol->maxBezier, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					case 2:
@@ -753,8 +889,8 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					break;
 					case 3:
 					{
-						renderBezierVector("Lower Bezier Curve", &fol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierVector("Upper Bezier Curve", &fol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Lower Bezier Curve", "Force", &fol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", "Force", &fol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;

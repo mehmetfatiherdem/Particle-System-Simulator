@@ -7,7 +7,7 @@
 Skybox::Skybox(std::string_view cubemapTexture) : shader(Shader::skyboxShader()),
 skybox(createCube()), texture(cubemapTexture, GL_TEXTURE_CUBE_MAP)
 {
-	skybox.initialize(shader.getVertexAttributes());
+	skybox.initializeOrAddInstance(shader.getVertexAttributes());
 }
 
 void Skybox::render(const glm::mat4& view, const glm::mat4& projection)

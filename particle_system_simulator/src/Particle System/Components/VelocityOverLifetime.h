@@ -2,7 +2,7 @@
 
 #include <glm/vec3.hpp>
 #include "Particle System/Data/ComponentMethod.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "Component.h"
 
 class ParticleSystemEditor;
@@ -15,8 +15,8 @@ private:
 	ComponentMethod method = ComponentMethod::Constant;
 	glm::vec3 minVelocity = glm::vec3{0.0f, 0.0f, 0.0f};
 	glm::vec3 maxVelocity = glm::vec3{1.0f, 1.0f, 1.0f};
-	CubicBezierCurve<glm::vec3> minBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
-	CubicBezierCurve<glm::vec3> maxBezier = CubicBezierCurve<glm::vec3>(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(2.0f), glm::vec3(3.0f));
+	BezierCurve<glm::vec3> minBezier = Bezier::createLinearVec3();
+	BezierCurve<glm::vec3> maxBezier = Bezier::createLinearVec3();
 
 protected:
 	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
@@ -30,10 +30,10 @@ public:
 	VelocityOverLifetime(const glm::vec3& minVelocity, const glm::vec3& maxVelocity) :
 		Component(0), method(ComponentMethod::Random_Between_Two_Constants), minVelocity(minVelocity), maxVelocity(maxVelocity)
 	{}
-	VelocityOverLifetime(const CubicBezierCurve<glm::vec3>& bezier) :
+	VelocityOverLifetime(const BezierCurve<glm::vec3>& bezier) :
 		Component(0), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier)
 	{}
-	VelocityOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
+	VelocityOverLifetime(const BezierCurve<glm::vec3>& minBezier, const BezierCurve<glm::vec3>& maxBezier) :
 		Component(0), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier)
 	{}
 

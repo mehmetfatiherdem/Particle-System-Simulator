@@ -31,7 +31,7 @@ indices(std::move(mesh.indices)), instanceMatrices(std::move(mesh.instanceMatric
 {
 	if (!this->props.has_value())
 		return;
-
+	
 	std::memcpy(this->buffers, mesh.buffers, 3 * sizeof(this->buffers[0]));
 	std::fill_n(mesh.buffers, 3, 0);
 	mesh.VAO = 0;
@@ -137,10 +137,9 @@ void Mesh::initialize()
 
 	if (props->isInstanced)
 	{
-		uint32_t bufferSize = props->approximateCount ? props->approximateCount : 25;
+		uint32_t bufferSize = props->approximateCount ? props->approximateCount : 125;
 		instanceMatrices = std::make_shared<std::vector<glm::mat4>>();
 		instanceMatrices->reserve(bufferSize);
-		instanceMatrices->push_back(glm::mat4(1.0f));
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[MBO]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSize * sizeof(glm::mat4), (void*)0, GL_STREAM_DRAW);
@@ -151,6 +150,8 @@ void Mesh::initialize()
 			glVertexAttribPointer(attribLocation, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(i * sizeof(glm::vec4)));
 			glVertexAttribDivisor(attribLocation++, 1);
 		}
+
+		addInstance();
 	}
 
 	glBindVertexArray(0);
@@ -158,12 +159,18 @@ void Mesh::initialize()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Mesh::initialize(VertexAttributes vertexAttribs)
+void Mesh::initializeOrAddInstance(VertexAttributes vertexAttribs)
 {
-	assert(!(this->props.has_value() && this->props->isInstanced && !vertexAttribs.isInstanced));
-	cleanup();
-	this->props = vertexAttribs;
-	initialize();
+	if (this->props.has_value() && props->isInstanced == vertexAttribs.isInstanced)
+	{
+		addInstance();
+	}
+	else
+	{
+		cleanup();
+		this->props = vertexAttribs;
+		initialize();
+	}
 }
 
 void Mesh::draw() const
