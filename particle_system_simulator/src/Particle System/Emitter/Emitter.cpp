@@ -12,8 +12,9 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 
 	if (props.currentParticles + particleCount > props.maxParticles)
 	{
-		props.currentParticles = props.maxParticles;
+		surplus += (particleCount - props.maxParticles + props.currentParticles);
 		particleCount = props.maxParticles - props.currentParticles;
+		props.currentParticles = props.maxParticles;
 	}
 	else
 	{

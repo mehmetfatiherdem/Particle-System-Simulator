@@ -20,6 +20,7 @@ ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& pr
 	: name(std::move(name)), props(props), emitter(std::move(emitter)),
 	scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1), enabled(true)
 {
+	this->props.currentParticles = 0;
 	particlePool.resize(props.maxParticles);
 	this->material.setColor(props.startColor);
 
@@ -84,6 +85,41 @@ ParticleSystem::~ParticleSystem()
 	}
 }
 
+void ParticleSystem::update()
+{
+	for (uint32_t i = 0; i < particlePool.size(); ++i)
+	{
+		Particle& particle = particlePool[i];
+
+		if (particle.isEnabled())
+		{
+			particle.remainingLifetime -= Time::deltaTime();
+
+			if (particle.remainingLifetime <= 0)
+			{
+				particle.disable();
+				props.currentParticles--;
+				continue;
+			}
+
+			for (Component* component : components)
+			{
+				component->tryUpdate(props, particle);
+			}
+
+			Transform& transform = particle.renderer->getTransform();
+			particle.velocity.y -= props.gravityModifier * 9.8f;
+			transform.translate(particle.velocity * Time::deltaTime());
+			//transform.rotate(particle.angularVelocity * Time::deltaTime());
+		}
+	}
+
+	if (enabled)
+	{
+		emitter->tryEmit(props, particlePool, poolIndex);
+	}
+}
+
 void ParticleSystem::addComponent(Component* component)
 {
 	for (auto it : components)
@@ -123,48 +159,32 @@ void ParticleSystem::setMaxParticles(uint32_t maxParticles)
 		if (pr.renderer == nullptr)
 		{
 			pr.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+
+			pr.renderer->setPreRenderAction([&](Transform& transform)
+				{
+					transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
+					transform.rotateAround(transform.getForwardVector(), pr.rotation);
+				});
 		}
 
 		pr.disable();
-		pr.renderer->setPreRenderAction([&](Transform& transform)
-			{
-				transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
-				transform.rotateAround(transform.getForwardVector(), pr.rotation);
-			});
 	}
 }
 
-void ParticleSystem::update()
+void ParticleSystem::setDiffuseMap(Texture* diffuseMap)
 {
-	if (enabled)
-	{
-		emitter->tryEmit(props, particlePool, poolIndex);
-	}
-
-	for (uint32_t i = 0; i < particlePool.size(); ++i)
-	{
-		Particle& particle = particlePool[i];
-
-		if (particle.isEnabled())
+	material.setDiffuseMap(diffuseMap);
+	std::for_each(particlePool.begin(), particlePool.end(), [diffuseMap](Particle& particle)
 		{
-			particle.remainingLifetime -= Time::deltaTime();
+			particle.renderer->getMaterial().setDiffuseMap(diffuseMap);
+		});
+}
 
-			if (particle.remainingLifetime <= 0)
-			{
-				particle.disable();
-				props.currentParticles--;
-				continue;
-			}
-
-			for (Component* component : components)
-			{
-				component->tryUpdate(props, particle);
-			}
-
-			Transform& transform = particle.renderer->getTransform();
-			particle.velocity.y -= props.gravityModifier * 9.8f;
-			transform.translate(particle.velocity * Time::deltaTime());
-			//transform.rotate(particle.angularVelocity * Time::deltaTime());
-		}
-	}
+void ParticleSystem::setSpecularMap(Texture* specularMap)
+{
+	material.setSpecularMap(specularMap);
+	std::for_each(particlePool.begin(), particlePool.end(), [specularMap](Particle& particle)
+		{
+			particle.renderer->getMaterial().setSpecularMap(specularMap);
+		});
 }

@@ -297,14 +297,14 @@ void ParticleSystemEditor::renderMinMaxFloat(const std::string& minName, const s
 	}
 }
 
-void ParticleSystemEditor::renderTextureSelect(const std::string& text, Texture** texture)
+void ParticleSystemEditor::renderTextureSelect(const std::string& text, const Texture* texture, std::function<void(Texture*)> setTextureCallback)
 {
 	const float framePadding = 1.0f;
 	const ImVec2 imageSize = ImVec2(30.0f, 30.0f);
 	const float imagePosY = imgui::GetCursorPosY();
 	const float textPosY = imagePosY + framePadding + imageSize.y / 2 - 2.0f;
 	const std::string popupName = "Textures" + text;
-	void* textureId = (void*)(intptr_t)(*texture == nullptr ? emptyTexture->getTextureID() : (*texture)->getTextureID());
+	void* textureId = (void*)(intptr_t)(texture == nullptr ? emptyTexture->getTextureID() : texture->getTextureID());
 
 	const float popupImageSpacing = 7.0f;
 	const float popupImagePadding = 10.0f;
@@ -340,7 +340,7 @@ void ParticleSystemEditor::renderTextureSelect(const std::string& text, Texture*
 		if (imgui::ImageButton((void*)(intptr_t)emptyTexture->getTextureID(), imageSize, ImVec2(0, 0), ImVec2(1, 1), -1,
 			ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
 		{
-			*texture = nullptr;
+			setTextureCallback(nullptr);
 			imgui::CloseCurrentPopup();
 		}
 
@@ -366,7 +366,7 @@ void ParticleSystemEditor::renderTextureSelect(const std::string& text, Texture*
 			if (imgui::ImageButton((void*)(intptr_t)it->second.getTextureID(), imageSize, ImVec2(0, 0), ImVec2(1, 1), -1,
 				ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
 			{
-				*texture = &it->second;
+				setTextureCallback(&it->second);
 				imgui::CloseCurrentPopup();
 			}
 
@@ -494,9 +494,17 @@ void ParticleSystemEditor::renderParticleTabs()
 
 				renderSeparatorText("Material", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
 
-				renderTextureSelect("Diffuse Map", &ps.material.diffuseMap);
+				renderTextureSelect("Diffuse Map", ps.material.diffuseMap, [&ps](Texture* texture)
+					{
+						ps.setDiffuseMap(texture);
+					});
+
 				addVerticalSpace(1, false);
-				renderTextureSelect("Specular Map", &ps.material.specularMap);
+
+				renderTextureSelect("Specular Map", ps.material.specularMap, [&ps](Texture* texture)
+					{
+						ps.setSpecularMap(texture);
+					});
 
 				addVerticalSpace(2, false);
 

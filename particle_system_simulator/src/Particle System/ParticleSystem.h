@@ -55,6 +55,8 @@ public:
 	void removeComponent(Component* component);
 
 	void setMaxParticles(uint32_t maxParticles);
+	void setDiffuseMap(Texture* diffuseMap);
+	void setSpecularMap(Texture* specularMap);
 
 	void update();
 

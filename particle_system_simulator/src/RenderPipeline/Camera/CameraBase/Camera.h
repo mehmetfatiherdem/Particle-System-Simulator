@@ -22,7 +22,7 @@ protected:
 public:
 	Camera() = delete;
 	Camera(const TransformProps& transform, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -8.0f, float right = 8.0f,
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 1000.0f, float left = -8.0f, float right = 8.0f,
 		float top = 4.5f, float bottom = -4.5f);
 
 	glm::mat4 getViewMatrix() const;

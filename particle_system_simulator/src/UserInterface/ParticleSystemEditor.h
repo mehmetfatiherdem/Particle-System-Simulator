@@ -3,6 +3,7 @@
 #include <set>
 #include <stdint.h>
 #include <limits>
+#include <functional>
 #include <glm/glm.hpp>
 #include "RenderPipeline/Texture/Texture.h"
 #include "GeneralUtility/BezierCurve.h"
@@ -40,7 +41,8 @@ private:
 	void renderMinMaxFloat(const std::string& minName, const std::string& maxName, float* min, float* max, float minLimit = 0.0f);
 	void renderMinMaxVector(const std::string& name, glm::vec3* min, glm::vec3* max, const glm::vec3& minLimit = 
 		glm::vec3{std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()});
-	void renderTextureSelect(const std::string& text, Texture** texture);
+
+	void renderTextureSelect(const std::string& text, const Texture* texture, std::function<void(Texture*)> setTextureCallback);
 	void renderSeparatorText(const std::string& text, const ImVec4& color = ImVec4(1, 1, 1, 1), bool extraFlashy = false);
 
 public:
