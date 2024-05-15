@@ -5,6 +5,8 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/SerializationUtils.h"
 #include "LimitVelocityOverLifetime.h"
 
 void LimitVelocityOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -43,4 +45,20 @@ void LimitVelocityOverLifetime::update(const ParticleSystemProps& props, Particl
 	{
 		particle.velocity -= ((particle.velocity - limitVelocity) * dampen * Time::deltaTime());
 	}
+}
+
+void LimitVelocityOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+
+	serializer["Dampen"].Double(dampen);
+
+	persistence::utils::serializeVector(serializer, minVelocity, "MinVelocity");
+	persistence::utils::serializeVector(serializer, maxVelocity, "MaxVelocity");
+
+	persistence::utils::serializeBezierVector(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezierVector(serializer, maxBezier, "MaxBezier");
+
+	serializer.endObject();
 }

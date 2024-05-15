@@ -32,4 +32,6 @@ public:
 	virtual ~SizeBySpeed() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Size_By_Speed; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

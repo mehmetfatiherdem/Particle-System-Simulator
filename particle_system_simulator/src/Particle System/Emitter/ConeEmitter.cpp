@@ -1,8 +1,10 @@
 #include <cmath>
-#include "ConeEmitter.h"
 #include "GeneralUtility/MathConstants.h"
 #include "GeneralUtility/Random.h"
 #include "GeneralUtility/SignUtility.h"
+#include "Persistence/Serializer.h"
+#include "ConeEmitter.h"
+
 
 float findBiasedDirection(float bias, float direction)
 {
@@ -42,4 +44,14 @@ void ConeEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, gl
 std::unique_ptr<ConeEmitter> ConeEmitter::defaultEmitter()
 {
 	return std::make_unique<ConeEmitter>(10.0f);
+}
+
+void ConeEmitter::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	serializer.startObject(objectName);
+	serializer["EmitterType"].String("Cone");
+	Emitter::serialize(serializer);
+	serializer["Radius"].Double(radius);
+	serializer["Angle"].Double(angle);
+	serializer.endObject();
 }

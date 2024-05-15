@@ -24,4 +24,6 @@ public:
 	virtual EmitterType getType() const override { return EmitterType::SphereEmitter; }
 
 	static std::unique_ptr<SphereEmitter> defaultEmitter();
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

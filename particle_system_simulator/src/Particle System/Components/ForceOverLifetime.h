@@ -36,4 +36,6 @@ public:
 	virtual ~ForceOverLifetime() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Force_Over_Lifetime; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

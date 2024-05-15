@@ -25,4 +25,6 @@ public:
 	virtual EmitterType getType() const override { return EmitterType::ConeEmitter; }
 
 	static std::unique_ptr<ConeEmitter> defaultEmitter();
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

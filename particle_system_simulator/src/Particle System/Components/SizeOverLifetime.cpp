@@ -2,6 +2,8 @@
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/SerializationUtils.h"
 #include "SizeOverLifetime.h"
 
 void SizeOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -27,4 +29,18 @@ void SizeOverLifetime::update(const ParticleSystemProps& props, Particle& partic
 
 	size = glm::clamp(size, props.minSize, props.maxSize);
 	particle.renderer->getTransform().setScale(glm::vec3{size, size, size});
+}
+
+void SizeOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+
+	serializer["MinSize"].Double(minSize);
+	serializer["MaxSize"].Double(maxSize);
+
+	persistence::utils::serializeBezierFloat(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezierFloat(serializer, maxBezier, "MaxBezier");
+
+	serializer.endObject();
 }

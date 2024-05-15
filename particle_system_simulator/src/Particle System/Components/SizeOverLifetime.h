@@ -35,4 +35,6 @@ public:
 	virtual ~SizeOverLifetime() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Size_Over_Lifetime; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

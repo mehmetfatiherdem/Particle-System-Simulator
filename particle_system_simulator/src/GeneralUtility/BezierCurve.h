@@ -17,8 +17,12 @@ public:
 	BezierCurve() : controlPoints() {}
 
 	size_t size() const { return controlPoints.size(); }
+
 	std::vector<T>::iterator begin() { return controlPoints.begin(); }
 	std::vector<T>::iterator end() { return controlPoints.end(); }
+	std::vector<T>::const_iterator cbegin() const { return controlPoints.cbegin(); }
+	std::vector<T>::const_iterator cend() const { return controlPoints.cend(); }
+
 	void pushControlPoint(T value) { controlPoints.push_back(value); }
 
 	bool addControlPoint(int index, T value)

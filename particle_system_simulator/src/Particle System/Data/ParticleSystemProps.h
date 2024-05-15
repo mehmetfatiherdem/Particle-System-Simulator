@@ -5,6 +5,8 @@
 #include <glm/vec3.hpp>
 #include "RenderPipeline/Color/Color4.h"
 
+#include "Persistence/ISerializable.h"
+
 struct ParticleSystemProps
 {
 	float startLifetime = 10.0f;

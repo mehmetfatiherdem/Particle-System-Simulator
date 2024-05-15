@@ -4,8 +4,9 @@
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/EmitterType.h"
+#include "Persistence/ISerializable.h"
 
-class Emitter
+class Emitter : public ISerializable
 {
 private:
 	friend class ParticleSystemEditor;
@@ -23,4 +24,6 @@ public:
 
 	virtual EmitterType getType() const = 0;
 	void tryEmit(ParticleSystemProps& props, std::vector<Particle>& particlePool, uint32_t& poolIndex);
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

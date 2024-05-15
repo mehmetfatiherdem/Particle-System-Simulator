@@ -42,6 +42,8 @@
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
 
+#include "Persistence/Serializer.h"
+
 Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
 	Texture texSmoke("Resources/Textures/smoke.png",
@@ -121,4 +123,13 @@ void Application::run()
 		Gui::endFrame();
 		Time::endFrame();
 	}
+
+	Serializer serializer{};
+
+	for (auto& it : particleSystems)
+	{
+		it.serialize(serializer);
+	}
+
+	std::cout << serializer.getString() << std::endl;
 }

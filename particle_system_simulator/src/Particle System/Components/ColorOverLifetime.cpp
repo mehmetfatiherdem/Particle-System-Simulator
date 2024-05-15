@@ -4,6 +4,8 @@
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/SerializationUtils.h"
 #include "ColorOverLifetime.h"
 
 void ColorOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -28,4 +30,21 @@ void ColorOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	}
 
 	particle.renderer->getMaterial().setColor(color);
+}
+
+void ColorOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+
+	serializer.startArray("Keypoints");
+	serializer.real(keypoints[0]);
+	serializer.real(keypoints[1]);
+	serializer.endArray();
+
+	serializer.startArray("Colors");
+	persistence::utils::serializeColor(serializer, colors[0]);
+	persistence::utils::serializeColor(serializer, colors[1]);
+	serializer.endArray();
+
+	serializer.endObject();
 }

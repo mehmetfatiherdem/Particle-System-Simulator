@@ -1,6 +1,7 @@
 #include "RenderPipeline/Application.h"
-#include "Emitter.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
+#include "Emitter.h"
 
 Emitter::~Emitter() { }
 
@@ -41,4 +42,9 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 		particle.remainingLifetime = props.startLifetime;
 		particle.enable();
 	}
+}
+
+void Emitter::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	serializer["EmissionRate"].Double(emissionRate);
 }

@@ -4,7 +4,7 @@
 #include <glm/vec2.hpp>
 #include "MathConstants.h"
 
-namespace Trig
+namespace trig
 {
 	inline double atan2(double y, double x)
 	{
@@ -14,6 +14,6 @@ namespace Trig
 
 	inline double atan2(glm::vec2 direction)
 	{
-		return Trig::atan2(direction.y, direction.x);
+		return trig::atan2(direction.y, direction.x);
 	}
 }

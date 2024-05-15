@@ -27,4 +27,6 @@ public:
 	virtual ~ColorBySpeed() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Color_By_Speed; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

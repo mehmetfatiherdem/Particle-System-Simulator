@@ -5,6 +5,8 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/SerializationUtils.h"
 #include "ForceOverLifetime.h"
 
 void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -40,4 +42,18 @@ void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	}
 
 	particle.velocity += force * Time::deltaTime();
+}
+
+void ForceOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+
+	persistence::utils::serializeVector(serializer, minForce, "MinVelocity");
+	persistence::utils::serializeVector(serializer, maxForce, "MaxVelocity");
+
+	persistence::utils::serializeBezierVector(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezierVector(serializer, maxBezier, "MaxBezier");
+	
+	serializer.endObject();
 }

@@ -33,4 +33,6 @@ public:
 	virtual ~RotationBySpeed() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Rotation_By_Speed; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

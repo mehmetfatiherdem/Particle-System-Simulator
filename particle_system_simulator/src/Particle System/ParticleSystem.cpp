@@ -1,20 +1,24 @@
 #include <functional>
 #include <algorithm>
 #include <iostream>
-#include "ParticleSystem.h"
 #include "Time Management/Time.h"
+#include "ResourceManagement/ResourceManager.h"
+#include "MeshConstruction/Shapes.h"
+#include "Components/Component.h"
 #include "RenderPipeline/Application.h"
+#include "RenderPipeline/Scene/Scene.h"
 #include "RenderPipeline/Shader/Shader.h"
-#include "Components/RotationBySpeed.h"
-#include "Components/VelocityOverLifetime.h"
-#include "Components/SizeOverLifetime.h"
-#include "Components/SizeBySpeed.h"
-#include "Components/LimitVelocityOverLifetime.h"
-#include "Components/ForceOverLifetime.h"
-#include "Components/ColorOverLifetime.h"
-#include "Components/ColorBySpeed.h"
+#include "RenderPipeline/Texture/Texture.h"
+#include "Emitter/SphereEmitter.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/SerializationUtils.h"
+#include "ParticleSystem.h"
 
 Mesh ParticleSystem::quad = createQuad();
+
+ParticleSystem::ParticleSystem() : name(""), props(), material(Material::defaultMaterial()), emitter(std::move(SphereEmitter::defaultEmitter())),
+scene(Application::getInstance().getScene()), enabled(false), poolIndex(0)
+{}
 
 ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter)
 	: name(std::move(name)), props(props), emitter(std::move(emitter)),
@@ -187,4 +191,63 @@ void ParticleSystem::setSpecularMap(Texture* specularMap)
 		{
 			particle.renderer->getMaterial().setSpecularMap(specularMap);
 		});
+}
+
+void ParticleSystem::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	serializer.startObject(objectName);
+
+	serializer["Name"].String(name.c_str());
+	serializer["Enabled"].Bool(enabled);
+
+	serializer["StartLifetime"].Double(props.startLifetime);
+	serializer["StartSpeed"].Double(props.startSpeed);
+	serializer["StartSize"].Double(props.startSize);
+	serializer["MinSize"].Double(props.minSize);
+	serializer["MaxSize"].Double(props.maxSize);
+	serializer["StartRotation"].Double(props.startRotation);
+
+	persistence::utils::serializeColor(serializer, props.startColor, "StartColor");
+
+	serializer["GravityModifier"].Double(props.gravityModifier);
+	serializer["MaxParticles"].Uint(props.maxParticles);
+
+	persistence::utils::serializeVector(serializer, props.position, "Position");
+
+	serializer["Shininess"].Double(material.getShininess());
+
+	const Texture* texture = material.getDiffuseMap();
+
+	if (texture == nullptr)
+	{
+		serializer["DiffuseMap"].Null();
+	}
+	else
+	{
+		serializer["DiffuseMap"].String(ResourceManager::getTextureName(texture).c_str());
+	}
+
+	texture = material.getSpecularMap();
+
+	if (texture == nullptr)
+	{
+		serializer["SpecularMap"].Null();
+	}
+	else
+	{
+		serializer["SpecularMap"].String(ResourceManager::getTextureName(texture).c_str());
+	}
+
+	emitter->serialize(serializer, "Emitter");
+
+	serializer.startArray("Components");
+
+	for (auto* component : components)
+	{
+		component->serialize(serializer);
+	}
+
+	serializer.endArray();
+
+	serializer.endObject();
 }

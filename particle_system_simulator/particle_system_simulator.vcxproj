@@ -37,6 +37,7 @@
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
     <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp" />
     <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\Component.cpp" />
     <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="src\Particle System\Emitter\Emitter.cpp" />
     <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
     <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
+    <ClCompile Include="src\Persistence\SerializationUtils.cpp" />
+    <ClCompile Include="src\Persistence\Serializer.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
@@ -125,6 +128,9 @@
     <ClInclude Include="src\Particle System\Particle.h" />
     <ClInclude Include="src\Particle System\ParticleSystem.h" />
     <ClInclude Include="src\Particle System\ParticleSystemComparator.h" />
+    <ClInclude Include="src\Persistence\SerializationUtils.h" />
+    <ClInclude Include="src\Persistence\ISerializable.h" />
+    <ClInclude Include="src\Persistence\Serializer.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />
@@ -253,7 +259,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -271,7 +277,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -289,7 +295,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -307,7 +313,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
