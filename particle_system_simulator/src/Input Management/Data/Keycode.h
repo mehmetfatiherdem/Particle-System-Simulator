@@ -14,6 +14,7 @@ enum class KeyCode
 	KEY_T = GLFW_KEY_T,
 	KEY_Y = GLFW_KEY_Y,
 	KEY_U = GLFW_KEY_U,
+	KEY_O = GLFW_KEY_O,
 	KEY_F = GLFW_KEY_F,
 	KEY_Z = GLFW_KEY_Z,
 	KEY_X = GLFW_KEY_X,

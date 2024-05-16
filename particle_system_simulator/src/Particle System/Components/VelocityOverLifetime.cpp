@@ -7,7 +7,7 @@
 #include "Time Management/Time.h"
 #include "Particle System/Data/ComponentMethod.h"
 #include "Persistence/Serializer.h"
-#include "Persistence/SerializationUtils.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "VelocityOverLifetime.h"
 
 void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& particle)

@@ -2,8 +2,8 @@
 #include "RenderPipeline/Color/Color3.h"
 #include "RenderPipeline/Color/Color4.h"
 #include "GeneralUtility/BezierCurve.h"
-#include "Serializer.h"
-#include "Deserializer.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/Deserializer.h"
 #include "SerializationUtils.h"
 
 void persistence::utils::serializeVector(Serializer& serializer, glm::vec2 vector, const std::string& objectName)

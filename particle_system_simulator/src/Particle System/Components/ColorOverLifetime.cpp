@@ -5,7 +5,7 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Persistence/Serializer.h"
-#include "Persistence/SerializationUtils.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ColorOverLifetime.h"
 
 void ColorOverLifetime::update(const ParticleSystemProps& props, Particle& particle)

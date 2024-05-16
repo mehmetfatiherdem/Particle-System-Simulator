@@ -1,51 +1,6 @@
-//#include "Particle System/Data/ComponentMethod.h"
-//#include "Particle System/Components/Component.h"
-//#include "Particle System/Components/ColorBySpeed.h"
-//#include "Particle System/Components/ColorOverLifetime.h"
-//#include "Particle System/Components/ForceOverLifetime.h"
-//#include "Particle System/Components/LimitVelocityOverLifetime.h"
-//#include "Particle System/Components/RotationBySpeed.h"
-//#include "Particle System/Components/SizeBySpeed.h"
-//#include "Particle System/Components/SizeOverLifetime.h"
-//#include "Particle System/Components/VelocityOverLifetime.h"
-//#include "Persistence/Deserializer.h"
-//#include "Persistence/SerializationUtils.h"
-//#include "GeneralUtility/BezierCurve.h"
-//#include "ComponentDeserializer.h"
-
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <cmath>
 #include <stdint.h>
-
-#include <glm/glm.hpp>
-#include <glm/ext/quaternion_float.hpp>
-
-#include "UserInterface/ParticleSystemEditor.h"
-#include "ResourceManagement/ResourceManager.h"
-#include "UserInterface/Gui.h"
-#include "GeneralUtility/gl2fw3.h"
-#include "UserInterface/Window.h"
-#include "RenderPipeline/Light/PointLight.h"
-#include "RenderPipeline/Light/DirectionalLight.h"
-#include "RenderPipeline/Light/SpotLight.h"
-#include "RenderPipeline/Transform/Transform.h"
-#include "RenderPipeline/Mesh/Mesh.h"
-#include "RenderPipeline/Shader/Shader.h"
-#include "RenderPipeline/Texture/Texture.h"
-#include "RenderPipeline/Material/Material.h"
-#include "RenderPipeline/Object/MeshRenderer.h"
-#include "RenderPipeline/Shader/ShaderManagement/GlobalShaderManager.h"
-#include "RenderPipeline/Scene/Scene.h"
-#include "MeshConstruction/Shapes.h"
 #include "RenderPipeline/Application.h"
-#include "Input Management/Input.h"
-#include "Time Management/Time.h"
 #include "Particle System/ParticleSystem.h"
-#include "GeneralUtility/Random.h"
-#include "Particle System/Emitter/SphereEmitter.h"
-#include "Particle System/Emitter/ConeEmitter.h"
 #include "Particle System/Components/Component.h"
 #include "Particle System/Components/ColorBySpeed.h"
 #include "Particle System/Components/ColorOverLifetime.h"
@@ -57,12 +12,8 @@
 #include "Particle System/Components/VelocityOverLifetime.h"
 #include "ComponentDeserializer.h"
 
-#include "Persistence/Serializer.h"
 #include "Persistence/Deserializer.h"
-#include "Persistence/SerializationUtils.h"
-
-#include <fstream>
-#include <sstream>
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 
 Component* deserializeComponent(const Deserializer& deserializer)
 {

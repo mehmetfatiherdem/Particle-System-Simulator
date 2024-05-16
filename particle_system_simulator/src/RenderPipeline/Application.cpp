@@ -5,8 +5,10 @@
 #include <cmath>
 #include <stdint.h>
 
+
 #include <glm/glm.hpp>
 #include <glm/ext/quaternion_float.hpp>
+
 
 #include "UserInterface/ParticleSystemEditor.h"
 #include "ResourceManagement/ResourceManager.h"
@@ -41,13 +43,9 @@
 #include "Particle System/Components/SizeBySpeed.h"
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
-#include "Particle System/Deserialization/ParticleSytemDeserializer.h"
+#include "Persistence/Project Management/ProjectManager.h"
 
-#include "Persistence/Serializer.h"
-#include "Persistence/Deserializer.h"
-
-#include <fstream>
-#include <sstream>
+#include "GeneralUtility/FileIOUtils.h"
 
 Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
@@ -86,6 +84,13 @@ ParticleSystem* Application::getParticleSystem(const std::string& name)
 
 void Application::run()
 {
+	ProjectManager::getInstance();
+
+	std::vector<int> vec;
+
+	vec.push_back(5);
+	vec.insert(vec.begin(), 6);
+
 	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
 	void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
 	bool currentMode = 0;
@@ -114,53 +119,13 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		if (Input::getKeyDown(KeyCode::KEY_T))
+		if (Input::getKey(KeyCode::CTRL) && Input::getKeyDown(KeyCode::KEY_S))
 		{
-			Serializer serializer;
-			serializer.startArray();
-
-			for (auto& it : particleSystems)
-			{
-				it.serialize(serializer);
-			}
-
-			serializer.endArray();
-
-			std::ofstream file("C:/Users/mtuna/Desktop/TestFolder/test.json");
-
-			if (!file.is_open())
-			{
-				std::cerr << "Error opening file: " << std::endl;
-				continue;
-			}
-
-			file << serializer.getJsonString();
-			file.close();
+			ProjectManager::getInstance().saveProject("test1");
 		}
-		else if (Input::getKeyDown(KeyCode::KEY_U))
+		else if (Input::getKey(KeyCode::CTRL) && Input::getKeyDown(KeyCode::KEY_O))
 		{
-			std::ifstream file("C:/Users/mtuna/Desktop/TestFolder/test.json");
-
-			if (!file.is_open())
-			{
-				std::cerr << "Error opening file: " << std::endl;
-				continue;
-			}
-
-			std::stringstream buffer;
-			buffer << file.rdbuf();
-			std::string json = buffer.str();
-			file.close();
-
-			particleSystems.clear();
-
-			Document doc = Deserializer::createDocument(buffer.str());
-			Deserializer deserializer{doc};
-
-			for (auto& it : deserializer.getArray())
-			{
-				deserializeParticleSystem(it, *this);
-			}
+			ProjectManager::getInstance().loadProject();
 		}
 
 		scene.update();
@@ -178,12 +143,4 @@ void Application::run()
 		Gui::endFrame();
 		Time::endFrame();
 	}
-
-	Serializer serializer;
-
-	const ParticleSystem& ps = *particleSystems.begin();
-
-	ps.serialize(serializer);
-
-	std::cout << serializer.getJsonString() << std::endl;
 }

@@ -4,7 +4,7 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Persistence/Serializer.h"
-#include "Persistence/SerializationUtils.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ColorBySpeed.h"
 
 void ColorBySpeed::update(const ParticleSystemProps& props, Particle& particle)

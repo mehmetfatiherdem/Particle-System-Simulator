@@ -52,7 +52,8 @@
     <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
     <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
     <ClCompile Include="src\Persistence\Deserializer.cpp" />
-    <ClCompile Include="src\Persistence\SerializationUtils.cpp" />
+    <ClCompile Include="src\Persistence\Project Management\ProjectManager.cpp" />
+    <ClCompile Include="src\Persistence\Serialization Utils\SerializationUtils.cpp" />
     <ClCompile Include="src\Persistence\Serializer.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\BasicMath.h" />
     <ClInclude Include="src\GeneralUtility\BezierCurve.h" />
+    <ClInclude Include="src\GeneralUtility\FileIOUtils.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\SignUtility.h" />
@@ -106,6 +108,7 @@
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\GeneralUtility\Trigonometry.h" />
+    <ClInclude Include="src\GeneralUtility\WindowsUtils.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
     <ClInclude Include="src\Input Management\Data\KeyCode.h" />
     <ClInclude Include="src\Input Management\Data\MouseButton.h" />
@@ -136,8 +139,9 @@
     <ClInclude Include="src\Particle System\ParticleSystem.h" />
     <ClInclude Include="src\Particle System\ParticleSystemComparator.h" />
     <ClInclude Include="src\Persistence\Deserializer.h" />
-    <ClInclude Include="src\Persistence\SerializationUtils.h" />
     <ClInclude Include="src\Persistence\ISerializable.h" />
+    <ClInclude Include="src\Persistence\Project Management\ProjectManager.h" />
+    <ClInclude Include="src\Persistence\Serialization Utils\SerializationUtils.h" />
     <ClInclude Include="src\Persistence\Serializer.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
@@ -274,7 +278,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -294,7 +298,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -310,7 +314,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -330,7 +334,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

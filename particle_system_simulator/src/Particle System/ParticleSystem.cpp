@@ -12,7 +12,7 @@
 #include "Emitter/SphereEmitter.h"
 #include "Persistence/Deserializer.h"
 #include "Persistence/Serializer.h"
-#include "Persistence/SerializationUtils.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ParticleSystem.h"
 
 Mesh ParticleSystem::quad = createQuad();

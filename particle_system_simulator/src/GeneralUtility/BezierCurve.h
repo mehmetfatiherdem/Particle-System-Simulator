@@ -28,8 +28,8 @@ public:
 
 	bool addControlPoint(int index, T value)
 	{
-		if (index < -1 || index >= controlPoints.size()) return false;
-		controlPoints.insert(controlPoints.begin() + index + 1, value);
+		if (index < -1 || index >= static_cast<int>(controlPoints.size())) return false;
+		controlPoints.insert(controlPoints.begin() + 1 + index, value);
 		return true;
 	}
 

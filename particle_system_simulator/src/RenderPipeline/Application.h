@@ -25,6 +25,7 @@ public:
 
     void run();
 
+    void deleteAllParticleSystems() { particleSystems.clear(); }
 	void addParticleSystem(ParticleSystem&& particleSystem) { this->particleSystems.insert(std::move(particleSystem)); }
 	void removeParticleSystem(const ParticleSystem& particleSystem) { this->particleSystems.erase(particleSystem); }
     ParticleSystem* getParticleSystem(const std::string& name);

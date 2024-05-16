@@ -4,7 +4,7 @@
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
 #include "Persistence/Serializer.h"
-#include "Persistence/SerializationUtils.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "SizeBySpeed.h"
 
 void SizeBySpeed::update(const ParticleSystemProps& props, Particle& particle)

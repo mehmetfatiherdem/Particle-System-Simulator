@@ -151,6 +151,12 @@
     <Filter Include="src\Particle System\Deserialization">
       <UniqueIdentifier>{f9b91edc-7163-43c9-a3cd-67d904f67422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Persistence\Serialization Utils">
+      <UniqueIdentifier>{6321f330-b7d8-4198-a186-04e06157695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Persistence\Project Management">
+      <UniqueIdentifier>{86783778-4860-4800-9b63-a736bf86b026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -312,9 +318,6 @@
     <ClCompile Include="..\dependencies\imgui\include\imgui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Persistence\SerializationUtils.cpp">
-      <Filter>src\Persistence</Filter>
-    </ClCompile>
     <ClCompile Include="src\Persistence\Serializer.cpp">
       <Filter>src\Persistence</Filter>
     </ClCompile>
@@ -332,6 +335,12 @@
     </ClCompile>
     <ClCompile Include="src\Persistence\Deserializer.cpp">
       <Filter>src\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Serialization Utils\SerializationUtils.cpp">
+      <Filter>src\Persistence\Serialization Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Project Management\ProjectManager.cpp">
+      <Filter>src\Persistence\Project Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -611,9 +620,6 @@
     <ClInclude Include="src\Persistence\ISerializable.h">
       <Filter>src\Persistence</Filter>
     </ClInclude>
-    <ClInclude Include="src\Persistence\SerializationUtils.h">
-      <Filter>src\Persistence</Filter>
-    </ClInclude>
     <ClInclude Include="src\Persistence\Deserializer.h">
       <Filter>src\Persistence</Filter>
     </ClInclude>
@@ -625,6 +631,18 @@
     </ClInclude>
     <ClInclude Include="src\Particle System\Deserialization\ParticleSytemDeserializer.h">
       <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Serialization Utils\SerializationUtils.h">
+      <Filter>src\Persistence\Serialization Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Project Management\ProjectManager.h">
+      <Filter>src\Persistence\Project Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\WindowsUtils.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\FileIOUtils.h">
+      <Filter>src\General Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
