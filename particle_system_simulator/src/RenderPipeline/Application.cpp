@@ -41,8 +41,13 @@
 #include "Particle System/Components/SizeBySpeed.h"
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
+#include "Particle System/Deserialization/ParticleSytemDeserializer.h"
 
 #include "Persistence/Serializer.h"
+#include "Persistence/Deserializer.h"
+
+#include <fstream>
+#include <sstream>
 
 Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
@@ -108,6 +113,56 @@ void Application::run()
 			glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentMode]);
 			glToggle[currentMode](GL_CULL_FACE);
 		}
+
+		if (Input::getKeyDown(KeyCode::KEY_T))
+		{
+			Serializer serializer;
+			serializer.startArray();
+
+			for (auto& it : particleSystems)
+			{
+				it.serialize(serializer);
+			}
+
+			serializer.endArray();
+
+			std::ofstream file("C:/Users/mtuna/Desktop/TestFolder/test.json");
+
+			if (!file.is_open())
+			{
+				std::cerr << "Error opening file: " << std::endl;
+				continue;
+			}
+
+			file << serializer.getJsonString();
+			file.close();
+		}
+		else if (Input::getKeyDown(KeyCode::KEY_U))
+		{
+			std::ifstream file("C:/Users/mtuna/Desktop/TestFolder/test.json");
+
+			if (!file.is_open())
+			{
+				std::cerr << "Error opening file: " << std::endl;
+				continue;
+			}
+
+			std::stringstream buffer;
+			buffer << file.rdbuf();
+			std::string json = buffer.str();
+			file.close();
+
+			particleSystems.clear();
+
+			Document doc = Deserializer::createDocument(buffer.str());
+			Deserializer deserializer{doc};
+
+			for (auto& it : deserializer.getArray())
+			{
+				deserializeParticleSystem(it, *this);
+			}
+		}
+
 		scene.update();
 
 		for (auto& ps : particleSystems)
@@ -124,12 +179,11 @@ void Application::run()
 		Time::endFrame();
 	}
 
-	Serializer serializer{};
+	Serializer serializer;
 
-	for (auto& it : particleSystems)
-	{
-		it.serialize(serializer);
-	}
+	const ParticleSystem& ps = *particleSystems.begin();
 
-	std::cout << serializer.getString() << std::endl;
+	ps.serialize(serializer);
+
+	std::cout << serializer.getJsonString() << std::endl;
 }

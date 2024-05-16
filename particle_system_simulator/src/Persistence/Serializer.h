@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <stdint.h>
 #include "rapidjson/prettywriter.h"
 
 using Writer = rapidjson::PrettyWriter<rapidjson::StringBuffer>;
@@ -24,11 +25,12 @@ public:
 
 	void string(const std::string& value) { writer.String(value.c_str()); }
 	void real(double value) { writer.Double(value); }
-	void uint(unsigned int value) { writer.Uint(value); }
+	void uint(uint32_t value) { writer.Uint(value); }
+	void integer(int value) { writer.Int(value); }
 	void boolean(bool value) { writer.Bool(value); }
 	void null() { writer.Null(); }
 
-	std::string getString() const { return buffer.GetString(); }
+	std::string getJsonString() const { return buffer.GetString(); }
 
-	Writer& operator[](const std::string& key);
+	Serializer& operator[](const std::string& key);
 };

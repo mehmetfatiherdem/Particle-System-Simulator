@@ -10,6 +10,7 @@
 #include "RenderPipeline/Shader/Shader.h"
 #include "RenderPipeline/Texture/Texture.h"
 #include "Emitter/SphereEmitter.h"
+#include "Persistence/Deserializer.h"
 #include "Persistence/Serializer.h"
 #include "Persistence/SerializationUtils.h"
 #include "ParticleSystem.h"
@@ -197,45 +198,45 @@ void ParticleSystem::serialize(Serializer& serializer, const std::string& object
 {
 	serializer.startObject(objectName);
 
-	serializer["Name"].String(name.c_str());
-	serializer["Enabled"].Bool(enabled);
+	serializer["Name"].string(name.c_str());
+	serializer["Enabled"].boolean(enabled);
 
-	serializer["StartLifetime"].Double(props.startLifetime);
-	serializer["StartSpeed"].Double(props.startSpeed);
-	serializer["StartSize"].Double(props.startSize);
-	serializer["MinSize"].Double(props.minSize);
-	serializer["MaxSize"].Double(props.maxSize);
-	serializer["StartRotation"].Double(props.startRotation);
+	serializer["StartLifetime"].real(props.startLifetime);
+	serializer["StartSpeed"].real(props.startSpeed);
+	serializer["StartSize"].real(props.startSize);
+	serializer["MinSize"].real(props.minSize);
+	serializer["MaxSize"].real(props.maxSize);
+	serializer["StartRotation"].real(props.startRotation);
 
 	persistence::utils::serializeColor(serializer, props.startColor, "StartColor");
 
-	serializer["GravityModifier"].Double(props.gravityModifier);
-	serializer["MaxParticles"].Uint(props.maxParticles);
+	serializer["GravityModifier"].real(props.gravityModifier);
+	serializer["MaxParticles"].uint(props.maxParticles);
 
 	persistence::utils::serializeVector(serializer, props.position, "Position");
 
-	serializer["Shininess"].Double(material.getShininess());
+	serializer["Shininess"].real(material.getShininess());
 
 	const Texture* texture = material.getDiffuseMap();
 
 	if (texture == nullptr)
 	{
-		serializer["DiffuseMap"].Null();
+		serializer["DiffuseMap"].null();
 	}
 	else
 	{
-		serializer["DiffuseMap"].String(ResourceManager::getTextureName(texture).c_str());
+		serializer["DiffuseMap"].string(ResourceManager::getTextureName(texture).c_str());
 	}
 
 	texture = material.getSpecularMap();
 
 	if (texture == nullptr)
 	{
-		serializer["SpecularMap"].Null();
+		serializer["SpecularMap"].null();
 	}
 	else
 	{
-		serializer["SpecularMap"].String(ResourceManager::getTextureName(texture).c_str());
+		serializer["SpecularMap"].string(ResourceManager::getTextureName(texture).c_str());
 	}
 
 	emitter->serialize(serializer, "Emitter");

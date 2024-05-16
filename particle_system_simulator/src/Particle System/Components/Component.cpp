@@ -10,7 +10,7 @@ void Component::tryUpdate(const ParticleSystemProps& props, Particle& particle)
 void Component::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	serializer.startObject(objectName);
-	serializer["ComponentType"].String(getComponentTypeName(getType()).c_str());
-	serializer["Priority"].Uint(priority);
-	serializer["Enabled"].Bool(enabled);
+	serializer["ComponentType"].string(getComponentTypeName(getType()).c_str());
+	serializer["Priority"].uint(priority);
+	serializer["Enabled"].boolean(enabled);
 }

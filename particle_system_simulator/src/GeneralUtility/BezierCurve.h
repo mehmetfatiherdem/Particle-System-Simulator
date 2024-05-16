@@ -16,6 +16,7 @@ private:
 public:
 	BezierCurve() : controlPoints() {}
 
+	void clear() { controlPoints.clear(); }
 	size_t size() const { return controlPoints.size(); }
 
 	std::vector<T>::iterator begin() { return controlPoints.begin(); }

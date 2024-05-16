@@ -36,8 +36,8 @@ void ColorBySpeed::serialize(Serializer& serializer, const std::string& objectNa
 {
 	Component::serialize(serializer, objectName);
 
-	serializer["MinSpeed"].Double(minSpeed);
-	serializer["MaxSpeed"].Double(maxSpeed);
+	serializer["MinSpeed"].real(minSpeed);
+	serializer["MaxSpeed"].real(maxSpeed);
 
 	serializer.startArray("Keypoints");
 	serializer.real(keypoints[0]);

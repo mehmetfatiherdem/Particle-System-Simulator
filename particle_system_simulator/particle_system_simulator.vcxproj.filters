@@ -148,6 +148,9 @@
     <Filter Include="src\Persistence">
       <UniqueIdentifier>{9b0336a1-6df9-4c79-b7a1-01b2a82ac2bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Particle System\Deserialization">
+      <UniqueIdentifier>{f9b91edc-7163-43c9-a3cd-67d904f67422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp">
@@ -317,6 +320,18 @@
     </ClCompile>
     <ClCompile Include="src\Particle System\Components\Component.cpp">
       <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\ComponentDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\EmitterDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\ParticleSytemDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Deserializer.cpp">
+      <Filter>src\Persistence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -598,6 +613,18 @@
     </ClInclude>
     <ClInclude Include="src\Persistence\SerializationUtils.h">
       <Filter>src\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Deserializer.h">
+      <Filter>src\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\ComponentDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\EmitterDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\ParticleSytemDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

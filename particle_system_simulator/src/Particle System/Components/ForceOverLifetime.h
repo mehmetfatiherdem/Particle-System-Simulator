@@ -33,6 +33,10 @@ public:
 	ForceOverLifetime(const BezierCurve<glm::vec3>& minBezier, const BezierCurve<glm::vec3>& maxBezier) :
 		Component(2), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
 
+	ForceOverLifetime(ComponentMethod method, const glm::vec3& minForce, const glm::vec3& maxForce, const BezierCurve<glm::vec3>& minBezier,
+		const BezierCurve<glm::vec3>& maxBezier) : Component(2), method(method), minForce(minForce),
+		maxForce(maxForce), minBezier(minBezier), maxBezier(maxBezier) { }
+
 	virtual ~ForceOverLifetime() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Force_Over_Lifetime; }

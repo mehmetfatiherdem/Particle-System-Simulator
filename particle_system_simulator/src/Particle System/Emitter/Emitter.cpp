@@ -46,5 +46,5 @@ void Emitter::tryEmit(ParticleSystemProps& props, std::vector<Particle>& particl
 
 void Emitter::serialize(Serializer& serializer, const std::string& objectName) const
 {
-	serializer["EmissionRate"].Double(emissionRate);
+	serializer["EmissionRate"].real(emissionRate);
 }

@@ -34,13 +34,13 @@ void SizeBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 void SizeBySpeed::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	Component::serialize(serializer, objectName);
-	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
 
-	serializer["MinSpeed"].Double(minSpeed);
-	serializer["MaxSpeed"].Double(maxSpeed);
+	serializer["MinSpeed"].real(minSpeed);
+	serializer["MaxSpeed"].real(maxSpeed);
 
-	persistence::utils::serializeBezierFloat(serializer, minBezier, "MinBezier");
-	persistence::utils::serializeBezierFloat(serializer, maxBezier, "MaxBezier");
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
 
 	serializer.endObject();
 }

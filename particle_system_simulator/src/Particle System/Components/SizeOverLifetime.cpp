@@ -34,13 +34,13 @@ void SizeOverLifetime::update(const ParticleSystemProps& props, Particle& partic
 void SizeOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	Component::serialize(serializer, objectName);
-	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
 
-	serializer["MinSize"].Double(minSize);
-	serializer["MaxSize"].Double(maxSize);
+	serializer["MinSize"].real(minSize);
+	serializer["MaxSize"].real(maxSize);
 
-	persistence::utils::serializeBezierFloat(serializer, minBezier, "MinBezier");
-	persistence::utils::serializeBezierFloat(serializer, maxBezier, "MaxBezier");
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
 
 	serializer.endObject();
 }

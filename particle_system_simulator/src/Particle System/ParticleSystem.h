@@ -17,6 +17,7 @@ class ParticleSystemEditor;
 class Component;
 class Texture;
 class Scene;
+class Deserializer;
 
 using OrderedComponentSet = std::set<Component*, ComponentComparator>;
 

@@ -37,6 +37,10 @@ public:
 		Component(0), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier)
 	{}
 
+	VelocityOverLifetime(ComponentMethod method, const glm::vec3& minVelocity, const glm::vec3& maxVelocity,
+		const BezierCurve<glm::vec3>& minBezier, const BezierCurve<glm::vec3>& maxBezier) : Component(0), method(method),
+		minVelocity(minVelocity), maxVelocity(maxVelocity), minBezier(minBezier), maxBezier(maxBezier) { }
+
 	virtual ~VelocityOverLifetime() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Velocity_Over_Lifetime; }

@@ -29,6 +29,8 @@ public:
 	SizeBySpeed(float minSpeed, float maxSpeed, const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) :
 		Component(4), method(ComponentMethod::Random_Between_Two_Curves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
 
+	SizeBySpeed(ComponentMethod method, float minSpeed, float maxSpeed, const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) : Component(4), method(method), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
+
 	virtual ~SizeBySpeed() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Size_By_Speed; }

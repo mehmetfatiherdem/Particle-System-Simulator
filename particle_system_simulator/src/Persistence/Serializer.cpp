@@ -20,8 +20,8 @@ void Serializer::startArray(const std::string& arrayName)
 	writer.StartArray();
 }
 
-Writer& Serializer::operator[](const std::string& key)
+Serializer& Serializer::operator[](const std::string& key)
 {
 	writer.Key(key.c_str());
-	return writer;
+	return *this;
 }

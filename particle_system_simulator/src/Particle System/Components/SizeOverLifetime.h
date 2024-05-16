@@ -32,6 +32,10 @@ public:
 	SizeOverLifetime(const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) :
 		Component(1), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
 
+	SizeOverLifetime(ComponentMethod method, float minConstant, float maxConstant, const BezierCurve<float>& minBezier,
+		const BezierCurve<float>& maxBezier) : Component(1), method(method), minSize(minConstant),
+		maxSize(maxConstant), minBezier(minBezier), maxBezier(maxBezier) { }
+
 	virtual ~SizeOverLifetime() override = default;
 
 	virtual ComponentType getType() const override { return ComponentType::Size_Over_Lifetime; }

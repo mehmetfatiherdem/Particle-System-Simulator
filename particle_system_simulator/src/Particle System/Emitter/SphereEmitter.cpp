@@ -39,9 +39,9 @@ std::unique_ptr<SphereEmitter> SphereEmitter::defaultEmitter()
 void SphereEmitter::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	serializer.startObject(objectName);
-	serializer["EmitterType"].String("Sphere");
+	serializer["EmitterType"].string(getEmitterTypeName(getType()).c_str());
 	Emitter::serialize(serializer);
-	serializer["Radius"].Double(radius);
-	serializer["Arc"].Double(arc);
+	serializer["Radius"].real(radius);
+	serializer["Arc"].real(arc);
 	serializer.endObject();
 }

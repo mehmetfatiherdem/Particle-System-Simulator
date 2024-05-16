@@ -48,12 +48,12 @@ void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& pa
 void VelocityOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	Component::serialize(serializer, objectName);
-	serializer["ComponentMethod"].String(getComponentMethodName(method).c_str());
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
 
 	persistence::utils::serializeVector(serializer, minVelocity, "MinVelocity");
 	persistence::utils::serializeVector(serializer, maxVelocity, "MaxVelocity");
-	persistence::utils::serializeBezierVector(serializer, minBezier, "MinBezier");
-	persistence::utils::serializeBezierVector(serializer, maxBezier, "MaxBezier");
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
 
 	serializer.endObject();
 }

@@ -49,9 +49,9 @@ std::unique_ptr<ConeEmitter> ConeEmitter::defaultEmitter()
 void ConeEmitter::serialize(Serializer& serializer, const std::string& objectName) const
 {
 	serializer.startObject(objectName);
-	serializer["EmitterType"].String("Cone");
+	serializer["EmitterType"].string(getEmitterTypeName(getType()).c_str());
 	Emitter::serialize(serializer);
-	serializer["Radius"].Double(radius);
-	serializer["Angle"].Double(angle);
+	serializer["Radius"].real(radius);
+	serializer["Angle"].real(angle);
 	serializer.endObject();
 }
