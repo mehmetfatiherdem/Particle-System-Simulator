@@ -440,6 +440,7 @@ void ParticleSystemEditor::renderParticleTabs()
 	if (imgui::BeginTabBar("Particle Systems"))
 	{
 		static ParticleSystem* selectedForRemoval = nullptr;
+		bool openedThisFrame = false;
 
 		for (auto& temp : Application::getInstance().getParticleSystems())
 		{
@@ -447,9 +448,10 @@ void ParticleSystemEditor::renderParticleTabs()
 
 			bool tab = imgui::BeginTabItem(ps.name.c_str());
 
-			if (imgui::IsMouseClicked(1) && imgui::IsItemHovered())
+			if (imgui::IsItemHovered() && imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Right))
 			{
 				selectedForRemoval = &ps;
+				openedThisFrame = true;
 			}
 
 			if (tab)
@@ -564,35 +566,46 @@ void ParticleSystemEditor::renderParticleTabs()
 
 		if (selectedForRemoval != nullptr)
 		{
-			imgui::OpenPopup("Remove Particle System");
+			ImGuiPopupFlags popupFlags = ImGuiPopupFlags_::ImGuiPopupFlags_NoOpenOverExistingPopup | ImGuiPopupFlags_::ImGuiPopupFlags_NoReopen;
+
+			imgui::OpenPopup("Remove Particle System", popupFlags);
 
 			if (imgui::BeginPopup("Remove Particle System"))
 			{
 				imgui::Text("Are you sure you want to remove this particle system?");
 
-				addVerticalSpace(2, false);
+				addVerticalSpace(1, true);
 
 				ImVec2 popupSize = imgui::GetWindowSize();
-				ImVec2 buttonSize = ImVec2(popupSize.x * 0.4f, popupSize.y * 0.4f);
+				ImVec2 buttonSize = ImVec2(popupSize.x * 0.35f, 25.0f);
+
+				imgui::SetCursorPosX(popupSize.x * 0.1f);
 
 				auto& style = imgui::GetStyle();
 				ImVec4 defaultColor = style.Colors[ImGuiCol_Button];
 				style.Colors[ImGuiCol_Button] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 
-				bool yesNo = imgui::Button("Yes", buttonSize);
-				bool removePs = yesNo;
+				imgui::Button("Yes", buttonSize);
 
-				imgui::SameLine(0.0f, popupSize.x * 0.08f);
+				bool removePs = imgui::IsItemClicked();
+				bool closePopup = removePs;
+
+				imgui::SameLine(0.0f, popupSize.x * 0.1f);
 				style.Colors[ImGuiCol_Button] = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
-				yesNo |= imgui::Button("No", buttonSize);
+				closePopup |= imgui::Button("No", buttonSize);
 				style.Colors[ImGuiCol_Button] = defaultColor;
+
+				closePopup |= (!imgui::IsWindowHovered() && !openedThisFrame && 
+					(imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left) ||
+					imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Middle) ||
+					imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Right)));
 
 				if (removePs)
 				{
 					Application::getInstance().removeParticleSystem(*selectedForRemoval);
 				}
 
-				if (yesNo)
+				if (closePopup)
 				{
 					selectedForRemoval = nullptr;
 				}
