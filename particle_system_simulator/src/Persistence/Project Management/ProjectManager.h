@@ -1,12 +1,7 @@
 #pragma once
 
 #include <string>
-#include "GeneralUtility/WindowsUtils.h"
-
-//Particle Engine
-//last.proj
-//Projects
-	//fire.proj
+#include <vector>
 
 class ProjectManager
 {
@@ -19,11 +14,11 @@ private:
 	ProjectManager();
 
 public:
-	
 
 	static ProjectManager& getInstance();
 
 	std::string getProjectDirectory() const { return applicationDirectory + "Projects\\"; }
+	std::vector<std::string> getProjectList() const;
 
 	void saveProject(const std::string& fileName = "", bool relativeToProjectDir = true) const;
 	void loadProject(const std::string& fileName = "", bool relativeToProjectDir = true);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -58,5 +59,22 @@ namespace utility::io
 
 		file << content;
 		file.close();
+	}
+
+	inline std::vector<std::string> getFilesInDirectory(const std::string& directory, const std::string& extension = "")
+	{
+		std::vector<std::string> files;
+
+		for (const auto& entry : std::filesystem::directory_iterator(directory))
+		{
+			if (entry.is_regular_file())
+			{
+				if (!extension.empty() && entry.path().extension().string() != extension) continue;
+
+				files.push_back(entry.path().filename().string());
+			}
+		}
+
+		return files;
 	}
 }

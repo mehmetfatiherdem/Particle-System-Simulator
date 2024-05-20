@@ -2,6 +2,7 @@
 #include <map>
 #include <set>
 #include <optional>
+#include "Persistence/Project Management/ProjectManager.h"
 #include "RenderPipeline/Application.h"
 #include "ResourceManagement/ResourceManager.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -431,6 +432,63 @@ void ParticleSystemEditor::render()
 		imgui::End();
 	}
 
+	if (imgui::BeginMainMenuBar())
+	{
+		if (imgui::BeginMenu("File"))
+		{
+			if (imgui::MenuItem("New"))
+			{
+
+			}
+
+			if (imgui::MenuItem("Save"))
+			{
+
+			}
+
+			if (imgui::MenuItem("Save As"))
+			{
+
+			}
+
+			if (imgui::BeginMenu("Load"))
+			{
+				std::vector<std::string> projects = ProjectManager::getInstance().getProjectList();
+
+				for (auto& project : projects)
+				{
+					if (imgui::MenuItem(project.c_str()))
+					{
+						ProjectManager::getInstance().loadProject(project);
+					}
+				}
+
+				imgui::EndMenu();
+			}
+
+			imgui::EndMenu();
+		}
+
+		if (imgui::BeginMenu("Edit"))
+		{
+			if (imgui::MenuItem("Reset Camera"))
+			{
+
+			}
+
+			bool skyboxEnabled = true;	//fetch this from somewhere else
+
+			if (imgui::MenuItem(skyboxEnabled ? "Disable Skybox" : "Enable Skybox"))
+			{
+
+			}
+
+			imgui::EndMenu();
+		}
+
+		imgui::EndMainMenuBar();
+	}
+
 	imgui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(imgui::GetDrawData());
 }
@@ -456,93 +514,7 @@ void ParticleSystemEditor::renderParticleTabs()
 
 			if (tab)
 			{
-				imgui::Checkbox("Enabled", &ps.enabled);
-
-				imgui::BeginDisabled(!ps.enabled);
-				imgui::Text("Active Particles: %d", ps.props.currentParticles);
-
-				char buffer[50];
-				ps.name.copy(buffer, sizeof(buffer) - 1);
-				uint32_t size = ps.name.size() > 49 ? 49 : ps.name.size();
-				buffer[size] = '\0';
-
-				addVerticalSpace(1, false);
-				renderSeparatorText("Properties", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), true);
-				addVerticalSpace(1, false);
-
-				if (imgui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue))
-				{
-					std::memcpy(ps.name.data(), buffer, size);
-					ps.name = buffer;
-				}
-
-				int mp = ps.props.maxParticles;
-
-				if (imgui::InputInt("Max Particles", &mp))
-				{
-					ps.setMaxParticles(utility::math::max<uint32_t>(mp, 0));
-				}
-
-				imgui::InputFloat3("Position", &ps.props.position[0]);
-
-				renderMinMaxFloat("Size", &ps.props.minSize, &ps.props.maxSize);
-
-				if (imgui::InputFloat("Gravity Modifier", &ps.props.gravityModifier))
-				{
-					ps.props.gravityModifier = utility::math::max<float>(ps.props.gravityModifier, 0.0f);
-				}
-
-				if (imgui::InputFloat("Start Lifetime", &ps.props.startLifetime))
-				{
-					ps.props.startLifetime = utility::math::max<float>(ps.props.startLifetime, 0.0f);
-				}
-
-				if (imgui::InputFloat("Start Speed", &ps.props.startSpeed))
-				{
-					ps.props.startSpeed = utility::math::max<float>(ps.props.startSpeed, 0.0f);
-				}
-
-				if (imgui::InputFloat("Start Size", &ps.props.startSize))
-				{
-					ps.props.startSize = utility::math::max<float>(ps.props.startSize, 0.0f);
-				}
-
-				float rot = ps.props.startRotation * TO_DEGREES;
-
-				if (imgui::SliderAngle("Start Rotation", &rot, 0.0f, 360.0f))
-				{
-					ps.props.startRotation = rot * TO_RADIANS;
-				}
-
-				renderSeparatorText("Material", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
-
-				renderTextureSelect("Diffuse Map", ps.material.diffuseMap, [&ps](Texture* texture)
-					{
-						ps.setDiffuseMap(texture);
-					});
-
-				addVerticalSpace(1, false);
-
-				renderTextureSelect("Specular Map", ps.material.specularMap, [&ps](Texture* texture)
-					{
-						ps.setSpecularMap(texture);
-					});
-
-				addVerticalSpace(2, false);
-
-				float shininess = ps.material.getShininess();
-
-				if (imgui::InputFloat("Shininess", &shininess))
-				{
-					ps.material.setShininess(utility::math::max<float>(0.0f, shininess));
-				}
-
-				renderColor("Start Color", &ps.props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
-
-				renderEmitter(ps);
-				renderComponents(ps);
-
-				imgui::EndDisabled();
+				renderParticleSystem(ps);
 				imgui::EndTabItem();
 			}
 		}
@@ -595,10 +567,10 @@ void ParticleSystemEditor::renderParticleTabs()
 				closePopup |= imgui::Button("No", buttonSize);
 				style.Colors[ImGuiCol_Button] = defaultColor;
 
-				closePopup |= (!imgui::IsWindowHovered() && !openedThisFrame && 
+				closePopup |= (!imgui::IsWindowHovered() && !openedThisFrame &&
 					(imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left) ||
-					imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Middle) ||
-					imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Right)));
+						imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Middle) ||
+						imgui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Right)));
 
 				if (removePs)
 				{
@@ -616,6 +588,97 @@ void ParticleSystemEditor::renderParticleTabs()
 
 		imgui::EndTabBar();
 	}
+}
+
+void ParticleSystemEditor::renderParticleSystem(ParticleSystem& ps)
+{
+	imgui::Checkbox("Enabled", &ps.enabled);
+
+	imgui::BeginDisabled(!ps.enabled);
+	imgui::Text("Active Particles: %d", ps.props.currentParticles);
+
+	char buffer[50];
+	ps.name.copy(buffer, sizeof(buffer) - 1);
+	uint32_t size = ps.name.size() > 49 ? 49 : ps.name.size();
+	buffer[size] = '\0';
+
+	addVerticalSpace(1, false);
+	renderSeparatorText("Properties", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), true);
+	addVerticalSpace(1, false);
+
+	if (imgui::InputText("Name", buffer, sizeof(buffer), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		std::memcpy(ps.name.data(), buffer, size);
+		ps.name = buffer;
+	}
+
+	int mp = ps.props.maxParticles;
+
+	if (imgui::InputInt("Max Particles", &mp))
+	{
+		ps.setMaxParticles(utility::math::max<uint32_t>(mp, 0));
+	}
+
+	imgui::InputFloat3("Position", &ps.props.position[0]);
+
+	renderMinMaxFloat("Size", &ps.props.minSize, &ps.props.maxSize);
+
+	if (imgui::InputFloat("Gravity Modifier", &ps.props.gravityModifier))
+	{
+		ps.props.gravityModifier = utility::math::max<float>(ps.props.gravityModifier, 0.0f);
+	}
+
+	if (imgui::InputFloat("Start Lifetime", &ps.props.startLifetime))
+	{
+		ps.props.startLifetime = utility::math::max<float>(ps.props.startLifetime, 0.0f);
+	}
+
+	if (imgui::InputFloat("Start Speed", &ps.props.startSpeed))
+	{
+		ps.props.startSpeed = utility::math::max<float>(ps.props.startSpeed, 0.0f);
+	}
+
+	if (imgui::InputFloat("Start Size", &ps.props.startSize))
+	{
+		ps.props.startSize = utility::math::max<float>(ps.props.startSize, 0.0f);
+	}
+
+	float rot = ps.props.startRotation * TO_DEGREES;
+
+	if (imgui::SliderAngle("Start Rotation", &rot, 0.0f, 360.0f))
+	{
+		ps.props.startRotation = rot * TO_RADIANS;
+	}
+
+	renderSeparatorText("Material", ImVec4(0.67f, 0.34f, 0.72f, 1.0f), false);
+
+	renderTextureSelect("Diffuse Map", ps.material.diffuseMap, [&ps](Texture* texture)
+		{
+			ps.setDiffuseMap(texture);
+		});
+
+	addVerticalSpace(1, false);
+
+	renderTextureSelect("Specular Map", ps.material.specularMap, [&ps](Texture* texture)
+		{
+			ps.setSpecularMap(texture);
+		});
+
+	addVerticalSpace(2, false);
+
+	float shininess = ps.material.getShininess();
+
+	if (imgui::InputFloat("Shininess", &shininess))
+	{
+		ps.material.setShininess(utility::math::max<float>(0.0f, shininess));
+	}
+
+	renderColor("Start Color", &ps.props.startColor, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen);
+
+	renderEmitter(ps);
+	renderComponents(ps);
+
+	imgui::EndDisabled();
 }
 
 void ParticleSystemEditor::renderEmitter(ParticleSystem& ps)

@@ -27,7 +27,9 @@ private:
 	ImVec2 windowSize;
 
 	void addVerticalSpace(uint32_t count, bool useLargeSpaces = false);
+
 	void renderParticleTabs();
+	void renderParticleSystem(ParticleSystem& ps);
 	void renderEmitter(ParticleSystem& ps);
 	void renderComponents(ParticleSystem& ps);
 

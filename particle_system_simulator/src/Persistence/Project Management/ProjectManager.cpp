@@ -3,6 +3,7 @@
 #include "Particle System/Deserialization/ParticleSytemDeserializer.h"
 #include "RenderPipeline/Application.h"
 #include "GeneralUtility/FileIOUtils.h"
+#include "GeneralUtility/WindowsUtils.h"
 #include "ProjectManager.h"
 
 ProjectManager::ProjectManager() : applicationDirectory(getCurrentUserDirectory() + "\\AppData\\Local\\Particle Engine\\"),
@@ -64,4 +65,16 @@ void ProjectManager::loadProject(const std::string& fileName, bool relativeToPro
 	{
 		deserializeParticleSystem(it, app);
 	}
+}
+
+std::vector<std::string> ProjectManager::getProjectList() const
+{
+	 std::vector<std::string> projects = utility::io::getFilesInDirectory(getProjectDirectory(), ".proj");
+
+	 for (auto& project : projects)
+	 {
+		 project = project.substr(0, project.size() - 5);
+	 }
+
+	 return projects;
 }
