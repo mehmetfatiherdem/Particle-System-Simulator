@@ -4,6 +4,7 @@
 #include <cassert>
 #include <stdint.h>
 #include <tuple>
+#include <functional>
 #include <glm/vec3.hpp>
 #include "MathConstants.h"
 
@@ -58,6 +59,19 @@ public:
 		}
 
 		return controlPoints[index];
+	}
+
+	bool validate(std::function<bool(T)> validator) const
+	{
+		float stepSize = 1.0f / (49);
+		float t = 0.0f;
+
+		for (uint32_t i = 0; i < 50; ++i, t += stepSize)
+		{
+			if (!validator(evaluatePoint(t))) return false;
+		}
+
+		return true;
 	}
 
 	T evaluatePoint(float t) const
@@ -117,5 +131,73 @@ namespace Bezier
 		curve.pushControlPoint(glm::vec3(0.0f, 0.0f, 0.0f));
 		curve.pushControlPoint(glm::vec3(1.0f, 1.0f, 1.0f));
 		return curve;
+	}
+
+	static std::function<bool(float)> bezierFloatValidator(bool addMin, bool addMax, float min, float max)
+	{
+		if (addMin && addMax)
+		{
+			return [min, max](float value) -> bool
+				{
+					return value >= min && value <= max;
+				};
+		}
+		else if (addMin)
+		{
+			return [min](float value) -> bool
+				{
+					return value >= min;
+				};
+		}
+		else if (addMax)
+		{
+			return [max](float value) -> bool
+				{
+					return value <= max;
+				};
+		}
+
+		return [](float value) -> bool
+			{
+				return true;
+			};
+	}
+
+	static std::function<bool(glm::vec3)> bezierVec3Validator(bool addMin, bool addMax, const glm::vec3& min, const glm::vec3& max)
+	{
+		if (addMin && addMax)
+		{
+			return [&min, &max](glm::vec3 value) -> bool
+				{
+					return value.x >= min.x && value.x <= max.x &&
+						value.y >= min.y && value.y <= max.y &&
+						value.z >= min.z && value.z <= max.z;
+				};
+		}
+		else if (addMin)
+		{
+			return [&min](glm::vec3 value) -> bool
+				{
+					return value.x >= min.x &&
+						value.y >= min.y &&
+						value.z >= min.z;
+				};
+			
+		}
+		else if (addMax)
+		{
+			return [&max](glm::vec3 value) -> bool
+				{
+					return value.x <= max.x &&
+						value.y <= max.y &&
+						value.z <= max.z;
+				};
+		}
+
+		return [](glm::vec3 value) -> bool
+			{
+				return true;
+			};
+
 	}
 }

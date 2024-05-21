@@ -34,14 +34,18 @@ private:
 	void renderComponents(ParticleSystem& ps);
 	void renderMainMenuBar();
 
-	void renderBezierVector(const std::string& name, const std::string& yAxis, BezierCurve<glm::vec3>* bezier, BezierCurve<glm::vec3>* copy = nullptr, ImGuiTreeNodeFlags flags = 0);
+	void renderBezierVector(const std::string& name, const std::string& yAxis, BezierCurve<glm::vec3>* bezier, BezierCurve<glm::vec3>* copy = nullptr,
+		ImGuiTreeNodeFlags flags = 0, bool addMin = false, bool addMax = false, const glm::vec3& min = glm::vec3(0.0f, 0.0f, 0.0f),
+		const glm::vec3& max = glm::vec3(0.0f, 0.0f, 0.0f));
+
 	void renderBezierFloat(const std::string& name, const std::string& yAxis, BezierCurve<float>* bezier, BezierCurve<float>* copy = nullptr,
-		ImGuiTreeNodeFlags flags = 0);
+		ImGuiTreeNodeFlags flags = 0, bool addMin = false, bool addMax = false, float min = 0.0f, float max = 0.0f);
 
 	void renderColor(const std::string& name, Color4* color, ImGuiTreeNodeFlags flags = 0);
 
-	void renderMinMaxFloat(const std::string& name, float* min, float* max, float minLimit = 0.0f);
-	void renderMinMaxFloat(const std::string& minName, const std::string& maxName, float* min, float* max, float minLimit = 0.0f);
+	void renderMinMaxFloat(const std::string& name, float* min, float* max, float minLimit = 0.0f, float step = 0.01f, float fastStep = 0.1f);
+	void renderMinMaxFloat(const std::string& minName, const std::string& maxName, float* min, float* max, float minLimit = 0.0f,
+		float step = 0.01f, float fastStep = 0.1f);
 	void renderMinMaxVector(const std::string& name, glm::vec3* min, glm::vec3* max, const glm::vec3& minLimit = 
 		glm::vec3{std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest()});
 

@@ -10,9 +10,12 @@ void APIENTRY glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum 
 
 Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :
 	width(width), height(height), vsync(vsync), cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f),
-	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr)
+	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr), iconified(false)
 {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+	glfwWindowHint(GLFW_MAXIMIZED, true);
+	//glfwWindowHint(GLFW_RESIZABLE, false);
+
 	window = glfwCreateWindow(width, height, title.data(), nullptr, nullptr);
 
 	if(!window)
@@ -37,6 +40,7 @@ Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsy
 	glfwSetCursorPosCallback(window, cursorPosCallback);
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetFramebufferSizeCallback(window, resizeCallback);
+	//glfwSetWindowIconifyCallback(window, iconifyCallback);
 
 	int flags;
 	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
@@ -78,6 +82,7 @@ Window::~Window()
 void Window::resizeCallback(GLFWwindow* window, int width, int height)
 {
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
 	ownerWindow->width = width;
 	ownerWindow->height = height;
 	Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
@@ -89,8 +94,9 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height)
 void Window::keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode)
 {
 	if (Gui::wantCaptureKeyboard()) return;
-
+	
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
 	KeyCode keyCode = toKeyCode(key);
 
 	if(action == GLFW_PRESS)
@@ -129,6 +135,7 @@ void Window::cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
 	if (Gui::wantCaptureMouse()) return;
 
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
 	glm::vec2 newPos = glm::vec2{xPos / ownerWindow->width, yPos / ownerWindow->height};
 	ownerWindow->mouseDelta += (newPos - ownerWindow->mousePos);
 	ownerWindow->mousePos = newPos;
@@ -138,14 +145,25 @@ void Window::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
 	if (Gui::wantCaptureMouse()) return;
 
-	if (Application::getInstance().getEditor().isEditorWindowFocused()) return;
 	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
 	ownerWindow->scroll = yOffset;
+}
+
+void Window::iconifyCallback(GLFWwindow* window, int iconified)
+{
+	Window* ownerWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	ownerWindow->iconified = iconified;
 }
 
 void Window::pollEvents()
 {
 	glfwPollEvents();
+}
+
+bool Window::shouldRender() const
+{
+	return !iconified;
 }
 
 bool Window::shouldClose() const

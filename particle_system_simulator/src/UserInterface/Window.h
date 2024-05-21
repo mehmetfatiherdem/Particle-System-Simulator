@@ -29,7 +29,10 @@ private:
 	glm::vec2 mouseDelta;
 	float scroll;
 
+	bool iconified;
+
 	static void resizeCallback(GLFWwindow* window, int width, int height);
+	static void iconifyCallback(GLFWwindow* window, int iconified);
 	static void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode);
 	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
@@ -42,6 +45,7 @@ public:
 	~Window();
 
 	static void pollEvents();
+	bool shouldRender() const;
 	bool shouldClose() const;
 	void swapBuffers() const;
 	void endFrame();

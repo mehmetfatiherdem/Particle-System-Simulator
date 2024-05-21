@@ -47,7 +47,7 @@
 
 #include "GeneralUtility/FileIOUtils.h"
 
-Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
+Application::Application() : window(500, 500, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
 	Texture texSmoke("Resources/Textures/smoke.png",
 		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');

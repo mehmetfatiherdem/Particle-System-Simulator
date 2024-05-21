@@ -31,7 +31,9 @@ glm::mat4 Camera::getViewProjectionMatrix(float useFov) const
 
 void Camera::reset()
 {
-	transform.reset();
+	transform.setPosition(glm::vec3(0.0f, 0.0f, 50.0f));
+	transform.setRotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
+	transform.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
 	fov = glm::radians(45.0f);
 	left = -8.0f;
 	right = 8.0f;
