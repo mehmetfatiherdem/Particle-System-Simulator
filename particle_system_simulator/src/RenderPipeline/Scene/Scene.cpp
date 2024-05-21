@@ -19,7 +19,7 @@ std::string getTextureAddresses()
 
 Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
 	camera(glm::vec3{0.0f, 0.0f, 10.0f}, windowWidth, windowHeight), skybox(getTextureAddresses()),
-	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects() {}
+	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skyboxEnabled(true) {}
 
 Scene::~Scene()
 {
@@ -44,7 +44,10 @@ void Scene::render()
 	shaderManager.updateViewProjectionMatrices(camera.getViewMatrix(), camera.getProjectionMatrix());
 	shaderManager.updateViewPosition(camera.getTransform().getPosition());
 
-	skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
+	if (skyboxEnabled)
+	{
+		skybox.render(camera.getViewMatrix(), camera.getProjectionMatrix(45.0f));
+	}
 
 	//Render opaque objects first
 	std::for_each(objects.begin(), objects.end(), [](MeshRenderer* object)

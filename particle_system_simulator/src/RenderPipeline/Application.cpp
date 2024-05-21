@@ -112,6 +112,7 @@ void Application::run()
 		window.pollEvents();
 		Gui::beginFrame();
 
+		//Input class is used for in-game input handling
 		if (Input::getKeyDown(KeyCode::KEY_X))
 		{
 			currentMode = !currentMode;
@@ -119,11 +120,14 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		if (Input::getKey(KeyCode::CTRL) && Input::getKeyDown(KeyCode::KEY_S))
+		//imgui works in the editor as well
+		bool ctrlPressed = (ImGui::IsKeyPressed(ImGuiKey_LeftCtrl, true) || ImGui::IsKeyPressed(ImGuiKey_RightCtrl, true));
+
+		if (ctrlPressed && ImGui::IsKeyPressed(ImGuiKey_S))
 		{
-			ProjectManager::getInstance().saveProject("test1");
+			ProjectManager::getInstance().saveProject();
 		}
-		else if (Input::getKey(KeyCode::CTRL) && Input::getKeyDown(KeyCode::KEY_O))
+		else if (ctrlPressed && ImGui::IsKeyPressed(ImGuiKey_O))
 		{
 			ProjectManager::getInstance().loadProject();
 		}

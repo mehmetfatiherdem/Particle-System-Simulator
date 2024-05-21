@@ -33,6 +33,16 @@ void persistence::utils::serializeVector(Serializer& serializer, glm::vec4 vecto
 	serializer.endArray();
 }
 
+void persistence::utils::serializeQuaternion(Serializer& serializer, glm::quat quaternion, const std::string& objectName)
+{
+	serializer.startArray(objectName);
+	serializer.real(quaternion.x);
+	serializer.real(quaternion.y);
+	serializer.real(quaternion.z);
+	serializer.real(quaternion.w);
+	serializer.endArray();
+}
+
 void persistence::utils::serializeColor(Serializer& serializer, const Color3& color, const std::string& objectName)
 {
 	serializer.startObject(objectName);
@@ -101,6 +111,14 @@ void persistence::utils::deserializeVector(const Deserializer& deserializer, glm
 	vector->y = deserializer[1].getReal();
 	vector->z = deserializer[2].getReal();
 	vector->w = deserializer[3].getReal();
+}
+
+void persistence::utils::deserializeQuaternion(const Deserializer& deserializer, glm::quat* quaternion)
+{
+	quaternion->x = deserializer[0].getReal();
+	quaternion->y = deserializer[1].getReal();
+	quaternion->z = deserializer[2].getReal();
+	quaternion->w = deserializer[3].getReal();
 }
 
 void persistence::utils::deserializeColor(const Deserializer& deserializer, Color3* color)

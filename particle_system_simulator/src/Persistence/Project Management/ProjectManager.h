@@ -23,6 +23,6 @@ public:
 	bool isProjectRegistered() const { return !currentProject.empty(); }
 	void newProject() { currentProject = ""; }
 
-	void saveProject(const std::string& fileName = "", bool relativeToProjectDir = true) const;
+	void saveProject(const std::string& fileName = "", bool relativeToProjectDir = true);
 	void loadProject(const std::string& fileName = "", bool relativeToProjectDir = true);
 };

@@ -3,8 +3,11 @@
 #include <stdint.h>
 #include "RenderPipeline/Camera/Data/CameraType.h"
 #include "RenderPipeline/Transform/Transformable.h"
+#include "Persistence/ISerializable.h"
 
-class Camera : public Transformable
+class Deserializer;
+
+class Camera : public Transformable, public ISerializable
 {
 protected:
 	CameraType cameraType;
@@ -52,4 +55,7 @@ public:
 	void setTop(float top) { this->top = top; }
 	void setBottom(float bottom) { this->bottom = bottom; }
 	void setCameraType(CameraType cameraType) { this->cameraType = cameraType; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "Camera") const override;
+	void deserialize(const Deserializer& deserializer);
 };

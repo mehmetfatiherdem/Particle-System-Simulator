@@ -23,15 +23,23 @@ std::string ProjectManager::getLastProjectAddress() const
 	return utility::io::readFile(applicationDirectory + "last.txt");
 }
 
-void ProjectManager::saveProject(const std::string& fileName, bool relativeToProjectDir) const
+void ProjectManager::saveProject(const std::string& fileName, bool relativeToProjectDir)
 {
 	std::string fileAddress = fileName.empty() ? currentProject :
 		(relativeToProjectDir ? getProjectDirectory() + fileName : fileName) + ".proj";
 
 	if (fileAddress.empty()) return;
 
+	currentProject = fileAddress;
+
 	Serializer serializer;
-	serializer.startArray();
+	serializer.startObject();
+
+	serializer["SkyboxEnabled"].boolean(Application::getInstance().getScene().isSkyboxEnabled());
+
+	Application::getInstance().getScene().getCamera().serialize(serializer);
+
+	serializer.startArray("ParticleSystems");
 
 	for (auto& ps : Application::getInstance().getParticleSystems())
 	{
@@ -39,6 +47,7 @@ void ProjectManager::saveProject(const std::string& fileName, bool relativeToPro
 	}
 
 	serializer.endArray();
+	serializer.endObject();
 
 	utility::io::writeFile(fileAddress, serializer.getJsonString());
 	utility::io::writeFile(applicationDirectory + "last.txt", fileAddress);
@@ -61,9 +70,12 @@ void ProjectManager::loadProject(const std::string& fileName, bool relativeToPro
 	Document doc = Deserializer::createDocument(json);
 	Deserializer deserializer(doc);
 
-	for (auto& it : deserializer.getArray())
+	app.getScene().setSkyboxEnabled(deserializer["SkyboxEnabled"].getBoolean());
+	app.getScene().getCamera().deserialize(deserializer["Camera"]);
+
+	for (auto& it : deserializer["ParticleSystems"].getArray())
 	{
-		deserializeParticleSystem(it, app);
+		deserializeParticleSystem(it);
 	}
 }
 

@@ -30,6 +30,7 @@ private:
 
 	SceneCamera camera;
 	Skybox skybox;
+	bool skyboxEnabled;
 
 	void destroyLight(LightSource* light, std::function<void()>&& untrack);
 
@@ -43,6 +44,12 @@ public:
 
 	GlobalShaderManager& getShaderManager() { return shaderManager; }
 	Camera& getCamera() { return camera; }
+
+	void setSkyboxEnabled(bool enabled) { skyboxEnabled = enabled; }
+	void enableSykbox() { skyboxEnabled = true; }
+	void disableSkybox() { skyboxEnabled = false; }
+	void toggleSkybox() { skyboxEnabled = !skyboxEnabled; }
+	bool isSkyboxEnabled() const { return skyboxEnabled; }
 	
 #pragma region Light Operations
 

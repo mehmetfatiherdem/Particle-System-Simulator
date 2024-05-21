@@ -16,7 +16,7 @@
 
 class Texture;
 
-void deserializeParticleSystem(const Deserializer& deserializer, Application& application)
+void deserializeParticleSystem(const Deserializer& deserializer)
 {
 	std::string name = deserializer["Name"].getString();
 	bool enabled = deserializer["Enabled"].getBoolean();
@@ -64,5 +64,5 @@ void deserializeParticleSystem(const Deserializer& deserializer, Application& ap
 		ps.addComponent(deserializeComponent(componentDeserializer));
 	}
 
-	application.addParticleSystem(std::move(ps));
+	Application::getInstance().addParticleSystem(std::move(ps));
 }
