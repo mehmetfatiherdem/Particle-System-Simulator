@@ -9,7 +9,7 @@
 
 struct ParticleSystemProps
 {
-	float startLifetime = 10.0f;
+	float startLifetime = 1.0f;
 	float startSpeed = 1.0f;
 	float startSize = 1.0f;
 	float minSize = 0.3f;

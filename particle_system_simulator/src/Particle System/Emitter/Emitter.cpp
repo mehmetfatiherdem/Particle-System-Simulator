@@ -2,6 +2,7 @@
 #include "Time Management/Time.h"
 #include "Persistence/Serializer.h"
 #include "Emitter.h"
+#include <iostream>
 
 Emitter::~Emitter() { }
 

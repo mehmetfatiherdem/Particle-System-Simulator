@@ -15,15 +15,12 @@
 #include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ParticleSystem.h"
 
-Mesh ParticleSystem::quad = createQuad();
-
 ParticleSystem::ParticleSystem() : name(""), props(), material(Material::defaultMaterial()), emitter(std::move(SphereEmitter::defaultEmitter())),
-scene(Application::getInstance().getScene()), enabled(false), poolIndex(0)
-{}
+	quad(createQuad()), scene(Application::getInstance().getScene()), enabled(false), poolIndex(0) { }
 
 ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter)
 	: name(std::move(name)), props(props), emitter(std::move(emitter)),
-	scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1), enabled(true)
+	quad(createQuad()), scene(Application::getInstance().getScene()), material(material), poolIndex(props.maxParticles - 1), enabled(true)
 {
 	this->props.currentParticles = 0;
 	particlePool.resize(props.maxParticles);
@@ -44,10 +41,28 @@ ParticleSystem::ParticleSystem(std::string&& name, const ParticleSystemProps& pr
 ParticleSystem::ParticleSystem(ParticleSystem&& other) noexcept
 	: name(std::move(other.name)), enabled(other.enabled), poolIndex(other.poolIndex),
 	material(std::move(other.material)), props(other.props), emitter(std::move(other.emitter)),
-	components(std::move(other.components)), scene(other.scene), particlePool(std::move(other.particlePool))
+	components(std::move(other.components)), scene(other.scene), particlePool(),
+	quad(std::move(other.quad))
 {
-	other.particlePool.clear();
-	other.enabled = false;
+	for (auto& particle : other.particlePool)
+	{
+		bool enabled = particle.isEnabled();
+		scene.destroyObject(particle.renderer);
+		particle.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+
+		if (!enabled)
+		{
+			particle.disable();
+		}
+
+		particle.renderer->setPreRenderAction([&](Transform& transform)
+			{
+				transform.lookAt(Application::getInstance().getScene().getCamera().getTransform());
+				transform.rotateAround(transform.getForwardVector(), particle.rotation);
+			});
+	}
+
+	this->particlePool = std::move(other.particlePool);
 }
 
 ParticleSystem& ParticleSystem::operator=(ParticleSystem&& other) noexcept
@@ -92,6 +107,11 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::update()
 {
+	if (!scene.isSkyboxEnabled())
+	{
+		int a = 5 + 5;
+	}
+
 	for (uint32_t i = 0; i < particlePool.size(); ++i)
 	{
 		Particle& particle = particlePool[i];

@@ -13,6 +13,8 @@ indices(std::make_shared<std::vector<uint32_t>>(std::move(indices)))
 Mesh::Mesh(const Mesh& mesh) : VAO(mesh.VAO), buffers(), props(mesh.props), vertices(mesh.vertices), indices(mesh.indices),
 instanceMatrices(mesh.instanceMatrices), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
 {
+	if (this == &mesh) return;
+
 	if (!this->props.has_value())
 		return;
 
@@ -29,6 +31,8 @@ instanceMatrices(mesh.instanceMatrices), updatedSinceLastDraw(mesh.updatedSinceL
 Mesh::Mesh(Mesh&& mesh) noexcept : VAO(mesh.VAO), buffers(), props(mesh.props), vertices(std::move(mesh.vertices)),
 indices(std::move(mesh.indices)), instanceMatrices(std::move(mesh.instanceMatrices)), updatedSinceLastDraw(mesh.updatedSinceLastDraw)
 {
+	if (this == &mesh) return;
+
 	if (!this->props.has_value())
 		return;
 	
@@ -40,6 +44,8 @@ indices(std::move(mesh.indices)), instanceMatrices(std::move(mesh.instanceMatric
 
 Mesh& Mesh::operator=(const Mesh& mesh)
 {
+	if (this == &mesh) return *this;
+
 	cleanup();
 
 	this->vertices = mesh.vertices;
@@ -66,6 +72,8 @@ Mesh& Mesh::operator=(const Mesh& mesh)
 
 Mesh& Mesh::operator=(Mesh&& mesh) noexcept
 {
+	if (this == &mesh) return *this;
+
 	cleanup();
 
 	this->vertices = std::move(mesh.vertices);

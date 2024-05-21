@@ -18,8 +18,11 @@ std::string getTextureAddresses()
 }
 
 Scene::Scene(uint32_t windowWidth, uint32_t windowHeight) : shaderManager(), lightTracker(this->shaderManager),
-	camera(glm::vec3{0.0f, 0.0f, 50.0f}, windowWidth, windowHeight), skybox(getTextureAddresses()),
-	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skyboxEnabled(true) {}
+	camera(TransformProps(glm::vec3(0.0f, 0.0f, 100.0f)), windowWidth, windowHeight), skybox(getTextureAddresses()),
+	lightSources(MAX_DIRECTIONAL_LIGHTS + MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS), objects(), skyboxEnabled(true) 
+{
+	camera.getTransform().setPosition(glm::vec3(0.0f, 0.0f, 100.0f));
+}
 
 Scene::~Scene()
 {

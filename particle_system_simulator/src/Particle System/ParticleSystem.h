@@ -37,7 +37,7 @@ private:
 	std::unique_ptr<Emitter> emitter;
 	std::vector<Component*> components;
 
-	static Mesh quad;
+	Mesh quad;
 
 	Scene& scene;
 	

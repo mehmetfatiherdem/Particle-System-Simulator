@@ -11,6 +11,8 @@ class SphereEmitter : public Emitter
 {
 private:
 	friend class ParticleSystemEditor;
+	friend class ParticleSystem;
+
 	float radius;
 	float arc;
 

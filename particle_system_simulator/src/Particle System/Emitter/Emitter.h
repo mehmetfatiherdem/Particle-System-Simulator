@@ -10,6 +10,7 @@ class Emitter : public ISerializable
 {
 private:
 	friend class ParticleSystemEditor;
+	friend class ParticleSystem;
 
 	float surplus;
 protected:
