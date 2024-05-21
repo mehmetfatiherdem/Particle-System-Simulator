@@ -20,6 +20,9 @@ public:
 	std::string getProjectDirectory() const { return applicationDirectory + "Projects\\"; }
 	std::vector<std::string> getProjectList() const;
 
+	bool isProjectRegistered() const { return !currentProject.empty(); }
+	void newProject() { currentProject = ""; }
+
 	void saveProject(const std::string& fileName = "", bool relativeToProjectDir = true) const;
 	void loadProject(const std::string& fileName = "", bool relativeToProjectDir = true);
 };

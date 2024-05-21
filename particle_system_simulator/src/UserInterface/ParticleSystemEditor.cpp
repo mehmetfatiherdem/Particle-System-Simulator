@@ -422,16 +422,27 @@ void ParticleSystemEditor::renderSeparatorText(const std::string& text, const Im
 
 void ParticleSystemEditor::render()
 {
-	if (imgui::Begin("Particle System Editor"))
+	bool open = imgui::Begin("Particle System Editor");
+
+	if (open)
 	{
 		windowSize = imgui::GetWindowSize();
 		hasFocus = imgui::IsWindowFocused();
 		isHovered = imgui::IsWindowHovered();
 
 		renderParticleTabs();
-		imgui::End();
 	}
 
+	imgui::End();
+
+	renderMainMenuBar();
+
+	imgui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(imgui::GetDrawData());
+}
+
+void ParticleSystemEditor::renderMainMenuBar()
+{
 	if (imgui::BeginMainMenuBar())
 	{
 		if (imgui::BeginMenu("File"))
@@ -441,14 +452,25 @@ void ParticleSystemEditor::render()
 
 			}
 
-			if (imgui::MenuItem("Save"))
-			{
+			bool projectRegistered = ProjectManager::getInstance().isProjectRegistered();
 
+			if (imgui::MenuItem("Save", "CTRL+S", false, projectRegistered))
+			{
+				ProjectManager::getInstance().saveProject();
 			}
 
-			if (imgui::MenuItem("Save As"))
+			if (imgui::BeginMenu("Save As"))
 			{
+				char buffer[50];
+				buffer[0] = '\0';
 
+				if (imgui::InputText("Project Name", buffer, sizeof(buffer), ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					imgui::SetWindowFocus(nullptr);
+					ProjectManager::getInstance().saveProject(buffer);
+				}
+
+				imgui::EndMenu();
 			}
 
 			if (imgui::BeginMenu("Load"))
@@ -464,6 +486,17 @@ void ParticleSystemEditor::render()
 				}
 
 				imgui::EndMenu();
+			}
+
+			if (imgui::MenuItem("Reload"))
+			{
+				ProjectManager::getInstance().loadProject();
+			}
+
+			if (imgui::MenuItem("Exit"))
+			{
+				//TODO: move this logic to application to do cleanup
+				exit(0);
 			}
 
 			imgui::EndMenu();
@@ -488,9 +521,6 @@ void ParticleSystemEditor::render()
 
 		imgui::EndMainMenuBar();
 	}
-
-	imgui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(imgui::GetDrawData());
 }
 
 void ParticleSystemEditor::renderParticleTabs()

@@ -32,6 +32,7 @@ private:
 	void renderParticleSystem(ParticleSystem& ps);
 	void renderEmitter(ParticleSystem& ps);
 	void renderComponents(ParticleSystem& ps);
+	void renderMainMenuBar();
 
 	void renderBezierVector(const std::string& name, const std::string& yAxis, BezierCurve<glm::vec3>* bezier, BezierCurve<glm::vec3>* copy = nullptr, ImGuiTreeNodeFlags flags = 0);
 	void renderBezierFloat(const std::string& name, const std::string& yAxis, BezierCurve<float>* bezier, BezierCurve<float>* copy = nullptr,
