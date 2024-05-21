@@ -449,12 +449,12 @@ void ParticleSystemEditor::renderMainMenuBar()
 		{
 			if (imgui::MenuItem("New"))
 			{
-
+				Application::getInstance().deleteAllParticleSystems();
+				ResourceManager::cleanup();
+				ProjectManager::getInstance().newProject();
 			}
 
-			bool projectRegistered = ProjectManager::getInstance().isProjectRegistered();
-
-			if (imgui::MenuItem("Save", "CTRL+S", false, projectRegistered))
+			if (imgui::MenuItem("Save", "CTRL+S", false, ProjectManager::getInstance().isProjectRegistered()))
 			{
 				ProjectManager::getInstance().saveProject();
 			}
@@ -488,14 +488,13 @@ void ParticleSystemEditor::renderMainMenuBar()
 				imgui::EndMenu();
 			}
 
-			if (imgui::MenuItem("Reload"))
+			if (imgui::MenuItem("Reload", "CTRL+O", false, ProjectManager::getInstance().isProjectRegistered()))
 			{
 				ProjectManager::getInstance().loadProject();
 			}
 
 			if (imgui::MenuItem("Exit"))
 			{
-				//TODO: move this logic to application to do cleanup
 				exit(0);
 			}
 
@@ -509,7 +508,7 @@ void ParticleSystemEditor::renderMainMenuBar()
 
 			}
 
-			bool skyboxEnabled = true;	//fetch this from somewhere else
+			bool skyboxEnabled = true;
 
 			if (imgui::MenuItem(skyboxEnabled ? "Disable Skybox" : "Enable Skybox"))
 			{

@@ -26,3 +26,8 @@ std::string ResourceManager::getTextureName(const Texture* texture)
 
 	return "None";
 }
+
+void ResourceManager::cleanup()
+{
+	textures.clear();
+}

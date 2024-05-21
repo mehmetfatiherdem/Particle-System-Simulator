@@ -16,6 +16,8 @@ public:
 
 	static const Texture& addTexture(Texture&& texture, std::string&& resourceName);
 
+	static void cleanup();
+	
 	static const Texture* getTexture(const std::string& name);
 	static std::string getTextureName(const Texture* texture);
 	static uint32_t getTextureCount() { return textures.size(); }
