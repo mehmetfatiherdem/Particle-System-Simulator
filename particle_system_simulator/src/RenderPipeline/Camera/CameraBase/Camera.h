@@ -32,6 +32,8 @@ public:
 	glm::mat4 getProjectionMatrix(float useFov = -1.0f) const;
 	glm::mat4 getViewProjectionMatrix(float useFov = -1.0f) const;
 
+	void reset();
+
 	uint32_t getWidth() const { return width; }
 	uint32_t getHeight() const { return height; }
 	float getAspectRatio() const { return aspectRatio; }

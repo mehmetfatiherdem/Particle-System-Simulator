@@ -450,7 +450,7 @@ void ParticleSystemEditor::renderMainMenuBar()
 			if (imgui::MenuItem("New"))
 			{
 				Application::getInstance().deleteAllParticleSystems();
-				ResourceManager::cleanup();
+				Application::getInstance().getScene().getCamera().reset();
 				ProjectManager::getInstance().newProject();
 			}
 
@@ -505,14 +505,12 @@ void ParticleSystemEditor::renderMainMenuBar()
 		{
 			if (imgui::MenuItem("Reset Camera"))
 			{
-
+				Application::getInstance().getScene().getCamera().reset();
 			}
 
-			bool skyboxEnabled = true;
-
-			if (imgui::MenuItem(skyboxEnabled ? "Disable Skybox" : "Enable Skybox"))
+			if (imgui::MenuItem(Application::getInstance().getScene().isSkyboxEnabled() ? "Disable Skybox" : "Enable Skybox"))
 			{
-
+				Application::getInstance().getScene().toggleSkybox();
 			}
 
 			imgui::EndMenu();

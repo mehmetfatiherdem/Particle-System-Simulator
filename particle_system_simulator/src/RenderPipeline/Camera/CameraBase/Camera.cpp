@@ -29,6 +29,18 @@ glm::mat4 Camera::getViewProjectionMatrix(float useFov) const
 	return getProjectionMatrix(useFov) * getViewMatrix();
 }
 
+void Camera::reset()
+{
+	transform.reset();
+	fov = glm::radians(45.0f);
+	left = -8.0f;
+	right = 8.0f;
+	top = 4.5f;
+	bottom = -4.5f;
+	near = 0.1f;
+	far = 1000.0f;
+}
+
 void Camera::setWidth(uint32_t width)
 {
 	this->width = width;

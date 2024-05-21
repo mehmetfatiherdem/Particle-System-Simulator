@@ -34,6 +34,13 @@ glm::mat4 Transform::getModelMatrix() const
 	return translate * rotate * scale;
 }
 
+void Transform::reset()
+{
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
+	rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+	_scale = glm::vec3(1.0f, 1.0f, 1.0f);
+}
+
 void Transform::translate(const glm::vec3& displacement)
 {
 	this->position += displacement;

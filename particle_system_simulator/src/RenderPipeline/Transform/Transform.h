@@ -24,6 +24,8 @@ public:
 
 	glm::mat4 getModelMatrix() const;
 
+	void reset();
+
 	void translate(const glm::vec3& displacement);
 	void rotate(const glm::vec3& rotation);
 	void rotate(const glm::quat& rotation);
