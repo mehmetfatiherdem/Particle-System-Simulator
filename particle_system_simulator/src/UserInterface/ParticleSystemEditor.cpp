@@ -712,10 +712,7 @@ void ParticleSystemEditor::renderParticleSystem(ParticleSystem& ps)
 		ps.props.startLifetime = utility::math::max<float>(ps.props.startLifetime, 0.0f);
 	}
 
-	if (imgui::InputFloat("Start Speed", &ps.props.startSpeed, 0.01f, 0.1f))
-	{
-		ps.props.startSpeed = utility::math::max<float>(ps.props.startSpeed, 0.0f);
-	}
+	imgui::InputFloat("Start Speed", &ps.props.startSpeed, 0.01f, 0.1f);
 
 	if (imgui::InputFloat("Start Size", &ps.props.startSize, 0.01f, 0.1f))
 	{
