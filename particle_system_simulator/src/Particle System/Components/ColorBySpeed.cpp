@@ -3,6 +3,8 @@
 #include "GeneralUtility/BasicMath.h"
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ColorBySpeed.h"
 
 void ColorBySpeed::update(const ParticleSystemProps& props, Particle& particle)
@@ -28,4 +30,24 @@ void ColorBySpeed::update(const ParticleSystemProps& props, Particle& particle)
 	}
 
 	particle.renderer->getMaterial().setColor(color);
+}
+
+void ColorBySpeed::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+
+	serializer["MinSpeed"].real(minSpeed);
+	serializer["MaxSpeed"].real(maxSpeed);
+
+	serializer.startArray("Keypoints");
+	serializer.real(keypoints[0]);
+	serializer.real(keypoints[1]);
+	serializer.endArray();
+
+	serializer.startArray("Colors");
+	persistence::utils::serializeColor(serializer, colors[0]);
+	persistence::utils::serializeColor(serializer, colors[1]);
+	serializer.endArray();
+
+	serializer.endObject();
 }

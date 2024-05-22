@@ -1,8 +1,8 @@
 #include <iostream>
 #include "GeneralUtility/gl2fw3.h"
-#include "Initialization.h"
+#include "Configuration.h"
 
-void initializeSettings()
+void Configuration::init()
 {
 	if(!glfwInit())
 	{
@@ -37,4 +37,9 @@ void initializeSettings()
 	}
 
 	glfwDestroyWindow(tempWindow);
+}
+
+void Configuration::shutdown()
+{
+	glfwTerminate();
 }

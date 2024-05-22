@@ -21,9 +21,9 @@ void addCubemapSurface(GLenum targetSide, std::string_view file)
 	}
 }
 
-Texture::Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum textureType, GLint textureWrappingMethod_S,
+Texture::Texture(std::string_view textureAddress, GLenum textureType, GLint textureWrappingMethod_S,
 	GLint textureWrappingMethod_T, GLint textureWrappingMethod_R, GLint textureMinFilter, GLint textureMagFilter, GLint internalFormat,
-	GLenum format, char addressDelimiter) : textureUnit(textureUnit), textureType(textureType), textureID(0)
+	GLenum format, char addressDelimiter) : textureType(textureType), textureID(0)
 {
 	glGenTextures(1, &textureID);
 	glBindTexture(textureType, textureID);
@@ -55,7 +55,10 @@ Texture::Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum t
 	{
 		w_stbi_set_flip_vertically_on_load(true);
 
-		unsigned char* textureData = w_stbi_load(textureAddress.data(), &width, &height, &bitDepth, 0);
+		int w, h, garbageValue;
+		unsigned char* textureData = w_stbi_load(textureAddress.data(), &w, &h, &garbageValue, 0);
+		width = w;
+		height = h;
 
 		if (!textureData)
 		{
@@ -75,13 +78,29 @@ Texture::Texture(std::string_view textureAddress, uint32_t textureUnit, GLenum t
 	glBindTexture(textureType, 0);
 }
 
-Texture::Texture(Texture&& texture) noexcept : textureID(texture.textureID), textureType(texture.textureType), textureUnit(texture.textureUnit),
-width(texture.width), height(texture.height), bitDepth(texture.bitDepth)
+Texture::Texture(unsigned char* textureData, uint32_t width, uint32_t height, GLenum textureType, GLint textureWrappingMethod_S,
+	GLint textureWrappingMethod_T, GLint textureWrappingMethod_R, GLint textureMinFilter, GLint textureMagFilter, GLint internalFormat,
+	GLenum format) : textureType(textureType), textureID(0), width(width), height(height)
+{
+	glGenTextures(1, &textureID);
+	glBindTexture(textureType, textureID);
+
+	glTexImage2D(textureType, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, textureData);
+	glGenerateMipmap(textureType);
+
+	glTexParameteri(textureType, GL_TEXTURE_WRAP_S, textureWrappingMethod_S);
+	glTexParameteri(textureType, GL_TEXTURE_WRAP_T, textureWrappingMethod_T);
+	glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, textureMinFilter);
+	glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, textureMagFilter);
+	glBindTexture(textureType, 0);
+}
+
+Texture::Texture(Texture&& texture) noexcept : textureID(texture.textureID), textureType(texture.textureType), width(texture.width),
+	height(texture.height)
 {
 	texture.textureID = 0;
 	texture.width = 0;
 	texture.height = 0;
-	texture.bitDepth = 0;
 }
 
 Texture::~Texture()
@@ -96,21 +115,14 @@ Texture& Texture::operator=(Texture&& texture) noexcept
 	this->textureType = texture.textureType;
 	this->width = texture.width;
 	this->height = texture.height;
-	this->bitDepth = texture.bitDepth;
 	texture.textureID = 0;
 	texture.width = 0;
 	texture.height = 0;
-	texture.bitDepth = 0;
 	return *this;
 }
 
-void Texture::useTexture() const
+void Texture::useTexture(uint32_t textureUnit = 0) const
 {
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(textureType, textureID);
-}
-
-void Texture::setTextureUnit(uint32_t textureUnit)
-{
-	this->textureUnit = textureUnit;
 }

@@ -5,6 +5,8 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "ForceOverLifetime.h"
 
 void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -17,17 +19,17 @@ void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	case ComponentMethod::Constant:
 		force = minForce;
 		break;
-	case ComponentMethod::RandomBetweenTwoConstants:
+	case ComponentMethod::Random_Between_Two_Constants:
 		force.x = Random::getFloat(minForce.x, maxForce.x);
 		force.y = Random::getFloat(minForce.y, maxForce.y);
 		force.z = Random::getFloat(minForce.z, maxForce.z);
 		break;
 	case ComponentMethod::Curve:
-		force = minBezier.evaluate(t);
+		force = minBezier.evaluatePoint(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
-		glm::vec3 min = minBezier.evaluate(t);
-		glm::vec3 max = maxBezier.evaluate(t);
+	case ComponentMethod::Random_Between_Two_Curves:
+		glm::vec3 min = minBezier.evaluatePoint(t);
+		glm::vec3 max = maxBezier.evaluatePoint(t);
 
 		utility::math::swapToPreserveMinMax(min.x, max.x);
 		utility::math::swapToPreserveMinMax(min.y, max.y);
@@ -40,4 +42,18 @@ void ForceOverLifetime::update(const ParticleSystemProps& props, Particle& parti
 	}
 
 	particle.velocity += force * Time::deltaTime();
+}
+
+void ForceOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
+
+	persistence::utils::serializeVector(serializer, minForce, "MinVelocity");
+	persistence::utils::serializeVector(serializer, maxForce, "MaxVelocity");
+
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
+	
+	serializer.endObject();
 }

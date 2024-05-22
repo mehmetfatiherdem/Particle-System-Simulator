@@ -10,7 +10,7 @@ class Particle
 public:
 	MeshRenderer* renderer = nullptr;
 	glm::vec3 velocity = glm::vec3{3.0f, 3.0f, 3.0f};
-	glm::vec3 angularVelocity = glm::vec3{0.1f, 0.1f, 0.1f};
+	float rotation = 0.0f;
 	float remainingLifetime = 0.0f;
 
 	bool isEnabled() { return renderer->isEnabled(); }

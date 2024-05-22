@@ -19,6 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_demo.cpp" />
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_items.cpp" />
     <ClCompile Include="src\GeneralUtility\Random.cpp" />
     <ClCompile Include="src\GeneralUtility\stb_wrapper\stb_wrapper.cpp" />
     <ClCompile Include="src\Input Management\Input.cpp" />
@@ -27,20 +37,28 @@
     <ClCompile Include="src\MeshConstruction\Shapes.cpp" />
     <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp" />
     <ClCompile Include="src\Particle System\Components\ColorOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Components\Component.cpp" />
     <ClCompile Include="src\Particle System\Components\ForceOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\LimitVelocityOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\RotationBySpeed.cpp" />
     <ClCompile Include="src\Particle System\Components\SizeBySpeed.cpp" />
     <ClCompile Include="src\Particle System\Components\SizeOverLifetime.cpp" />
     <ClCompile Include="src\Particle System\Components\VelocityOverLifetime.cpp" />
+    <ClCompile Include="src\Particle System\Deserialization\ComponentDeserializer.cpp" />
+    <ClCompile Include="src\Particle System\Deserialization\EmitterDeserializer.cpp" />
+    <ClCompile Include="src\Particle System\Deserialization\ParticleSytemDeserializer.cpp" />
     <ClCompile Include="src\Particle System\Emitter\ConeEmitter.cpp" />
     <ClCompile Include="src\Particle System\Emitter\Emitter.cpp" />
     <ClCompile Include="src\Particle System\Emitter\SphereEmitter.cpp" />
     <ClCompile Include="src\Particle System\ParticleSystem.cpp" />
+    <ClCompile Include="src\Persistence\Deserializer.cpp" />
+    <ClCompile Include="src\Persistence\Project Management\ProjectManager.cpp" />
+    <ClCompile Include="src\Persistence\Serialization Utils\SerializationUtils.cpp" />
+    <ClCompile Include="src\Persistence\Serializer.cpp" />
     <ClCompile Include="src\RenderPipeline\Application.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\CameraBase\Camera.cpp" />
     <ClCompile Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.cpp" />
-    <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp" />
+    <ClCompile Include="src\RenderPipeline\Configuration\Configuration.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\DirectionalLight.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\LightSource.cpp" />
     <ClCompile Include="src\RenderPipeline\Light\LightBase\PositionalLight.cpp" />
@@ -59,15 +77,29 @@
     <ClCompile Include="src\RenderPipeline\Transform\Transform.cpp" />
     <ClCompile Include="src\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="src\Time Management\Time.cpp" />
+    <ClCompile Include="src\UserInterface\ParticleSystemEditor.cpp" />
+    <ClCompile Include="src\UserInterface\Gui.cpp" />
     <ClCompile Include="src\UserInterface\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imconfig.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_internal.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot_internal.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h" />
     <ClInclude Include="src\EntityComponentSystem\Entity.h" />
     <ClInclude Include="src\EntityComponentSystem\IComponent.h" />
     <ClInclude Include="src\GeneralUtility\ArenaAllocator.h" />
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h" />
     <ClInclude Include="src\GeneralUtility\BasicMath.h" />
-    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h" />
+    <ClInclude Include="src\GeneralUtility\BezierCurve.h" />
+    <ClInclude Include="src\GeneralUtility\FileIOUtils.h" />
     <ClInclude Include="src\GeneralUtility\gl2fw3.h" />
     <ClInclude Include="src\GeneralUtility\MathConstants.h" />
     <ClInclude Include="src\GeneralUtility\SignUtility.h" />
@@ -76,6 +108,7 @@
     <ClInclude Include="src\GeneralUtility\stb_wrapper\stb_wrapper.h" />
     <ClInclude Include="src\GeneralUtility\stringify.h" />
     <ClInclude Include="src\GeneralUtility\Trigonometry.h" />
+    <ClInclude Include="src\GeneralUtility\WindowsUtils.h" />
     <ClInclude Include="src\Input Management\Data\Action.h" />
     <ClInclude Include="src\Input Management\Data\KeyCode.h" />
     <ClInclude Include="src\Input Management\Data\MouseButton.h" />
@@ -93,19 +126,30 @@
     <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h" />
     <ClInclude Include="src\Particle System\Components\VelocityOverLifetime.h" />
     <ClInclude Include="src\Particle System\Data\ComponentMethod.h" />
+    <ClInclude Include="src\Particle System\Data\ComponentType.h" />
+    <ClInclude Include="src\Particle System\Data\EmitterType.h" />
     <ClInclude Include="src\Particle System\Data\ParticleSystemProps.h" />
+    <ClInclude Include="src\Particle System\Deserialization\ComponentDeserializer.h" />
+    <ClInclude Include="src\Particle System\Deserialization\EmitterDeserializer.h" />
+    <ClInclude Include="src\Particle System\Deserialization\ParticleSytemDeserializer.h" />
     <ClInclude Include="src\Particle System\Emitter\ConeEmitter.h" />
     <ClInclude Include="src\Particle System\Emitter\Emitter.h" />
     <ClInclude Include="src\Particle System\Emitter\SphereEmitter.h" />
     <ClInclude Include="src\Particle System\Particle.h" />
     <ClInclude Include="src\Particle System\ParticleSystem.h" />
+    <ClInclude Include="src\Particle System\ParticleSystemComparator.h" />
+    <ClInclude Include="src\Persistence\Deserializer.h" />
+    <ClInclude Include="src\Persistence\ISerializable.h" />
+    <ClInclude Include="src\Persistence\Project Management\ProjectManager.h" />
+    <ClInclude Include="src\Persistence\Serialization Utils\SerializationUtils.h" />
+    <ClInclude Include="src\Persistence\Serializer.h" />
     <ClInclude Include="src\RenderPipeline\Application.h" />
     <ClInclude Include="src\RenderPipeline\Camera\CameraBase\Camera.h" />
     <ClInclude Include="src\RenderPipeline\Camera\Data\CameraType.h" />
     <ClInclude Include="src\RenderPipeline\Camera\SceneCamera\SceneCamera.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color3.h" />
     <ClInclude Include="src\RenderPipeline\Color\Color4.h" />
-    <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h" />
+    <ClInclude Include="src\RenderPipeline\Configuration\Configuration.h" />
     <ClInclude Include="src\RenderPipeline\Light\Data\LightConstants.h" />
     <ClInclude Include="src\RenderPipeline\Light\Data\LightDistance.h" />
     <ClInclude Include="src\RenderPipeline\Light\DirectionalLight.h" />
@@ -135,16 +179,22 @@
     <ClInclude Include="src\RenderPipeline\Transform\Transformable.h" />
     <ClInclude Include="src\ResourceManagement\ResourceManager.h" />
     <ClInclude Include="src\Time Management\Time.h" />
+    <ClInclude Include="src\UserInterface\ParticleSystemEditor.h" />
+    <ClInclude Include="src\UserInterface\Gui.h" />
     <ClInclude Include="src\UserInterface\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Fire\fire.png" />
+    <Image Include="Resources\Textures\raindrops.png" />
     <Image Include="Resources\Textures\Skybox\back.jpg" />
     <Image Include="Resources\Textures\Skybox\bottom.jpg" />
     <Image Include="Resources\Textures\Skybox\front.jpg" />
     <Image Include="Resources\Textures\Skybox\left.jpg" />
     <Image Include="Resources\Textures\Skybox\right.jpg" />
     <Image Include="Resources\Textures\Skybox\top.jpg" />
+    <Image Include="Resources\Textures\smoke.png" />
+    <Image Include="Resources\Textures\snowflake.png" />
+    <Image Include="Resources\Textures\star.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Generic\generic.frag" />
@@ -225,14 +275,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -243,7 +293,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -252,7 +302,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -261,14 +311,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -279,7 +329,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\glm\include;$(SolutionDir)dependencies\stb\include;$(SolutionDir)dependencies\entt\include;$(SolutionDir)dependencies\imgui\include;$(Solutiondir)dependencies\rapidjson\include;$(SolutionDir)particle_system_simulator\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -288,7 +338,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLEW\lib;$(SolutionDir)dependencies\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;user32.lib;gdi32.lib;shell32.lib;kernel32.lib;User32.Lib;UserEnv.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

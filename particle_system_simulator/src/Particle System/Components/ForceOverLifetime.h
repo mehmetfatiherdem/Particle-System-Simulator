@@ -2,31 +2,44 @@
 
 #include <glm/vec3.hpp>
 #include "Particle System/Data/ComponentMethod.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "Component.h"
+
+class ParticleSystemEditor;
 
 class ForceOverLifetime : public Component
 {
 private:
-	ComponentMethod method;
-	glm::vec3 minForce;
-	glm::vec3 maxForce;
-	CubicBezierCurve<glm::vec3> minBezier;
-	CubicBezierCurve<glm::vec3> maxBezier;
+	friend class ParticleSystemEditor;
+
+	ComponentMethod method = ComponentMethod::Constant;
+	glm::vec3 minForce = glm::vec3{0.0f, 0.0f, 0.0f};
+	glm::vec3 maxForce = glm::vec3{1.0f, 1.0f, 1.0f};
+	BezierCurve<glm::vec3> minBezier = Bezier::createLinearVec3();
+	BezierCurve<glm::vec3> maxBezier = Bezier::createLinearVec3();
+
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 public:
-	ForceOverLifetime() = delete;
+	ForceOverLifetime() : Component(2) { }
 
 	ForceOverLifetime(const glm::vec3& constantForce) : 
 		Component(2), method(ComponentMethod::Constant), minForce(constantForce), maxForce(constantForce) { }
 	ForceOverLifetime(const glm::vec3& minForce, const glm::vec3& maxForce) :
-		Component(2), method(ComponentMethod::RandomBetweenTwoConstants), minForce(minForce), maxForce(maxForce) { }
-	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& bezier) :
+		Component(2), method(ComponentMethod::Random_Between_Two_Constants), minForce(minForce), maxForce(maxForce) { }
+	ForceOverLifetime(const BezierCurve<glm::vec3>& bezier) :
 		Component(2), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
-	ForceOverLifetime(const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
-		Component(2), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
+	ForceOverLifetime(const BezierCurve<glm::vec3>& minBezier, const BezierCurve<glm::vec3>& maxBezier) :
+		Component(2), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
+
+	ForceOverLifetime(ComponentMethod method, const glm::vec3& minForce, const glm::vec3& maxForce, const BezierCurve<glm::vec3>& minBezier,
+		const BezierCurve<glm::vec3>& maxBezier) : Component(2), method(method), minForce(minForce),
+		maxForce(maxForce), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~ForceOverLifetime() override = default;
 
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+	virtual ComponentType getType() const override { return ComponentType::Force_Over_Lifetime; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

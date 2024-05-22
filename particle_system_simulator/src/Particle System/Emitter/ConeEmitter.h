@@ -1,11 +1,17 @@
 #pragma once
 
+#include <memory>
 #include <glm/glm.hpp>
 #include "Emitter.h"
+
+class ParticleSystemEditor;
 
 class ConeEmitter : public Emitter
 {
 private:
+	friend class ParticleSystemEditor;
+	friend class ParticleSystem;
+
 	float radius;
 	float angle;
 
@@ -17,4 +23,10 @@ public:
 		Emitter(emissionRate), radius(radius), angle(angle) { }
 
 	virtual ~ConeEmitter() override = default;
+
+	virtual EmitterType getType() const override { return EmitterType::ConeEmitter; }
+
+	static std::unique_ptr<ConeEmitter> defaultEmitter();
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

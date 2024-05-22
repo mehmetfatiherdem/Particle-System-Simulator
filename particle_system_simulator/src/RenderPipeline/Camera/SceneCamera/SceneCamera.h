@@ -14,7 +14,7 @@ private:
 public:
 	SceneCamera() = delete;
 	SceneCamera(const TransformProps& transform, uint32_t width, uint32_t height, CameraType cameraType = CameraType::Perspective,
-		float fov = glm::radians(45.0f), float near = 0.1f, float far = 100.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
+		float fov = glm::radians(45.0f), float near = 0.1f, float far = 1000.0f, float left = -1.0f, float right = 1.0f, float top = 1.0f,
 		float bottom = -1.0f, float rotationSpeed = glm::radians(180.0f), float slowMovementSpeed = 5.0f, float fastMovementSpeed = 15.0f, float zoomSensitivity = glm::radians(5.0f));
 
 	void update();

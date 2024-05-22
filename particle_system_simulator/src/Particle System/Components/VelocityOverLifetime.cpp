@@ -5,6 +5,9 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
+#include "Particle System/Data/ComponentMethod.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "VelocityOverLifetime.h"
 
 void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& particle)
@@ -17,17 +20,17 @@ void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& pa
 	case ComponentMethod::Constant:
 		velocity = minVelocity;
 		break;
-	case ComponentMethod::RandomBetweenTwoConstants:
+	case ComponentMethod::Random_Between_Two_Constants:
 		velocity.x = Random::getFloat(minVelocity.x, maxVelocity.x);
 		velocity.y = Random::getFloat(minVelocity.y, maxVelocity.y);
 		velocity.z = Random::getFloat(minVelocity.z, maxVelocity.z);
 		break;
 	case ComponentMethod::Curve:
-		velocity = minBezier.evaluate(t);
+		velocity = minBezier.evaluatePoint(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
-		glm::vec3 min = minBezier.evaluate(t);
-		glm::vec3 max = maxBezier.evaluate(t);
+	case ComponentMethod::Random_Between_Two_Curves:
+		glm::vec3 min = minBezier.evaluatePoint(t);
+		glm::vec3 max = maxBezier.evaluatePoint(t);
 
 		utility::math::swapToPreserveMinMax(min.x, max.x);
 		utility::math::swapToPreserveMinMax(min.y, max.y);
@@ -40,4 +43,17 @@ void VelocityOverLifetime::update(const ParticleSystemProps& props, Particle& pa
 	}
 
 	particle.velocity = velocity;
+}
+
+void VelocityOverLifetime::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
+
+	persistence::utils::serializeVector(serializer, minVelocity, "MinVelocity");
+	persistence::utils::serializeVector(serializer, maxVelocity, "MaxVelocity");
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
+
+	serializer.endObject();
 }

@@ -3,17 +3,19 @@
 #include "GeneralUtility/BasicMath.h"
 #include "GeneralUtility/Trigonometry.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
 #include "SphereEmitter.h"
 
 void SphereEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, glm::vec3& velocity)
 {
 	float dx, dy, x, y, z, randomRadius, randomXy, noise;
 
+	//Maybe come up with a better way to generate random vectors
 	do
 	{
 		dx = Random::getFloat(-1.0f, 1.0f);
 		dy = Random::getFloat(-1.0f, 1.0f);
-	} while (Trig::atan2(dy, dx) > arc);
+	} while (trig::atan2(dy, dx) > arc);
 
 	randomRadius = Random::getFloat(0.0f, radius);
 	z = Random::getFloat(-randomRadius, randomRadius);
@@ -27,4 +29,19 @@ void SphereEmitter::emit(const ParticleSystemProps& props, glm::vec3& position, 
 	velocity = offset + glm::vec3{Random::getFloat(-noise, noise), Random::getFloat(-noise, noise), Random::getFloat(-noise, noise)};
 	velocity = glm::normalize(velocity) * props.startSpeed;
 	position = offset + props.position;
+}
+
+std::unique_ptr<SphereEmitter> SphereEmitter::defaultEmitter()
+{
+	return std::make_unique<SphereEmitter>(10.0f);
+}
+
+void SphereEmitter::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	serializer.startObject(objectName);
+	serializer["EmitterType"].string(getEmitterTypeName(getType()).c_str());
+	Emitter::serialize(serializer);
+	serializer["Radius"].real(radius);
+	serializer["Arc"].real(arc);
+	serializer.endObject();
 }

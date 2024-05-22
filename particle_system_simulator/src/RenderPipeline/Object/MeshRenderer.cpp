@@ -6,28 +6,28 @@ MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh)
 	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {}),
 	postRenderAction([]() {})
 {
-	this->mesh->initialize(this->shader->getVertexAttributes());
+	this->mesh->initializeOrAddInstance(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), shader(&shader),
 	material(Material::defaultMaterial()), enabled(true), preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
-	this->mesh->initialize(this->shader->getVertexAttributes());
+	this->mesh->initializeOrAddInstance(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, const Material& material)
 	: Transformable(transform), mesh(mesh, false), material(material), shader(&Shader::genericShader()), enabled(true),
 	preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
-	this->mesh->initialize(this->shader->getVertexAttributes());
+	this->mesh->initializeOrAddInstance(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const TransformProps& transform, Mesh& mesh, Shader& shader, const Material& material)
 	: Transformable(transform), mesh(mesh, shader.getVertexAttributes().isInstanced), material(material), shader(&shader),
 	enabled(true), preRenderAction([](Transform&) {}), postRenderAction([]() {})
 {
-	this->mesh->initialize(this->shader->getVertexAttributes());
+	this->mesh->initializeOrAddInstance(this->shader->getVertexAttributes());
 }
 
 MeshRenderer::MeshRenderer(const MeshRenderer& meshRenderer)
@@ -45,7 +45,10 @@ MeshRenderer::MeshRenderer(MeshRenderer&& meshRenderer) noexcept
 
 MeshRenderer::~MeshRenderer()
 {
-	mesh->removeInstance();
+	if (enabled)
+	{
+		mesh->removeInstance();
+	}
 }
 
 MeshRenderer& MeshRenderer::operator=(const MeshRenderer& meshRenderer)
@@ -79,14 +82,48 @@ MeshRenderer& MeshRenderer::operator=(MeshRenderer&& meshRenderer) noexcept
 	return *this;
 }
 
+void MeshRenderer::enable()
+{
+	if (!enabled)
+	{
+		this->mesh->addInstance();
+	}
+
+	enabled = true;
+}
+
+void MeshRenderer::disable()
+{
+	if (enabled)
+	{
+		this->mesh->removeInstance();
+	}
+
+	enabled = false;
+}
+
+void MeshRenderer::toggle()
+{
+	if (enabled)
+	{
+		this->mesh->removeInstance();
+	}
+	else
+	{
+		this->mesh->addInstance();
+	}
+
+	enabled = !enabled;
+}
+
 void MeshRenderer::render()
 {
 	if (!enabled) return;
 
-	preRenderAction(transform);
-
 	shader->useShader();
 	material.useMaterial(*shader);
+
+	preRenderAction(transform);
 
 	if (mesh->isInstanced())
 	{
@@ -104,5 +141,5 @@ void MeshRenderer::render()
 void MeshRenderer::setShader(Shader& shader)
 {
 	this->shader = &shader;
-	this->mesh->initialize(this->shader->getVertexAttributes());
+	this->mesh->initializeOrAddInstance(this->shader->getVertexAttributes());
 }

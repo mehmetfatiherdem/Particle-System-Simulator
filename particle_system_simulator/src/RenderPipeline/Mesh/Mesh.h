@@ -30,7 +30,7 @@ private:
 	uint32_t updatedSinceLastDraw;
 
 	void initialize();
-	void initialize(VertexAttributes vertexAttribs);
+	void initializeOrAddInstance(VertexAttributes vertexAttribs);
 	void draw() const;
 	void setModelMatrix(const glm::mat4& model);
 	void addInstance();

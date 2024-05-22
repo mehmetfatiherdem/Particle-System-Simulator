@@ -1,30 +1,44 @@
 #pragma once
 
 #include "Particle System/Data/ComponentMethod.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "Component.h"
+
+class ParticleSystemEditor;
 
 class SizeOverLifetime : public Component
 {
 private:
-	ComponentMethod method;
-	float minSize;
-	float maxSize;
-	CubicBezierCurve<float> minBezier;
-	CubicBezierCurve<float> maxBezier;
+	friend class ParticleSystemEditor;
+
+	ComponentMethod method = ComponentMethod::Random_Between_Two_Constants;
+	float minSize = 0.0f;
+	float maxSize = 0.0f;
+	BezierCurve<float> minBezier = Bezier::createLinear();
+	BezierCurve<float> maxBezier = Bezier::createLinear();
+
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 public:
-	SizeOverLifetime() = delete;
-	SizeOverLifetime(float minConstant, float maxConstant) :
-		Component(1), method(ComponentMethod::RandomBetweenTwoConstants), minSize(minConstant), maxSize(maxConstant) {}
+	SizeOverLifetime() : Component(1) { }
 
-	SizeOverLifetime(const CubicBezierCurve<float>& bezier) :
+	SizeOverLifetime(float minConstant, float maxConstant) :
+		Component(1), method(ComponentMethod::Random_Between_Two_Constants), minSize(minConstant), maxSize(maxConstant) {}
+
+	SizeOverLifetime(const BezierCurve<float>& bezier) :
 		Component(1), method(ComponentMethod::Curve), minBezier(bezier), maxBezier(bezier) { }
 
-	SizeOverLifetime(const CubicBezierCurve<float>& minBezier, const CubicBezierCurve<float>& maxBezier) :
-		Component(1), method(ComponentMethod::RandomBetweenTwoCurves), minBezier(minBezier), maxBezier(maxBezier) { }
+	SizeOverLifetime(const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) :
+		Component(1), method(ComponentMethod::Random_Between_Two_Curves), minBezier(minBezier), maxBezier(maxBezier) { }
+
+	SizeOverLifetime(ComponentMethod method, float minConstant, float maxConstant, const BezierCurve<float>& minBezier,
+		const BezierCurve<float>& maxBezier) : Component(1), method(method), minSize(minConstant),
+		maxSize(maxConstant), minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~SizeOverLifetime() override = default;
 
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+	virtual ComponentType getType() const override { return ComponentType::Size_Over_Lifetime; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

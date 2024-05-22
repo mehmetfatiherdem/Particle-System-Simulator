@@ -2,28 +2,41 @@
 
 #include <glm/vec3.hpp>
 #include "Particle System/Data/ComponentMethod.h"
-#include "GeneralUtility/CubicBezierCurve.h"
+#include "GeneralUtility/BezierCurve.h"
 #include "Component.h"
 
-class RotationBySpeed : Component
+class ParticleSystemEditor;
+
+class RotationBySpeed : public Component
 {
 private:
-	ComponentMethod method;
-	float minSpeed;
-	float maxSpeed;
-	CubicBezierCurve<glm::vec3> minBezier;
-	CubicBezierCurve<glm::vec3> maxBezier;
+	friend class ParticleSystemEditor;
+
+	ComponentMethod method = ComponentMethod::Curve;
+	float minSpeed = 0.0f;
+	float maxSpeed = 1.0f;
+	BezierCurve<float> minBezier = Bezier::createLinear();
+	BezierCurve<float> maxBezier = Bezier::createLinear();
+
+protected:
+	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
 
 public:
-	RotationBySpeed() = delete;
+	RotationBySpeed() : Component(5) { }
 
-	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<glm::vec3>& bezier) :
+	RotationBySpeed(float minSpeed, float maxSpeed, const BezierCurve<float>& bezier) :
 		Component(5), method(ComponentMethod::Curve), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(bezier), maxBezier(bezier) { }
 
-	RotationBySpeed(float minSpeed, float maxSpeed, const CubicBezierCurve<glm::vec3>& minBezier, const CubicBezierCurve<glm::vec3>& maxBezier) :
-		Component(5), method(ComponentMethod::RandomBetweenTwoCurves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
+	RotationBySpeed(float minSpeed, float maxSpeed, const BezierCurve<float>& minBezier, const BezierCurve<float>& maxBezier) :
+		Component(5), method(ComponentMethod::Random_Between_Two_Curves), minSpeed(minSpeed), maxSpeed(maxSpeed), minBezier(minBezier), maxBezier(maxBezier) { }
+
+	RotationBySpeed(ComponentMethod method, float minSpeed, float maxSpeed, const BezierCurve<float>& minBezier,
+		const BezierCurve<float>& maxBezier) : Component(5), method(method), minSpeed(minSpeed), maxSpeed(maxSpeed),
+		minBezier(minBezier), maxBezier(maxBezier) { }
 
 	virtual ~RotationBySpeed() override = default;
 
-	virtual void update(const ParticleSystemProps& props, Particle& particle) override;
+	virtual ComponentType getType() const override { return ComponentType::Rotation_By_Speed; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

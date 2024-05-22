@@ -10,6 +10,10 @@ private:
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 _scale;
+
+	static bool isValidAngle(float angle);
+	static bool isValidAxis(const glm::vec3& axis);
+
 public:
 	static constexpr glm::vec3 WORLD_UP{0.0f, 1.0f, 0.0f};
 
@@ -19,6 +23,8 @@ public:
 	Transform(const glm::vec3& position, const glm::quat& rotation, const glm::vec3& scale = glm::vec3{1.0f, 1.0f, 1.0f});
 
 	glm::mat4 getModelMatrix() const;
+
+	void reset();
 
 	void translate(const glm::vec3& displacement);
 	void rotate(const glm::vec3& rotation);

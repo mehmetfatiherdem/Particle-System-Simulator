@@ -19,6 +19,7 @@ KeyCode toKeyCode(uint32_t code)
 	case KeyCode::KEY_T:
 	case KeyCode::KEY_Y:
 	case KeyCode::KEY_U:
+	case KeyCode::KEY_O:
 	case KeyCode::KEY_F:
 	case KeyCode::KEY_Z:
 	case KeyCode::KEY_X:
@@ -62,6 +63,7 @@ std::vector<KeyCode> getAllKeyCodes()
 	keyCodes.push_back(KeyCode::KEY_T);
 	keyCodes.push_back(KeyCode::KEY_Y);
 	keyCodes.push_back(KeyCode::KEY_U);
+	keyCodes.push_back(KeyCode::KEY_O);
 	keyCodes.push_back(KeyCode::KEY_F);
 	keyCodes.push_back(KeyCode::KEY_Z);
 	keyCodes.push_back(KeyCode::KEY_X);

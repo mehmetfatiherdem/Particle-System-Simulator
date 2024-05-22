@@ -1,12 +1,19 @@
 #include "RenderPipeline/Application.h"
-#include "RenderPipeline/Initialization/Initialization.h"
-#include "GeneralUtility/RefOrValue.h"
-#include <iostream>
-#include <cmath>
+#include "RenderPipeline/Configuration/Configuration.h"
+#include "UserInterface/Gui.h"
+#include "GeneralUtility/Random.h"
 
 int main()
 {
-    initializeSettings();
-    Application::getInstance().run();
+	Random::init();
+    Configuration::init();
+	Gui::init();
+
+	Application& app = Application::getInstance();
+	Gui::initWindow(app.getWindow().getNativeWindow());
+	app.run();
+
+	Gui::shutdown();
+	Configuration::shutdown();
     return 0;
 }

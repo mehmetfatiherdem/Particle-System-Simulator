@@ -3,6 +3,8 @@
 #include "Particle System/Particle.h"
 #include "Particle System/Data/ParticleSystemProps.h"
 #include "Time Management/Time.h"
+#include "Persistence/Serializer.h"
+#include "Persistence/Serialization Utils/SerializationUtils.h"
 #include "RotationBySpeed.h"
 
 void RotationBySpeed::update(const ParticleSystemProps& props, Particle& particle)
@@ -10,24 +12,34 @@ void RotationBySpeed::update(const ParticleSystemProps& props, Particle& particl
 	float speed = glm::length(particle.velocity);
 	float t = glm::clamp(speed, minSpeed, maxSpeed) / (maxSpeed - minSpeed);
 
-	glm::vec3 rotation;
+	float rotation = 0.0f;
 
 	switch (method)
 	{
 	case ComponentMethod::Curve:
-		rotation = minBezier.evaluate(t);
+		rotation = minBezier.evaluatePoint(t);
 		break;
-	case ComponentMethod::RandomBetweenTwoCurves:
-		glm::vec3 min = minBezier.evaluate(t);
-		glm::vec3 max = maxBezier.evaluate(t);
-		utility::math::swapToPreserveMinMax(min.x, max.x);
-		utility::math::swapToPreserveMinMax(min.y, max.y);
-		utility::math::swapToPreserveMinMax(min.z, max.z);
-		rotation.x = Random::getFloat(min.x, max.x);
-		rotation.y = Random::getFloat(min.y, max.y);
-		rotation.z = Random::getFloat(min.z, max.z);
+	case ComponentMethod::Random_Between_Two_Curves:
+		float min = minBezier.evaluatePoint(t);
+		float max = maxBezier.evaluatePoint(t);
+		utility::math::swapToPreserveMinMax(min, max);
+		rotation = Random::getFloat(min, max);
 		break;
 	}
+	
+	particle.rotation = rotation;
+}
 
-	particle.renderer->getTransform().setEulerRotation(rotation);
+void RotationBySpeed::serialize(Serializer& serializer, const std::string& objectName) const
+{
+	Component::serialize(serializer, objectName);
+	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
+
+	serializer["MinSpeed"].real(minSpeed);
+	serializer["MaxSpeed"].real(maxSpeed);
+
+	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
+	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
+
+	serializer.endObject();
 }

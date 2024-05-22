@@ -33,9 +33,9 @@ public:
 
 	void render();
 
-	void enable() { enabled = true; }
-	void disable() { enabled = false; }
-	void toggle() { enabled = !enabled; }
+	void enable();
+	void disable();
+	void toggle();
 
 	bool isEnabled() const { return enabled; }
 	Material& getMaterial() { return material; }

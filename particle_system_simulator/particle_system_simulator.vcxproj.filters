@@ -22,9 +22,6 @@
     <Filter Include="src\Render Pipeline\Color">
       <UniqueIdentifier>{5c6af526-c747-4895-95ce-9f06b55fa309}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Render Pipeline\Initialization">
-      <UniqueIdentifier>{c2b45cb1-b908-437e-8194-a8ea445382bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Render Pipeline\Light">
       <UniqueIdentifier>{c1c670f5-9cb9-4f04-b05d-0942b1779c4b}</UniqueIdentifier>
     </Filter>
@@ -139,8 +136,23 @@
     <Filter Include="src\Particle System\Emitter">
       <UniqueIdentifier>{9acb7489-ed0a-442b-8167-a31b4549140e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Textures\Fire">
-      <UniqueIdentifier>{4a36883f-bcfd-4d72-afb4-83a094b8e601}</UniqueIdentifier>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{cc640736-13dd-4495-b415-c3d90fd0c765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render Pipeline\Configuration">
+      <UniqueIdentifier>{c2b45cb1-b908-437e-8194-a8ea445382bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Persistence">
+      <UniqueIdentifier>{9b0336a1-6df9-4c79-b7a1-01b2a82ac2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Particle System\Deserialization">
+      <UniqueIdentifier>{f9b91edc-7163-43c9-a3cd-67d904f67422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Persistence\Serialization Utils">
+      <UniqueIdentifier>{6321f330-b7d8-4198-a186-04e06157695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Persistence\Project Management">
+      <UniqueIdentifier>{86783778-4860-4800-9b63-a736bf86b026}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +161,6 @@
     </ClCompile>
     <ClCompile Include="src\UserInterface\Window.cpp">
       <Filter>src\User Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderPipeline\Initialization\Initialization.cpp">
-      <Filter>src\Render Pipeline\Initialization</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderPipeline\Light\DirectionalLight.cpp">
       <Filter>src\Render Pipeline\Light</Filter>
@@ -267,6 +276,69 @@
     <ClCompile Include="src\Particle System\Components\ColorBySpeed.cpp">
       <Filter>src\Particle System\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\UserInterface\ParticleSystemEditor.cpp">
+      <Filter>src\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserInterface\Gui.cpp">
+      <Filter>src\User Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderPipeline\Configuration\Configuration.cpp">
+      <Filter>src\Render Pipeline\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\implot_items.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\include\imgui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Serializer.cpp">
+      <Filter>src\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Components\Component.cpp">
+      <Filter>src\Particle System\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\ComponentDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\EmitterDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle System\Deserialization\ParticleSytemDeserializer.cpp">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Deserializer.cpp">
+      <Filter>src\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Serialization Utils\SerializationUtils.cpp">
+      <Filter>src\Persistence\Serialization Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence\Project Management\ProjectManager.cpp">
+      <Filter>src\Persistence\Project Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GeneralUtility\ArrayUtility.h">
@@ -283,9 +355,6 @@
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Color\Color4.h">
       <Filter>src\Render Pipeline\Color</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderPipeline\Initialization\Initialization.h">
-      <Filter>src\Render Pipeline\Initialization</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderPipeline\Light\DirectionalLight.h">
       <Filter>src\Render Pipeline\Light</Filter>
@@ -455,9 +524,6 @@
     <ClInclude Include="src\Particle System\Components\SizeOverLifetime.h">
       <Filter>src\Particle System\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\GeneralUtility\CubicBezierCurve.h">
-      <Filter>src\General Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\Particle System\Data\ComponentMethod.h">
       <Filter>src\Particle System\Data</Filter>
     </ClInclude>
@@ -491,6 +557,90 @@
     <ClInclude Include="src\RenderPipeline\Shader\Data\MatrixPair.h">
       <Filter>src\Render Pipeline\Shader\Data</Filter>
     </ClInclude>
+    <ClInclude Include="src\UserInterface\ParticleSystemEditor.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserInterface\Gui.h">
+      <Filter>src\User Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\ComponentType.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\ParticleSystemComparator.h">
+      <Filter>src\Particle System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Data\EmitterType.h">
+      <Filter>src\Particle System\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\BezierCurve.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderPipeline\Configuration\Configuration.h">
+      <Filter>src\Render Pipeline\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_glfw.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\implot_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\include\imgui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Serializer.h">
+      <Filter>src\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\ISerializable.h">
+      <Filter>src\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Deserializer.h">
+      <Filter>src\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\ComponentDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\EmitterDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle System\Deserialization\ParticleSytemDeserializer.h">
+      <Filter>src\Particle System\Deserialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Serialization Utils\SerializationUtils.h">
+      <Filter>src\Persistence\Serialization Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Persistence\Project Management\ProjectManager.h">
+      <Filter>src\Persistence\Project Management</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\WindowsUtils.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeneralUtility\FileIOUtils.h">
+      <Filter>src\General Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Skybox\left.jpg">
@@ -512,7 +662,19 @@
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
     <Image Include="Resources\Textures\Fire\fire.png">
-      <Filter>Resources\Textures\Fire</Filter>
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\snowflake.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\raindrops.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\star.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\smoke.png">
+      <Filter>Resources\Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

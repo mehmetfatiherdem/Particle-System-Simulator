@@ -4,10 +4,13 @@
 
 class Shader;
 class Texture;
+class ParticleSystemEditor;
 
 class Material
 {
 private:
+	friend class ParticleSystemEditor;
+
 	Color4 color;
 	Texture* diffuseMap;
 	Texture* specularMap;

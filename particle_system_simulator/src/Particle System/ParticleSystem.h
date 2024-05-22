@@ -1,47 +1,71 @@
 #pragma once
 
-#include <vector>
-#include <queue>
-#include <set>
-#include <algorithm>
-#include <memory>
+#include <string>
 #include <stdint.h>
+#include <vector>
+#include <set>
+#include <memory>
+#include <algorithm>
 #include "Data/ParticleSystemProps.h"
 #include "Particle System/Particle.h"
 #include "Emitter/Emitter.h"
-#include "MeshConstruction/Shapes.h"
-#include "RenderPipeline/Scene/Scene.h"
 #include "RenderPipeline/Material/Material.h"
-#include "RenderPipeline/Texture/Texture.h"
-#include "Components/Component.h"
 #include "Components/ComponentComparator.h"
+#include "Persistence/ISerializable.h"
 
-//Friction over lifetime
-//Rotation over lifetime
+class ParticleSystemEditor;
+class Component;
+class Texture;
+class Scene;
+class Deserializer;
 
 using OrderedComponentSet = std::set<Component*, ComponentComparator>;
 
-class ParticleSystem
+class ParticleSystem : public ISerializable
 {
 private:
+	friend class ParticleSystemEditor;
+
 	std::vector<Particle> particlePool;
+	std::string name;
+	bool enabled;
 	uint32_t poolIndex;
 
-	Mesh sphere;
 	Material material;
 
 	ParticleSystemProps props;
 	std::unique_ptr<Emitter> emitter;
-	OrderedComponentSet components;
+	std::vector<Component*> components;
+
+	Mesh quad;
 
 	Scene& scene;
 	
 public:
-	ParticleSystem() = delete;
-	ParticleSystem(const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
-	~ParticleSystem() = default;
+	ParticleSystem();
+	ParticleSystem(std::string&& name, const ParticleSystemProps& props, const Material& material, std::unique_ptr<Emitter> emitter);
+	ParticleSystem(const ParticleSystem& other) = delete;
+	ParticleSystem(ParticleSystem&& other) noexcept;
+	~ParticleSystem();
+
+	ParticleSystem& operator=(const ParticleSystem& other) = delete;
+	ParticleSystem& operator=(ParticleSystem&& other) noexcept;
 
 	void addComponent(Component* component);
+	void removeComponent(Component* component);
+
+	void setMaxParticles(uint32_t maxParticles);
+	void setDiffuseMap(Texture* diffuseMap);
+	void setSpecularMap(Texture* specularMap);
 
 	void update();
+
+	bool isEnabled() const { return enabled; }
+	void enable() { enabled = true; }
+	void disable() { enabled = false; }
+	void toggle() { enabled = !enabled; }
+
+	const std::string& getName() const { return name; }
+
+	virtual void serialize(Serializer& serializer, const std::string& objectName = "") const override;
 };

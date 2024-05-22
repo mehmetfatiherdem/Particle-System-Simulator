@@ -1,10 +1,18 @@
+
 #include <iostream>
+#include <string>
 #include <cstring>
 #include <cmath>
+#include <stdint.h>
 
-#include <glm/vec3.hpp>
+
+#include <glm/glm.hpp>
 #include <glm/ext/quaternion_float.hpp>
 
+
+#include "UserInterface/ParticleSystemEditor.h"
+#include "ResourceManagement/ResourceManager.h"
+#include "UserInterface/Gui.h"
 #include "GeneralUtility/gl2fw3.h"
 #include "UserInterface/Window.h"
 #include "RenderPipeline/Light/PointLight.h"
@@ -35,16 +43,34 @@
 #include "Particle System/Components/SizeBySpeed.h"
 #include "Particle System/Components/SizeOverLifetime.h"
 #include "Particle System/Components/VelocityOverLifetime.h"
+#include "Persistence/Project Management/ProjectManager.h"
 
-Application::Application() : window(800, 600, "Particle Engine"), scene(800, 600)
+#include "GeneralUtility/FileIOUtils.h"
+
+Application::Application() : window(500, 500, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glDepthMask(GL_TRUE);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	Texture texSmoke("Resources/Textures/smoke.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texFire("Resources/Textures/fire.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texRaindrops("Resources/Textures/raindrops.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texSnowflake("Resources/Textures/snowflake.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texStar("Resources/Textures/star.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	ResourceManager::addTexture(std::move(texSmoke), "smoke");
+	ResourceManager::addTexture(std::move(texFire), "fire");
+	ResourceManager::addTexture(std::move(texRaindrops), "raindrops");
+	ResourceManager::addTexture(std::move(texSnowflake), "snowflake");
+	ResourceManager::addTexture(std::move(texStar), "star");
+
+	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 }
 
 Application& Application::getInstance()
@@ -53,99 +79,42 @@ Application& Application::getInstance()
 	return application;
 }
 
-std::string fire = "Resources/Textures/fire.png";
-std::string smoke = "Resources/Textures/smoke.png";
-std::string container = "Resources/Textures/container.jpg";
+ParticleSystem* Application::getParticleSystem(const std::string& name)
+{
+	auto it = std::find_if(particleSystems.begin(), particleSystems.end(), [&](const ParticleSystem& ps)
+		{
+			return ps.getName() == name;
+		});
+
+	if (it == particleSystems.end())
+	{
+		return nullptr;
+	}
+
+	return const_cast<ParticleSystem*>(&(*it));
+}
 
 void Application::run()
 {
-	Random::init();
+	ProjectManager::getInstance();
+	scene.getCamera().getTransform().setPosition(glm::vec3(0.0f, 0.0f, 100.0f));
 
-	//texture type, wrapping method S, wrapping method T, wrapping method R, min filter, mag filter, internal format, format
-	Texture texSmoke(smoke, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
-	Texture texFire(fire, 0, GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
-	Material matSmoke(&texSmoke, nullptr,
-		Color4
-		{
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		1.0f,
-		}, 1.0f);
+	std::vector<int> vec;
 
-	Mesh quad = createQuad();
-	
-	//auto obj = scene.createObject(TransformProps{}, quad, matSmoke);
-	
-	Material matFire(&texFire, nullptr, 
-		Color4
-		{
-		glm::vec3{1.0f, 1.0f, 1.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		glm::vec3{0.0f, 0.0f, 0.0f},
-		1.0f,
-		}, 1.0f);
-
-	ParticleSystemProps propsSmoke
-	{
-		.startLifetime = 3.2f,
-		.startSpeed = 1.0f,
-		.startSize = 5.0f,
-		.startColor = matSmoke.getColor(),
-		.maxParticles = 2000,
-		.position = glm::vec3{0.0f, 1.1f, -2.0f},
-	};
-
-	ParticleSystemProps propsFire
-	{
-		.startLifetime = 0.5f,
-		.startSpeed = 3.0f,
-		.startSize = 5.75f,
-		.startColor = matFire.getColor(),
-		.maxParticles = 550,
-	};
-	//low poly
-	//ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{200.0f, 0.25f, glm::radians(25.0f)}));
-	//3d realistic
-	ParticleSystem psSmoke(propsSmoke, matSmoke, std::make_unique<ConeEmitter>(ConeEmitter{20.0f, 0.35f, glm::radians(45.0f)}));
-	ParticleSystem psFire(propsFire, matFire, std::make_unique<ConeEmitter>(ConeEmitter{45.0f, 0.75f, glm::radians(15.0f)}));
-
-	CubicBezierCurve<float> solBezierSmoke{0.00001f, 0.000005f, 0.000001f, 0.0000001f};
-	SizeOverLifetime* solSmoke = new SizeOverLifetime(solBezierSmoke);
-
-	CubicBezierCurve<float> solBezierFire{0.99f, 0.79f, 0.53f, 0.05f};
-	SizeOverLifetime* solFire = new SizeOverLifetime(solBezierFire);
-
-	//to make it realistic comment this line
-	//psSmoke.addComponent(solSmoke);
-	//psFire.addComponent(solFire);
-
-	/*ColorBySpeed* cbs = new ColorBySpeed(0.5f, Color4{glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}},
-		0.9f, Color4{glm::vec4{1.0f, 0.93f, 0.0f, 1.0f}}, 1.25f, 2.0f);
-
-	ps.addComponent(cbs);*/
-
-	ColorOverLifetime* colSmoke = new ColorOverLifetime(0.0f, Color4{glm::vec4{0.5f, 0.5f, 0.5f, 0.7f}},
-		1.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.25f}});
-
-	ColorOverLifetime* colFire = new ColorOverLifetime(0.0f, Color4{glm::vec4{1.0f, 1.0f, 1.0f, 0.7f}},
-		1.0f, Color4{glm::vec4{1.0f, 1.0f, 0.0f, 0.27f}});
-
-	psSmoke.addComponent(colSmoke);
-	psFire.addComponent(colFire);
-	CubicBezierCurve<glm::vec3> solBezierSmoke2{glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{5.0f, 2.0f, 0.0f},
-			glm::vec3{-5.3f, -2.8f, 0.0f}, glm::vec3{-2.1f, -0.2f, 0.0f}};
-	ForceOverLifetime* volSmoke = new ForceOverLifetime(solBezierSmoke2);
-	
-	psSmoke.addComponent(volSmoke);
-
-	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
-	//scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
-	//scene.createPointLight(glm::vec3{3.0f, 3.0f, 3.0f}, glm::vec3{1.0f, 1.0f, 1.0f}, LightDistance::AD_100);
+	vec.push_back(5);
+	vec.insert(vec.begin(), 6);
 
 	uint32_t polygonModes[2] = {GL_FILL, GL_LINE};
 	void (*glToggle[2])(GLenum) = {&glEnable, &glDisable};
 	bool currentMode = 0;
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glDepthMask(GL_TRUE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Time::start();
 
@@ -153,9 +122,10 @@ void Application::run()
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 		glClear(clearMask);
-
 		window.pollEvents();
+		Gui::beginFrame();
 
+		//Input class is used for in-game input handling
 		if (Input::getKeyDown(KeyCode::KEY_X))
 		{
 			currentMode = !currentMode;
@@ -163,18 +133,31 @@ void Application::run()
 			glToggle[currentMode](GL_CULL_FACE);
 		}
 
-		//psFire.update();
-		psSmoke.update();
+		//imgui works in the editor as well
+		bool ctrlPressed = (ImGui::IsKeyPressed(ImGuiKey_LeftCtrl, true) || ImGui::IsKeyPressed(ImGuiKey_RightCtrl, true));
+
+		if (ctrlPressed && ImGui::IsKeyPressed(ImGuiKey_S))
+		{
+			ProjectManager::getInstance().saveProject();
+		}
+		else if (ctrlPressed && ImGui::IsKeyPressed(ImGuiKey_O))
+		{
+			ProjectManager::getInstance().loadProject();
+		}
+
 		scene.update();
-		//obj->getTransform().lookAt(scene.getCamera().getTransform());
-		//mr2.render();
-		//mr.render();
+
+		for (auto& ps : particleSystems)
+		{
+			const_cast<ParticleSystem&>(ps).update();
+		}
+
 		scene.render();
+		editor.render();
 
 		window.swapBuffers();
 		window.endFrame();
+		Gui::endFrame();
 		Time::endFrame();
 	}
-
-	glfwTerminate();
 }
