@@ -1,4 +1,5 @@
 # Particle System Simulator
+A standalone 3D particle system simulator made with OpenGL and C++.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -36,6 +37,13 @@ Welcome to the 3D Particle System Simulator! This project aims to provide a real
 - **GLEW**: OpenGL extension wrangler library.
 - **GLM**: OpenGL Mathematics library.
 - **ImGui**: Immediate mode graphical user interface.
+
+## Dependencies
+- [GLFW](https://www.glfw.org/)
+- [GLEW](http://glew.sourceforge.net/)
+- [GLM](https://glm.g-truc.net/0.9.9/index.html)
+- [Imgui](https://github.com/ocornut/imgui)
+- [RapidJSON](https://rapidjson.org/)
 
 ## Contributing
 Contributions are welcome! If you have ideas for new features or improvements, please feel free to fork the repository and submit a pull request.
