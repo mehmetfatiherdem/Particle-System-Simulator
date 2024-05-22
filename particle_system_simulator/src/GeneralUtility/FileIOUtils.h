@@ -9,61 +9,71 @@
 
 namespace utility::io
 {
+	inline void createDirectories(const std::string& address, bool isFile)
+	{
+		std::string directory = address;
+
+		if (isFile)
+		{
+			for (auto it = directory.rbegin(); it != directory.rend(); ++it)
+			{
+				if (*it == '\\' || *it == '/')
+				{
+					directory = std::string(directory.begin(), it.base());
+					break;
+				}
+			}
+		}
+
+		if (!std::filesystem::exists(directory))
+		{
+			std::filesystem::create_directories(directory);
+		}
+	}
+
 	inline std::string readFile(const std::string& fileName)
 	{
-		std::ifstream file(fileName);
+		std::string dir = "";
+		std::ifstream stream;
 
-		if (!file.is_open())
+		createDirectories(fileName, true);
+		stream.open(fileName, std::ios::in);
+
+		if (!stream.is_open())
 		{
-			std::cerr << "Error opening file: " << fileName << std::endl;
+			std::cerr << "Failed to open file: " << fileName << std::endl;
 			return "";
 		}
 
 		std::stringstream buffer;
-		buffer << file.rdbuf();
-		file.close();
+		buffer << stream.rdbuf();
+		stream.close();
 		return buffer.str();
 	}
 
 	inline void writeFile(const std::string& fileName, const std::string& content)
 	{
 		std::string dir = "";
-		std::ofstream file;
+		std::ofstream stream;
 
-		while (true)
+		createDirectories(fileName, true);
+		stream.open(fileName, std::ios::out | std::ios::trunc);
+
+		if (!stream.is_open())
 		{
-			file.open(fileName, std::ios::out | std::ios::trunc);
-			if (file.is_open()) break;
-
-			if (dir.empty())
-			{
-				for (auto it = fileName.rbegin(); it != fileName.rend(); ++it)
-				{
-					if (*it == '\\' || *it == '/')
-					{
-						dir = std::string(fileName.begin(), it.base());
-						break;
-					}
-				}
-
-				if (!std::filesystem::exists(dir))
-				{
-					std::filesystem::create_directories(dir);
-					continue;
-				}
-			}
-
-			std::cerr << "Error opening file: " << fileName << std::endl;
+			std::cerr << "Failed to open file: " << fileName << std::endl;
 			return;
 		}
 
-		file << content;
-		file.close();
+		stream << content;
+		stream.close();
 	}
 
 	inline std::vector<std::string> getFilesInDirectory(const std::string& directory, const std::string& extension = "")
 	{
 		std::vector<std::string> files;
+
+		createDirectories(directory, false);
 
 		for (const auto& entry : std::filesystem::directory_iterator(directory))
 		{
