@@ -567,7 +567,7 @@ void ParticleSystemEditor::renderMainMenuBar()
 
 		if (imgui::BeginMenu("About"))
 		{
-			std::string url = "https://code.org/helloworld";
+			std::string url = "https://github.com/mehmetfatiherdem/Particle-System-Simulator";
 			system(("start " + url).c_str());
 		}
 
