@@ -49,8 +49,8 @@ void ForceOverLifetime::serialize(Serializer& serializer, const std::string& obj
 	Component::serialize(serializer, objectName);
 	serializer["ComponentMethod"].string(getComponentMethodName(method).c_str());
 
-	persistence::utils::serializeVector(serializer, minForce, "MinVelocity");
-	persistence::utils::serializeVector(serializer, maxForce, "MaxVelocity");
+	persistence::utils::serializeVector(serializer, minForce, "MinForce");
+	persistence::utils::serializeVector(serializer, maxForce, "MaxForce");
 
 	persistence::utils::serializeBezier(serializer, minBezier, "MinBezier");
 	persistence::utils::serializeBezier(serializer, maxBezier, "MaxBezier");
