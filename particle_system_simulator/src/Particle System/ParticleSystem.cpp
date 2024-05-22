@@ -48,7 +48,7 @@ ParticleSystem::ParticleSystem(ParticleSystem&& other) noexcept
 	{
 		bool enabled = particle.isEnabled();
 		scene.destroyObject(particle.renderer);
-		particle.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+		particle.renderer = scene.createObject(TransformProps{}, quad, Shader::genericShader(), material);
 
 		if (!enabled)
 		{
@@ -107,9 +107,9 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::update()
 {
-	if (!scene.isSkyboxEnabled())
+	if (enabled)
 	{
-		int a = 5 + 5;
+		emitter->tryEmit(props, particlePool, poolIndex);
 	}
 
 	for (uint32_t i = 0; i < particlePool.size(); ++i)
@@ -137,11 +137,6 @@ void ParticleSystem::update()
 			transform.translate(particle.velocity * Time::deltaTime());
 			//transform.rotate(particle.angularVelocity * Time::deltaTime());
 		}
-	}
-
-	if (enabled)
-	{
-		emitter->tryEmit(props, particlePool, poolIndex);
 	}
 }
 
@@ -183,7 +178,7 @@ void ParticleSystem::setMaxParticles(uint32_t maxParticles)
 	{
 		if (pr.renderer == nullptr)
 		{
-			pr.renderer = scene.createObject(TransformProps{}, quad, Shader::instancedShader(), material);
+			pr.renderer = scene.createObject(TransformProps{}, quad, Shader::genericShader(), material);
 
 			pr.renderer->setPreRenderAction([&](Transform& transform)
 				{
