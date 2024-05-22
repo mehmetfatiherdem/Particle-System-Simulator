@@ -55,8 +55,20 @@ Application::Application() : window(500, 500, "Particle Engine"), scene(1920, 10
 	Texture texFire("Resources/Textures/fire.png",
 		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
 
+	Texture texRaindrops("Resources/Textures/raindrops.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texSnowflake("Resources/Textures/snowflake.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
+	Texture texStar("Resources/Textures/star.png",
+		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
+
 	ResourceManager::addTexture(std::move(texSmoke), "smoke");
 	ResourceManager::addTexture(std::move(texFire), "fire");
+	ResourceManager::addTexture(std::move(texRaindrops), "raindrops");
+	ResourceManager::addTexture(std::move(texSnowflake), "snowflake");
+	ResourceManager::addTexture(std::move(texStar), "star");
 
 	scene.createDirectionalLight(glm::vec3{0.0f, 0.0f, 1.0f}, glm::vec3{1.0f, 1.0f, 1.0f});
 }

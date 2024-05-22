@@ -136,9 +136,6 @@
     <Filter Include="src\Particle System\Emitter">
       <UniqueIdentifier>{9acb7489-ed0a-442b-8167-a31b4549140e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Textures\Fire">
-      <UniqueIdentifier>{4a36883f-bcfd-4d72-afb4-83a094b8e601}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{cc640736-13dd-4495-b415-c3d90fd0c765}</UniqueIdentifier>
     </Filter>
@@ -665,7 +662,19 @@
       <Filter>Resources\Textures\Skybox</Filter>
     </Image>
     <Image Include="Resources\Textures\Fire\fire.png">
-      <Filter>Resources\Textures\Fire</Filter>
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\snowflake.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\raindrops.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\star.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="Resources\Textures\smoke.png">
+      <Filter>Resources\Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

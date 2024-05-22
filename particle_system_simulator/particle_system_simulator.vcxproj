@@ -185,12 +185,16 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\Fire\fire.png" />
+    <Image Include="Resources\Textures\raindrops.png" />
     <Image Include="Resources\Textures\Skybox\back.jpg" />
     <Image Include="Resources\Textures\Skybox\bottom.jpg" />
     <Image Include="Resources\Textures\Skybox\front.jpg" />
     <Image Include="Resources\Textures\Skybox\left.jpg" />
     <Image Include="Resources\Textures\Skybox\right.jpg" />
     <Image Include="Resources\Textures\Skybox\top.jpg" />
+    <Image Include="Resources\Textures\smoke.png" />
+    <Image Include="Resources\Textures\snowflake.png" />
+    <Image Include="Resources\Textures\star.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Generic\generic.frag" />
