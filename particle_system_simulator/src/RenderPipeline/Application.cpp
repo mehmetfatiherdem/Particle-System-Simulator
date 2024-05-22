@@ -96,8 +96,8 @@ ParticleSystem* Application::getParticleSystem(const std::string& name)
 
 void Application::run()
 {
-	ProjectManager::getInstance();
 	scene.getCamera().getTransform().setPosition(glm::vec3(0.0f, 0.0f, 100.0f));
+	ProjectManager::getInstance();
 
 	std::vector<int> vec;
 
