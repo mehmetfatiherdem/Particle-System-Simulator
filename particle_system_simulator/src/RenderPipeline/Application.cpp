@@ -118,6 +118,8 @@ void Application::run()
 
 	Time::start();
 
+	float timer = 0.0f;
+
 	while (!window.shouldClose())
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
@@ -154,6 +156,14 @@ void Application::run()
 
 		scene.render();
 		editor.render();
+
+		timer += Time::deltaTime();
+
+		if (timer >= 0.1f)
+		{
+			window.setWindowTitle("Particle Engine (" + std::to_string(static_cast<uint32_t>(Time::fps())) + " FPS)");
+			timer = 0.0f;
+		}
 
 		window.swapBuffers();
 		window.endFrame();

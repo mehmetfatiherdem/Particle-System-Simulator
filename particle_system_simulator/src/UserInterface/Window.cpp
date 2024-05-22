@@ -156,6 +156,11 @@ void Window::iconifyCallback(GLFWwindow* window, int iconified)
 	ownerWindow->iconified = iconified;
 }
 
+void Window::setWindowTitle(const std::string& title)
+{
+	glfwSetWindowTitle(window, title.c_str());
+}
+
 void Window::pollEvents()
 {
 	glfwPollEvents();

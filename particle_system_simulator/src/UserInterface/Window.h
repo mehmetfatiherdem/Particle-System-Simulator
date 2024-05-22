@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <string>
 #include <map>
 #include <stdint.h>
 
@@ -67,4 +68,6 @@ public:
 
 	Action getKey(KeyCode keyCode) const { return keys.at(keyCode); }
 	Action getMouseButton(MouseButton button) const { return mouseButtons.at(button); }
+
+	void setWindowTitle(const std::string& title);
 };
