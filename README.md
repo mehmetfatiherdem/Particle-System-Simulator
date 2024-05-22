@@ -25,10 +25,8 @@ Welcome to the 3D Particle System Simulator! This project aims to provide a real
 1. Clone the repository:
     ```bash
     git clone git@github.com:mehmetfatiherdem/Particle-System-Simulator.git
-    cd 3DParticleSystemSimulator
     ```
-2. Ensure you have the necessary dependencies installed (GLFW, GLEW, GLM).
-3. Build the project using your preferred C++ compiler.
+2. Build the project using Visual Studio (it might not work with other compilers).
 
 ## Technologies Used
 - **C++**: Core programming language.
@@ -37,6 +35,7 @@ Welcome to the 3D Particle System Simulator! This project aims to provide a real
 - **GLEW**: OpenGL extension wrangler library.
 - **GLM**: OpenGL Mathematics library.
 - **ImGui**: Immediate mode graphical user interface.
+- **stb**: Image loader.
 
 ## Dependencies
 - [GLFW](https://www.glfw.org/)
@@ -44,9 +43,7 @@ Welcome to the 3D Particle System Simulator! This project aims to provide a real
 - [GLM](https://glm.g-truc.net/0.9.9/index.html)
 - [Imgui](https://github.com/ocornut/imgui)
 - [RapidJSON](https://rapidjson.org/)
-
-## Contributing
-Contributions are welcome! If you have ideas for new features or improvements, please feel free to fork the repository and submit a pull request.
+- [stb](https://github.com/nothings/stb)
 
 ## Contact
 For any inquiries or feedback, please contact us at [talhasezer4@gmail.com](mailto:talhasezer4@gmail.com) [mehmeterdem1024@gmail.com](mailto:mehmeterdem1024@gmail.com) [m.tunahanbas90@gmail.com](mailto:m.tunahanbas90@gmail.com).
