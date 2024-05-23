@@ -1,0 +1,171 @@
+{
+    "SkyboxEnabled": false,
+    "Camera": {
+        "Fov": 0.7853981852531433,
+        "Top": 4.5,
+        "Bottom": -4.5,
+        "Left": -8.0,
+        "Right": 8.0,
+        "Near": 0.10000000149011612,
+        "Far": 1000.0,
+        "Transform": {
+            "Position": [
+                -35.09043502807617,
+                -6.402373790740967,
+                -8.915107727050781
+            ],
+            "Rotation": [
+                -0.010950922966003418,
+                -0.7897437214851379,
+                -0.01410349365323782,
+                0.6131771206855774
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    "ParticleSystems": [
+        {
+            "Name": "rain",
+            "Enabled": true,
+            "StartLifetime": 0.20000000298023224,
+            "StartSpeed": 1.0,
+            "StartSize": 1.0,
+            "MinSize": 0.30000001192092896,
+            "MaxSize": 2.4000000953674316,
+            "StartRotation": 0.0,
+            "StartColor": {
+                "Ambient": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Diffuse": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Specular": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Alpha": 1.0
+            },
+            "GravityModifier": 0.0,
+            "MaxParticles": 3000,
+            "Position": [
+                0.0,
+                1.100000023841858,
+                -2.0
+            ],
+            "Shininess": 1.0,
+            "DiffuseMap": "raindrops",
+            "SpecularMap": null,
+            "Emitter": {
+                "EmitterType": "Cone Emitter",
+                "EmissionRate": 700.0,
+                "Radius": 20.0,
+                "Angle": 0.0
+            },
+            "Components": [
+                {
+                    "ComponentType": "Velocity Over Lifetime",
+                    "Priority": 0,
+                    "Enabled": true,
+                    "ComponentMethod": "Constant",
+                    "MinVelocity": [
+                        0.0,
+                        -150.0,
+                        0.0
+                    ],
+                    "MaxVelocity": [
+                        0.0,
+                        -150.0,
+                        0.0
+                    ],
+                    "MinBezier": {
+                        "ControlPointsSize": 2,
+                        "ControlPoints": [
+                            [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        ]
+                    },
+                    "MaxBezier": {
+                        "ControlPointsSize": 2,
+                        "ControlPoints": [
+                            [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "ComponentType": "Color Over Lifetime",
+                    "Priority": 3,
+                    "Enabled": true,
+                    "Keypoints": [
+                        0.0,
+                        1.0
+                    ],
+                    "Colors": [
+                        {
+                            "Ambient": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Diffuse": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Specular": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Alpha": 1.0
+                        },
+                        {
+                            "Ambient": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Diffuse": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Specular": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Alpha": 1.0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,171 @@
+{
+    "SkyboxEnabled": false,
+    "Camera": {
+        "Fov": 0.7853981852531433,
+        "Top": 1.0,
+        "Bottom": -1.0,
+        "Left": -1.0,
+        "Right": 1.0,
+        "Near": 0.10000000149011612,
+        "Far": 1000.0,
+        "Transform": {
+            "Position": [
+                1.442789912223816,
+                -4.842925548553467,
+                13.926128387451172
+            ],
+            "Rotation": [
+                -0.005442304536700249,
+                0.014351366087794304,
+                0.00007811324030626565,
+                0.9998816847801208
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    "ParticleSystems": [
+        {
+            "Name": "Snow",
+            "Enabled": true,
+            "StartLifetime": 5.0,
+            "StartSpeed": 0.0,
+            "StartSize": 0.10000000149011612,
+            "MinSize": 0.30000001192092896,
+            "MaxSize": 2.4000000953674316,
+            "StartRotation": 0.0,
+            "StartColor": {
+                "Ambient": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Diffuse": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Specular": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Alpha": 1.0
+            },
+            "GravityModifier": 0.0,
+            "MaxParticles": 3000,
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Shininess": 32.0,
+            "DiffuseMap": "snowflake",
+            "SpecularMap": null,
+            "Emitter": {
+                "EmitterType": "Cone Emitter",
+                "EmissionRate": 350.0,
+                "Radius": 9.0,
+                "Angle": 0.8135327100753784
+            },
+            "Components": [
+                {
+                    "ComponentType": "Color Over Lifetime",
+                    "Priority": 3,
+                    "Enabled": false,
+                    "Keypoints": [
+                        0.8999999761581421,
+                        1.0
+                    ],
+                    "Colors": [
+                        {
+                            "Ambient": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Diffuse": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Specular": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Alpha": 0.3059999942779541
+                        },
+                        {
+                            "Ambient": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Diffuse": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Specular": [
+                                0.501960813999176,
+                                0.501960813999176,
+                                0.501960813999176
+                            ],
+                            "Alpha": 0.10100000351667404
+                        }
+                    ]
+                },
+                {
+                    "ComponentType": "Velocity Over Lifetime",
+                    "Priority": 0,
+                    "Enabled": true,
+                    "ComponentMethod": "Random Between Two Curves",
+                    "MinVelocity": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "MaxVelocity": [
+                        1.0,
+                        0.0,
+                        1.0
+                    ],
+                    "MinBezier": {
+                        "ControlPointsSize": 2,
+                        "ControlPoints": [
+                            [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                -1.0,
+                                -10.0,
+                                1.0
+                            ]
+                        ]
+                    },
+                    "MaxBezier": {
+                        "ControlPointsSize": 2,
+                        "ControlPoints": [
+                            [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                2.0,
+                                -5.0,
+                                1.0
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

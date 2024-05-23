@@ -1,0 +1,151 @@
+{
+    "SkyboxEnabled": false,
+    "Camera": {
+        "Fov": 0.4082946181297302,
+        "Top": 4.5,
+        "Bottom": -4.5,
+        "Left": -8.0,
+        "Right": 8.0,
+        "Near": 0.10000000149011612,
+        "Far": 1000.0,
+        "Transform": {
+            "Position": [
+                0.542917013168335,
+                1.924722671508789,
+                34.20497131347656
+            ],
+            "Rotation": [
+                -0.008242321200668812,
+                0.0012340578250586987,
+                0.000010089050192618743,
+                0.9999646544456482
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    "ParticleSystems": [
+        {
+            "Name": "Fire",
+            "Enabled": true,
+            "StartLifetime": 1.0,
+            "StartSpeed": 4.0,
+            "StartSize": 3.0,
+            "MinSize": 0.30000001192092896,
+            "MaxSize": 2.4000000953674316,
+            "StartRotation": 0.0,
+            "StartColor": {
+                "Ambient": [
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                "Diffuse": [
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                "Specular": [
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                "Alpha": 1.0
+            },
+            "GravityModifier": 0.0,
+            "MaxParticles": 1000,
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Shininess": 32.0,
+            "DiffuseMap": "fire",
+            "SpecularMap": null,
+            "Emitter": {
+                "EmitterType": "Cone Emitter",
+                "EmissionRate": 200.0,
+                "Radius": 0.699999988079071,
+                "Angle": 0.5322031378746033
+            },
+            "Components": [
+                {
+                    "ComponentType": "Color Over Lifetime",
+                    "Priority": 3,
+                    "Enabled": true,
+                    "Keypoints": [
+                        0.0,
+                        1.0
+                    ],
+                    "Colors": [
+                        {
+                            "Ambient": [
+                                0.5882353186607361,
+                                0.5882353186607361,
+                                0.22745098173618317
+                            ],
+                            "Diffuse": [
+                                0.5882353186607361,
+                                0.5882353186607361,
+                                0.23529411852359772
+                            ],
+                            "Specular": [
+                                0.5882353186607361,
+                                0.5882353186607361,
+                                0.23529411852359772
+                            ],
+                            "Alpha": 0.2639999985694885
+                        },
+                        {
+                            "Ambient": [
+                                0.5882353186607361,
+                                0.0,
+                                0.0
+                            ],
+                            "Diffuse": [
+                                0.5882353186607361,
+                                0.0,
+                                0.0
+                            ],
+                            "Specular": [
+                                0.5882353186607361,
+                                0.0,
+                                0.0
+                            ],
+                            "Alpha": 0.0
+                        }
+                    ]
+                },
+                {
+                    "ComponentType": "Size Over Lifetime",
+                    "Priority": 1,
+                    "Enabled": true,
+                    "ComponentMethod": "Curve",
+                    "MinSize": 0.0,
+                    "MaxSize": 0.0,
+                    "MinBezier": {
+                        "ControlPointsSize": 4,
+                        "ControlPoints": [
+                            5.0,
+                            1.2300007343292236,
+                            1.600000262260437,
+                            0.0
+                        ]
+                    },
+                    "MaxBezier": {
+                        "ControlPointsSize": 4,
+                        "ControlPoints": [
+                            5.0,
+                            1.2300007343292236,
+                            1.600000262260437,
+                            0.0
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
