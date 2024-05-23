@@ -47,7 +47,7 @@
 
 #include "GeneralUtility/FileIOUtils.h"
 
-Application::Application() : window(500, 500, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
+Application::Application() : window(1920, 1080, "Particle Engine"), scene(1920, 1080), particleSystems(), editor()
 {
 	Texture texSmoke("Resources/Textures/smoke.png",
 		GL_TEXTURE_2D, GL_REPEAT, GL_REPEAT, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_RGBA, GL_RGBA, ',');
@@ -119,13 +119,35 @@ void Application::run()
 	Time::start();
 
 	float timer = 0.0f;
+	bool iconified = false;
 
 	while (!window.shouldClose())
 	{
+		window.pollEvents();
+
+		if (window.isIconified())
+		{
+			iconified = true;
+			continue;
+		}
+		else if (iconified)
+		{
+			iconified = false;
+			Time::endFrame();
+		}
+
+		Gui::beginFrame();
+
 		glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
 		glClear(clearMask);
-		window.pollEvents();
-		Gui::beginFrame();
+
+		timer += Time::deltaTime();
+
+		if (timer >= 0.1f)
+		{
+			window.setWindowTitle("Particle Engine (" + std::to_string(static_cast<uint32_t>(Time::fps())) + " FPS)");
+			timer = 0.0f;
+		}
 
 		//Input class is used for in-game input handling
 		if (Input::getKeyDown(KeyCode::KEY_X))
@@ -147,27 +169,19 @@ void Application::run()
 			ProjectManager::getInstance().loadProject();
 		}
 
-		scene.update();
-
 		for (auto& ps : particleSystems)
 		{
 			const_cast<ParticleSystem&>(ps).update();
 		}
 
+		scene.update();
+
 		scene.render();
 		editor.render();
 
-		timer += Time::deltaTime();
-
-		if (timer >= 0.1f)
-		{
-			window.setWindowTitle("Particle Engine (" + std::to_string(static_cast<uint32_t>(Time::fps())) + " FPS)");
-			timer = 0.0f;
-		}
-
+		Gui::endFrame();
 		window.swapBuffers();
 		window.endFrame();
-		Gui::endFrame();
 		Time::endFrame();
 	}
 }

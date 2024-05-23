@@ -565,10 +565,19 @@ void ParticleSystemEditor::renderMainMenuBar()
 			imgui::EndMenu();
 		}
 
-		if (imgui::BeginMenu("About"))
+		static bool aboutClickedLastFrame = false;
+
+		bool about = imgui::MenuItem("About");
+
+		if (about && !aboutClickedLastFrame)
 		{
+			aboutClickedLastFrame = true;
 			std::string url = "https://github.com/mehmetfatiherdem/Particle-System-Simulator";
 			system(("start " + url).c_str());
+		}
+		else if (aboutClickedLastFrame)
+		{
+			aboutClickedLastFrame = false;
 		}
 
 		imgui::EndMainMenuBar();
@@ -925,7 +934,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					case 3:
 					{
 						renderBezierVector("Lower Bezier Curve", "Velocity", &vol->minBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
-						renderBezierVector("Upper Bezier Curve", "Velocity", &vol->maxBezier, nullptr,  ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
+						renderBezierVector("Upper Bezier Curve", "Velocity", &vol->maxBezier, nullptr, ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet);
 					}
 					break;
 					default: throw 100;
@@ -947,7 +956,7 @@ void ParticleSystemEditor::renderComponents(ParticleSystem& ps)
 					{
 					case 0:
 					{
-						renderBezierFloat("Bezier Curve", "Size", &sol->minBezier, &sol->maxBezier, 
+						renderBezierFloat("Bezier Curve", "Size", &sol->minBezier, &sol->maxBezier,
 							ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet, true, false, 0.0f, 0.0f);
 					}
 					break;

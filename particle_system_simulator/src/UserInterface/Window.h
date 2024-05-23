@@ -31,9 +31,11 @@ private:
 	float scroll;
 
 	bool iconified;
+	bool shouldIconify;
 
 	static void resizeCallback(GLFWwindow* window, int width, int height);
 	static void iconifyCallback(GLFWwindow* window, int iconified);
+	static void maximizeCallback(GLFWwindow* window, int maximized);
 	static void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mode);
 	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos);
@@ -51,6 +53,8 @@ public:
 	void swapBuffers() const;
 	void endFrame();
 
+	void iconify();
+
 	void* getNativeWindow() const { return window; }
 
 	glm::vec2 getMousePosition() const { return mousePos; }
@@ -65,6 +69,8 @@ public:
 	uint32_t getWidth() const { return width; }
 	uint32_t getHeight() const { return height; }
 	float getAspectRatio() const { return (float)width / height; }
+
+	bool isIconified() const { return iconified; }
 
 	Action getKey(KeyCode keyCode) const { return keys.at(keyCode); }
 	Action getMouseButton(MouseButton button) const { return mouseButtons.at(button); }

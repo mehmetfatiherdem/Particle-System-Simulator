@@ -12,6 +12,11 @@ currentProject(getLastProjectAddress())
 	loadProject();
 }
 
+ProjectManager::~ProjectManager()
+{
+	utility::io::writeFile(applicationDirectory + "last.txt", currentProject);
+}
+
 ProjectManager& ProjectManager::getInstance()
 {
 	static ProjectManager instance;
@@ -50,7 +55,6 @@ void ProjectManager::saveProject(const std::string& fileName, bool relativeToPro
 	serializer.endObject();
 
 	utility::io::writeFile(fileAddress, serializer.getJsonString());
-	utility::io::writeFile(applicationDirectory + "last.txt", fileAddress);
 }
 
 void ProjectManager::loadProject(const std::string& fileName, bool relativeToProjectDir)

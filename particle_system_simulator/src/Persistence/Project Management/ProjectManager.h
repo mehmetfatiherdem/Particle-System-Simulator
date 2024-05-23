@@ -15,6 +15,8 @@ private:
 
 public:
 
+	~ProjectManager();
+
 	static ProjectManager& getInstance();
 
 	std::string getProjectDirectory() const { return applicationDirectory + "Projects\\"; }
