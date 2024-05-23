@@ -10,7 +10,7 @@ void APIENTRY glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum 
 
 Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsync, bool cursorEnabled, bool escapeCloses) :
 	width(width), height(height), vsync(vsync), cursorEnabled(cursorEnabled), escapeCloses(escapeCloses), mousePos(0.0f, 0.0f),
-	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr), iconified(false)
+	mouseDelta(0.0f, 0.0f), scroll(0.0f), keys(), mouseButtons(), window(nullptr), iconified(false), shouldIconify(false)
 {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	glfwWindowHint(GLFW_MAXIMIZED, true);
@@ -40,7 +40,7 @@ Window::Window(uint32_t width, uint32_t height, std::string_view title, bool vsy
 	glfwSetCursorPosCallback(window, cursorPosCallback);
 	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetFramebufferSizeCallback(window, resizeCallback);
-	//glfwSetWindowIconifyCallback(window, iconifyCallback);
+	glfwSetWindowIconifyCallback(window, iconifyCallback);
 
 	int flags;
 	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
@@ -85,7 +85,11 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height)
 
 	ownerWindow->width = width;
 	ownerWindow->height = height;
-	Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
+
+	if (width > 0 || height > 0)
+	{
+		Application::getInstance().getScene().getCamera().setAspectRatio(width, height);
+	}
 
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
@@ -181,8 +185,19 @@ void Window::swapBuffers() const
 	glfwSwapBuffers(window);
 }
 
+void Window::iconify()
+{
+	shouldIconify = true;
+}
+
 void Window::endFrame()
 {
+	if (shouldIconify)
+	{
+		glfwIconifyWindow(window);
+		shouldIconify = false;
+	}
+
 	for(auto iterator = keys.begin(); iterator != keys.end(); ++iterator)
 	{
 		switch(iterator._Ptr->_Myval.second)
