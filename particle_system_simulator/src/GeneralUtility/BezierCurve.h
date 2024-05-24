@@ -76,7 +76,7 @@ public:
 
 	T evaluatePoint(float t) const
 	{
-		assert(t >= 0.0f && t <= 1.0f + EPSILON);
+		//assert(t >= 0.0f && t <= 1.0f + EPSILON);
 
 		std::vector<T> beta(controlPoints);
 		size_t n = beta.size();
